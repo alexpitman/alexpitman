@@ -10,18 +10,18 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-Point2D::Point2D() {}
+geo::Point2D::Point2D() {}
 
 ///////////////////////////////////////////////////////////////////////////////
-Point2D::Point2D(double X, double Y)
+geo::Point2D::Point2D(double X, double Y)
 {
   myX = X;
   myY = Y;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-Point2D&
-Point2D::operator =(const Point2D& RHS)
+geo::Point2D&
+geo::Point2D::operator =(const Point2D& RHS)
 {
   myX = RHS.X();
   myY = RHS.Y();
@@ -29,22 +29,22 @@ Point2D::operator =(const Point2D& RHS)
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-Point2D 
-Point2D::operator +(const Vector2D& RHS) const
+geo::Point2D 
+geo::Point2D::operator +(const Vector2D& RHS) const
 {
   return Point2D( myX + RHS.X(), myY + RHS.Y() );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-Point2D 
-Point2D::operator -(const Vector2D& RHS) const
+geo::Point2D 
+geo::Point2D::operator -(const Vector2D& RHS) const
 {
   return Point2D( myX - RHS.X(), myY - RHS.Y() );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-Point2D& 
-Point2D::operator +=(const Vector2D& RHS)
+geo::Point2D& 
+geo::Point2D::operator +=(const Vector2D& RHS)
 {
   myX += RHS.X();
   myY += RHS.Y();
@@ -52,8 +52,8 @@ Point2D::operator +=(const Vector2D& RHS)
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-Point2D& 
-Point2D::operator -=(const Vector2D& RHS)
+geo::Point2D& 
+geo::Point2D::operator -=(const Vector2D& RHS)
 {
   myX -= RHS.X();
   myY -= RHS.Y();
@@ -62,58 +62,58 @@ Point2D::operator -=(const Vector2D& RHS)
 
 ///////////////////////////////////////////////////////////////////////////////
 bool 
-Point2D::operator ==(const Point2D& RHS) const
+geo::Point2D::operator ==(const Point2D& RHS) const
 {
   return ( myX == RHS.X() && myY == RHS.Y() );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 bool 
-Point2D::operator !=(const Point2D& RHS) const
+geo::Point2D::operator !=(const Point2D& RHS) const
 {
   return !operator==(RHS);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-Vector2D
-Point2D::ToVector() const
+geo::Vector2D
+geo::Point2D::ToVector() const
 {
   return Vector2D(myX, myY);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-Vector2D 
-Point2D::operator -(const Point2D& RHS) const
+geo::Vector2D 
+geo::Point2D::operator -(const Point2D& RHS) const
 {
   return Vector2D( myX - RHS.X(), myY - RHS.Y() );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-Vector2D 
-Point2D::operator -=(const Point2D& RHS) const
+geo::Vector2D 
+geo::Point2D::operator -=(const Point2D& RHS) const
 {
   return Vector2D( myX - RHS.X(), myY - RHS.Y() );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-Point2D& 
-Point2D::Origin()
+geo::Point2D& 
+geo::Point2D::Origin()
 {
   static Point2D pt(0, 0);
   return pt;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-Point2D& 
-Point2D::UnitX()
+geo::Point2D& 
+geo::Point2D::UnitX()
 {
   static Point2D pt(1, 0);
   return pt;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-Point2D& 
-Point2D::UnitY()
+geo::Point2D& 
+geo::Point2D::UnitY()
 {
   static Point2D pt(0, 1);
   return pt;
@@ -127,10 +127,10 @@ Point2D::UnitY()
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-Point3D::Point3D() {};
+geo::Point3D::Point3D() {};
 
 ///////////////////////////////////////////////////////////////////////////////
-Point3D::Point3D(double X, double Y, double Z)
+geo::Point3D::Point3D(double X, double Y, double Z)
 {
   myX = X;
   myY = Y;
@@ -138,8 +138,8 @@ Point3D::Point3D(double X, double Y, double Z)
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-Point3D&
-Point3D::operator =(const Point3D& RHS)
+geo::Point3D&
+geo::Point3D::operator =(const Point3D& RHS)
 {
   myX = RHS.X();
   myY = RHS.Y();
@@ -148,36 +148,36 @@ Point3D::operator =(const Point3D& RHS)
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-Point3D
-Point3D::operator +(const Vector3D& RHS) const
+geo::Point3D
+geo::Point3D::operator +(const Vector3D& RHS) const
 {
   return Point3D( myX + RHS.X(), myY + RHS.Y(), myZ + RHS.Z() );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-Point3D
-Point3D::operator -(const Vector3D& RHS) const
+geo::Point3D
+geo::Point3D::operator -(const Vector3D& RHS) const
 {
   return Point3D( myX - RHS.X(), myY - RHS.Y(), myZ - RHS.Z() );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-Point3D 
-Point3D::operator *(double RHS) const
+geo::Point3D 
+geo::Point3D::operator *(double RHS) const
 {
   return Point3D( myX*RHS, myY*RHS, myZ*RHS );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-Point3D 
-Point3D::operator /(double RHS) const
+geo::Point3D 
+geo::Point3D::operator /(double RHS) const
 {
   return Point3D( myX/RHS, myY/RHS, myZ/RHS );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-Point3D& 
-Point3D::operator +=(const Vector3D& RHS)
+geo::Point3D& 
+geo::Point3D::operator +=(const Vector3D& RHS)
 {
   myX += RHS.X();
   myY += RHS.Y();
@@ -186,8 +186,8 @@ Point3D::operator +=(const Vector3D& RHS)
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-Point3D& 
-Point3D::operator -=(const Vector3D& RHS)
+geo::Point3D& 
+geo::Point3D::operator -=(const Vector3D& RHS)
 {
   myX -= RHS.X();
   myY -= RHS.Y();
@@ -197,42 +197,42 @@ Point3D::operator -=(const Vector3D& RHS)
 
 ///////////////////////////////////////////////////////////////////////////////
 bool 
-Point3D::operator ==(const Point3D& RHS) const
+geo::Point3D::operator ==(const Point3D& RHS) const
 {
   return ( myX == RHS.X() && myY == RHS.Y() && myZ == RHS.Z() );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 bool 
-Point3D::operator !=(const Point3D& RHS) const
+geo::Point3D::operator !=(const Point3D& RHS) const
 {
   return !operator==(RHS);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-Vector3D 
-Point3D::operator -(const Point3D& RHS) const
+geo::Vector3D 
+geo::Point3D::operator -(const Point3D& RHS) const
 {
   return Vector3D( myX-RHS.X(), myY-RHS.Y(), myZ-RHS.Z());
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-Vector3D
-Point3D::ToVector() const
+geo::Vector3D
+geo::Point3D::ToVector() const
 {
   return Vector3D(myX, myY, myZ);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 bool 
-Point3D::IsEmpty() const
+geo::Point3D::IsEmpty() const
 {
   return ( myX != myX || myY != myY || myZ != myZ );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-Point3D& 
-Point3D::Empty()
+geo::Point3D& 
+geo::Point3D::Empty()
 {
   static Point3D pt( std::numeric_limits<double>::quiet_NaN(),
                      std::numeric_limits<double>::quiet_NaN(), 
@@ -241,32 +241,32 @@ Point3D::Empty()
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-Point3D& 
-Point3D::Origin()
+geo::Point3D& 
+geo::Point3D::Origin()
 {
   static Point3D pt(0, 0, 0);
   return pt;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-Point3D& 
-Point3D::UnitX()
+geo::Point3D& 
+geo::Point3D::UnitX()
 {
   static Point3D pt(1, 0, 0);
   return pt;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-Point3D& 
-Point3D::UnitY()
+geo::Point3D& 
+geo::Point3D::UnitY()
 {
   static Point3D pt(0, 1, 0);
   return pt;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-Point3D& 
-Point3D::UnitZ()
+geo::Point3D& 
+geo::Point3D::UnitZ()
 {
   static Point3D pt(0, 0, 1);
   return pt;

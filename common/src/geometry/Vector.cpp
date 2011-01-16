@@ -10,18 +10,18 @@
 #include <math.h>
 
 ///////////////////////////////////////////////////////////////////////////////
-Vector2D::Vector2D() {}
+geo::Vector2D::Vector2D() {}
 
 ///////////////////////////////////////////////////////////////////////////////
-Vector2D::Vector2D(const double X, const double Y)
+geo::Vector2D::Vector2D(const double X, const double Y)
 {
   myX = X;
   myY = Y;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-Vector2D&
-Vector2D::operator =(const Vector2D& RHS)
+geo::Vector2D&
+geo::Vector2D::operator =(const Vector2D& RHS)
 {
   myX = RHS.X();
   myY = RHS.Y();
@@ -29,22 +29,22 @@ Vector2D::operator =(const Vector2D& RHS)
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-Vector2D
-Vector2D::operator +(const Vector2D& RHS) const
+geo::Vector2D
+geo::Vector2D::operator +(const Vector2D& RHS) const
 {
   return Vector2D( myX + RHS.X(), myY + RHS.Y() );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-Vector2D
-Vector2D::operator -(const Vector2D& RHS) const
+geo::Vector2D
+geo::Vector2D::operator -(const Vector2D& RHS) const
 {
   return Vector2D( myX - RHS.X(), myY - RHS.Y() );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-Vector2D& 
-Vector2D::operator +=(const Vector2D& RHS)
+geo::Vector2D& 
+geo::Vector2D::operator +=(const Vector2D& RHS)
 {
   myX += RHS.X();
   myY += RHS.Y();
@@ -52,8 +52,8 @@ Vector2D::operator +=(const Vector2D& RHS)
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-Vector2D& 
-Vector2D::operator -=(const Vector2D& RHS)
+geo::Vector2D& 
+geo::Vector2D::operator -=(const Vector2D& RHS)
 {
   myX -= RHS.X();
   myY -= RHS.Y();
@@ -62,44 +62,44 @@ Vector2D::operator -=(const Vector2D& RHS)
 
 ///////////////////////////////////////////////////////////////////////////////
 bool 
-Vector2D::operator ==(const Vector2D& RHS) const
+geo::Vector2D::operator ==(const Vector2D& RHS) const
 {
   return ( myX == RHS.X() && myY == RHS.Y() );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 double 
-Vector2D::Length() const
+geo::Vector2D::Length() const
 {
   return sqrt( LengthSquared() );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 double 
-Vector2D::LengthSquared() const
+geo::Vector2D::LengthSquared() const
 {
   return myX * myX + myY * myY;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-Vector2D& 
-Vector2D::Zero()
+geo::Vector2D& 
+geo::Vector2D::Zero()
 {
   static Vector2D vec(0, 0);
   return vec;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-Vector2D& 
-Vector2D::UnitX()
+geo::Vector2D& 
+geo::Vector2D::UnitX()
 {
   static Vector2D vec(1, 0);
   return vec;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-Vector2D& 
-Vector2D::UnitY()
+geo::Vector2D& 
+geo::Vector2D::UnitY()
 {
   static Vector2D vec(0, 1);
   return vec;
@@ -107,7 +107,7 @@ Vector2D::UnitY()
 
 ///////////////////////////////////////////////////////////////////////////////
 bool 
-Vector2D::operator !=(const Vector2D& RHS) const
+geo::Vector2D::operator !=(const Vector2D& RHS) const
 {
   return !operator==(RHS);
 }
@@ -120,10 +120,10 @@ Vector2D::operator !=(const Vector2D& RHS) const
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-Vector3D::Vector3D() {};
+geo::Vector3D::Vector3D() {};
 
 ///////////////////////////////////////////////////////////////////////////////
-Vector3D::Vector3D(double X, double Y, double Z)
+geo::Vector3D::Vector3D(double X, double Y, double Z)
 {
   myX = X;
   myY = Y;
@@ -131,8 +131,8 @@ Vector3D::Vector3D(double X, double Y, double Z)
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-Vector3D&
-Vector3D::operator =(const Vector3D& RHS)
+geo::Vector3D&
+geo::Vector3D::operator =(const Vector3D& RHS)
 {
   myX = RHS.X();
   myY = RHS.Y();
@@ -141,36 +141,36 @@ Vector3D::operator =(const Vector3D& RHS)
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-Vector3D
-Vector3D::operator +(const Vector3D& RHS) const
+geo::Vector3D
+geo::Vector3D::operator +(const Vector3D& RHS) const
 {
   return Vector3D( myX + RHS.X(), myY + RHS.Y(), myZ + RHS.Z() );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-Vector3D
-Vector3D::operator -(const Vector3D& RHS) const
+geo::Vector3D
+geo::Vector3D::operator -(const Vector3D& RHS) const
 {
   return Vector3D( myX - RHS.X(), myY - RHS.Y(), myZ - RHS.Z() );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-Vector3D 
-Vector3D::operator *(double RHS) const
+geo::Vector3D 
+geo::Vector3D::operator *(double RHS) const
 {
   return Vector3D( myX*RHS, myY*RHS, myZ*RHS );
 }
  
 ///////////////////////////////////////////////////////////////////////////////
-Vector3D 
-Vector3D::operator /(double RHS) const
+geo::Vector3D 
+geo::Vector3D::operator /(double RHS) const
 {
   return Vector3D( myX/RHS, myY/RHS, myZ/RHS );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-Vector3D& 
-Vector3D::operator +=(const Vector3D& RHS)
+geo::Vector3D& 
+geo::Vector3D::operator +=(const Vector3D& RHS)
 {
   myX += RHS.X();
   myY += RHS.Y();
@@ -179,8 +179,8 @@ Vector3D::operator +=(const Vector3D& RHS)
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-Vector3D& 
-Vector3D::operator -=(const Vector3D& RHS)
+geo::Vector3D& 
+geo::Vector3D::operator -=(const Vector3D& RHS)
 {
   myX -= RHS.X();
   myY -= RHS.Y();
@@ -190,21 +190,21 @@ Vector3D::operator -=(const Vector3D& RHS)
 
 ///////////////////////////////////////////////////////////////////////////////
 bool 
-Vector3D::operator ==(const Vector3D& RHS) const
+geo::Vector3D::operator ==(const Vector3D& RHS) const
 {
   return ( myX == RHS.X() && myY == RHS.Y() && myZ == RHS.Z() );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 bool 
-Vector3D::operator !=(const Vector3D& RHS) const
+geo::Vector3D::operator !=(const Vector3D& RHS) const
 {
   return !operator==(RHS);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-Vector3D 
-Vector3D::operator *(const Vector3D& RHS) const
+geo::Vector3D 
+geo::Vector3D::operator *(const Vector3D& RHS) const
 {
   return Vector3D( myY*RHS.Z() - myZ*RHS.Y(),
                    myX*RHS.Z() - myZ*RHS.X(),
@@ -213,21 +213,21 @@ Vector3D::operator *(const Vector3D& RHS) const
 
 ///////////////////////////////////////////////////////////////////////////////
 double 
-Vector3D::Length() const
+geo::Vector3D::Length() const
 {
   return sqrt( LengthSquared() );
 }
   
 ///////////////////////////////////////////////////////////////////////////////
 double 
-Vector3D::LengthSquared() const
+geo::Vector3D::LengthSquared() const
 {
   return myX * myX + myY * myY + myZ * myZ;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 void 
-Vector3D::Normalise()
+geo::Vector3D::Normalise()
 {
   double length = Length();
   
@@ -243,40 +243,40 @@ Vector3D::Normalise()
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-Vector3D& 
-Vector3D::Zero()
+geo::Vector3D& 
+geo::Vector3D::Zero()
 {
   static Vector3D vec(0, 0, 0);
   return vec;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-Vector3D& 
-Vector3D::Null()
+geo::Vector3D& 
+geo::Vector3D::Null()
 {
   static Vector3D vec;
   return vec;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-Vector3D& 
-Vector3D::UnitX()
+geo::Vector3D& 
+geo::Vector3D::UnitX()
 {
   static Vector3D vec(1, 0, 0);
   return vec;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-Vector3D& 
-Vector3D::UnitY()
+geo::Vector3D& 
+geo::Vector3D::UnitY()
 {
   static Vector3D vec(0, 1, 0);
   return vec;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-Vector3D& 
-Vector3D::UnitZ()
+geo::Vector3D& 
+geo::Vector3D::UnitZ()
 {
   static Vector3D vec(0, 0, 1);
   return vec;
