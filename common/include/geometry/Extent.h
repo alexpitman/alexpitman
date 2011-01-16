@@ -1,5 +1,5 @@
-#ifndef __GEOMETRY_EXTENT_H
-#define __GEOMETRY_EXTENT_H
+#ifndef __GEO_EXTENT_H
+#define __GEO_EXTENT_H
 ///////////////////////////////////////////////////////////////////////////////
 //
 // Name           : Extent2D, Extent3D
@@ -27,25 +27,28 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-struct Extent3D
+namespace geo
 {
-public:
-  Extent3D();
-  
-  Extent3D( const Extent3D& Extent3D );
-  
-  Extent3D operator +(const Point3D& RHS) const;
-  
-  Extent3D& operator +=(const Point3D& RHS);
-  
-  Point3D Min() const;
-  Point3D Max() const;
-  
-  Vector3D Span() const;
+  struct Extent3D
+  {
+  public:
+    Extent3D();
+    
+    Extent3D( const Extent3D& Extent3D );
+    
+    Extent3D operator +(const Point3D& RHS) const;
+    
+    Extent3D& operator +=(const Point3D& RHS);
+    
+    Point3D Min() const;
+    Point3D Max() const;
+    
+    Vector3D Span() const;
 
-private:
-  Point3D myMin;
-  Point3D myMax;
-};
+  private:
+    Point3D myMin;
+    Point3D myMax;
+  };
+}
 
 #endif
