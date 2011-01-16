@@ -7,21 +7,21 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-Extent3D::Extent3D()
+geo::Extent3D::Extent3D()
 {
   myMin = Point3D::Empty();
   myMax = Point3D::Empty();
 }
 
-Extent3D::Extent3D( const Extent3D& Extent3D )
+geo::Extent3D::Extent3D( const Extent3D& Extent3D )
 {
   myMin = Extent3D.Min();
   myMax = Extent3D.Max();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-Extent3D 
-Extent3D::operator +(const Point3D& RHS) const
+geo::Extent3D 
+geo::Extent3D::operator +(const Point3D& RHS) const
 {
   Extent3D Extent3D( *this );
   Extent3D += RHS;
@@ -29,8 +29,8 @@ Extent3D::operator +(const Point3D& RHS) const
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-Extent3D& 
-Extent3D::operator +=(const Point3D& RHS)
+geo::Extent3D& 
+geo::Extent3D::operator +=(const Point3D& RHS)
 {
   if ( myMin.IsEmpty() && myMax.IsEmpty() )
   {
@@ -52,22 +52,22 @@ Extent3D::operator +=(const Point3D& RHS)
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-Point3D 
-Extent3D::Min() const
+geo::Point3D 
+geo::Extent3D::Min() const
 {
   return myMin;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-Point3D 
-Extent3D::Max() const
+geo::Point3D 
+geo::Extent3D::Max() const
 {
   return myMax;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-Vector3D
-Extent3D::Span() const
+geo::Vector3D
+geo::Extent3D::Span() const
 {
   return myMax.ToVector() - myMin.ToVector();
 }
