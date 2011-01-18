@@ -26,10 +26,12 @@ sources = script.cwd([
   ])
 
 gsources = script.cwd([
+  "common/src/attribute/Colour.cpp",
   "common/src/geometry/Point.cpp",
   "common/src/geometry/Vector.cpp",
   "common/src/geometry/Extent.cpp",
-  "common/src/attribute/Colour.cpp",
+  "common/src/renderer/Factory.cpp",
+  "common/src/renderer/Renderer.cpp",
   "common/src/widget/ViewWindow.cpp",
   "common/src/widget/GLWidget.cpp",
   "common/src/viewer/View.cpp",

@@ -10,6 +10,8 @@
 
 //#include "scenetree/SceneTreeNode.h"
 
+#include "renderer/IRenderer.H"
+
 namespace wid
 {
   class GLWidget;
@@ -47,6 +49,11 @@ namespace vwr
     
     // Scene tree for this view
   //  SceneTreeHeadNode mySceneTree;
+  
+    ree::IRenderer* Renderer() { return myRendererPtr.get(); }
+  
+    // Renderer for this view
+    ree::T_RendererPtr myRendererPtr;
     
     bool isBuildPending; // Is a new build required?
     bool isRenderPending; // Is a new render required?

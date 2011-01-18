@@ -8,6 +8,10 @@
 
 #include "viewer/View.h"
 
+#include "renderer/Factory.h"
+
+#include "attribute/Colour.h"
+
 #include <gl.h>
 
 #ifndef GL_MULTISAMPLE
@@ -15,6 +19,7 @@
 #endif
 
 vwr::View::View()
+: myRendererPtr(ree::Factory::CreateRenderer())
 {
 }
 
@@ -40,70 +45,70 @@ vwr::View::Render()
   if ( isBuildPending ) Build();
   isRenderPending = false;
 
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  glLoadIdentity();
+  Renderer()->Clear();
+  Renderer()->LoadIdentity();
   
   glTranslatef(0, 0, 8);
   glRotatef(210, 1, 0, 0);
   glRotatef(210, 0, 0, 1);
   
-  glBegin(GL_TRIANGLES);
+  Renderer()->Begin(ree::TRIANGLES);
   
-  glColor3f(0, 1, 0);
-  glVertex3f(-1, -1, -1); // Front
-  glVertex3f( 1,  1, -1);
-  glVertex3f(-1,  1, -1);
+  Renderer()->SetColour( att::Colour(0, 1, 0) );
+  Renderer()->Vertex( geo::Point3D(-1, -1, -1) ); // Front
+  Renderer()->Vertex( geo::Point3D( 1,  1, -1) );
+  Renderer()->Vertex( geo::Point3D(-1,  1, -1) );
   
-  glVertex3f(-1, -1, -1);
-  glVertex3f( 1, -1, -1);
-  glVertex3f( 1,  1, -1);
+  Renderer()->Vertex( geo::Point3D(-1, -1, -1) );
+  Renderer()->Vertex( geo::Point3D( 1, -1, -1) );
+  Renderer()->Vertex( geo::Point3D( 1,  1, -1) );
   
-  glColor3f(1, 0, 0);
-  glVertex3f(-1, -1,  1); // Back
-  glVertex3f(-1,  1,  1);
-  glVertex3f( 1,  1,  1);
+  Renderer()->SetColour( att::Colour(1, 0, 0) );
+  Renderer()->Vertex( geo::Point3D(-1, -1,  1) ); // Back
+  Renderer()->Vertex( geo::Point3D(-1,  1,  1) );
+  Renderer()->Vertex( geo::Point3D( 1,  1,  1) );
   
-  glVertex3f(-1, -1,  1);
-  glVertex3f( 1,  1,  1);
-  glVertex3f( 1, -1,  1);
+  Renderer()->Vertex( geo::Point3D(-1, -1,  1) );
+  Renderer()->Vertex( geo::Point3D( 1,  1,  1) );
+  Renderer()->Vertex( geo::Point3D( 1, -1,  1) );
   
-  glColor3f(1, 1, 0);
-  glVertex3f(-1, -1,  1);
-  glVertex3f( 1, -1,  1);
-  glVertex3f(-1, -1, -1);
+  Renderer()->SetColour( att::Colour(1, 1, 0) );
+  Renderer()->Vertex( geo::Point3D(-1, -1,  1) );
+  Renderer()->Vertex( geo::Point3D( 1, -1,  1) );
+  Renderer()->Vertex( geo::Point3D(-1, -1, -1) );
   
-  glVertex3f( 1, -1,  1);
-  glVertex3f( 1, -1, -1);
-  glVertex3f(-1, -1, -1);
+  Renderer()->Vertex( geo::Point3D( 1, -1,  1) );
+  Renderer()->Vertex( geo::Point3D( 1, -1, -1) );
+  Renderer()->Vertex( geo::Point3D(-1, -1, -1) );
   
-  glColor3f(0, 1, 1);
-  glVertex3f(-1,  1,  1);
-  glVertex3f(-1, -1,  1);
-  glVertex3f(-1, -1, -1);
+  Renderer()->SetColour( att::Colour(0, 1, 1) );
+  Renderer()->Vertex( geo::Point3D(-1,  1,  1) );
+  Renderer()->Vertex( geo::Point3D(-1, -1,  1) );
+  Renderer()->Vertex( geo::Point3D(-1, -1, -1) );
   
-  glVertex3f(-1,  1, -1);
-  glVertex3f(-1,  1,  1);
-  glVertex3f(-1, -1, -1);
+  Renderer()->Vertex( geo::Point3D(-1,  1, -1) );
+  Renderer()->Vertex( geo::Point3D(-1,  1,  1) );
+  Renderer()->Vertex( geo::Point3D(-1, -1, -1) );
   
-  glColor3f(1, 0, 1);
-  glVertex3f( 1,  1, -1);
-  glVertex3f( 1, -1, -1);
-  glVertex3f( 1,  1,  1);
+  Renderer()->SetColour( att::Colour(1, 0, 1) );
+  Renderer()->Vertex( geo::Point3D( 1,  1, -1) );
+  Renderer()->Vertex( geo::Point3D( 1, -1, -1) );
+  Renderer()->Vertex( geo::Point3D( 1,  1,  1) );
   
-  glVertex3f( 1, -1, -1);
-  glVertex3f( 1, -1,  1);
-  glVertex3f( 1,  1,  1);
+  Renderer()->Vertex( geo::Point3D( 1, -1, -1) );
+  Renderer()->Vertex( geo::Point3D( 1, -1,  1) );
+  Renderer()->Vertex( geo::Point3D( 1,  1,  1) );
   
-  glColor3f(1, 1, 1);
-  glVertex3f( 1,  1, -1);
-  glVertex3f( 1,  1,  1);
-  glVertex3f(-1,  1, -1);
+  Renderer()->SetColour( att::Colour(1, 1, 1) );
+  Renderer()->Vertex( geo::Point3D( 1,  1, -1) );
+  Renderer()->Vertex( geo::Point3D( 1,  1,  1) );
+  Renderer()->Vertex( geo::Point3D(-1,  1, -1) );
   
-  glVertex3f( 1,  1,  1);
-  glVertex3f(-1,  1,  1);
-  glVertex3f(-1,  1, -1);
+  Renderer()->Vertex( geo::Point3D( 1,  1,  1) );
+  Renderer()->Vertex( geo::Point3D(-1,  1,  1) );
+  Renderer()->Vertex( geo::Point3D(-1,  1, -1) );
   
-  glEnd();
+  Renderer()->End();
 }
 
 void
@@ -115,7 +120,8 @@ vwr::View::SetRenderPending()
 void
 vwr::View::GLInitialise()
 {
-  glClearColor(0, 0, 0, 1);
+  Renderer()->SetClearColour( att::Colour(0, 0, 0) );
+  //glClearColor(0, 0, 0, 1) );
   
   glEnable(GL_DEPTH_TEST);
   glEnable(GL_CULL_FACE);
