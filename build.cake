@@ -27,6 +27,7 @@ sources = script.cwd([
 
 gsources = script.cwd([
   "common/src/attribute/Colour.cpp",
+  "common/src/camera/Camera.cpp",
   "common/src/geometry/Point.cpp",
   "common/src/geometry/Vector.cpp",
   "common/src/geometry/Extent.cpp",

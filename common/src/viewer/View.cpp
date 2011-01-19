@@ -12,7 +12,12 @@
 
 #include "attribute/Colour.h"
 
+#include "geometry/Point.h"
+#include "geometry/Vector.h"
+
 #include <gl.h>
+
+#include <glu.h>
 
 #ifndef GL_MULTISAMPLE
 #define GL_MULTISAMPLE  0x809D
@@ -48,10 +53,14 @@ vwr::View::Render()
   Renderer()->Clear();
   Renderer()->LoadIdentity();
   
-  glTranslatef(0, 0, 8);
-  glRotatef(210, 1, 0, 0);
-  glRotatef(210, 0, 0, 1);
+  // Set up camera
+  myCamera.SetCamera();
   
+  Renderer()->Transform( geo::Vector3D(8, 0, 0) );
+  //glRotatef(210, 1, 0, 0);
+  //glRotatef(210, 0, 0, 1);
+  
+  // Render Geometry
   Renderer()->Begin(ree::TRIANGLES);
   
   Renderer()->SetColour( att::Colour(0, 1, 0) );
@@ -129,17 +138,20 @@ vwr::View::GLInitialise()
   //glEnable(GL_LIGHTING);
   //glEnable(GL_LIGHT0);
   glEnable(GL_MULTISAMPLE);
+  
+  myCamera = cmr::Camera( geo::Point3D(0, 0, 0),
+                          geo::Vector3D(8, 0, 0),
+                          geo::Vector3D(0, 0, 1) );
 }
 
 void
 vwr::View::Resize(int Width, int Height)
 {
+  Renderer()->ProjectionMode();
+  Renderer()->LoadIdentity();
+  
+  gluPerspective( 80, (GLfloat) Width / Height, 1.0, 30.0 );
   glViewport(0, 0, Width, Height);
 
-  glMatrixMode(GL_PROJECTION);
-  glLoadIdentity();
-
-  glOrtho(-10, +10, -10, +10, -4.0, -15.0);
-
-  glMatrixMode(GL_MODELVIEW);
+  Renderer()->ModelViewMode();
 }

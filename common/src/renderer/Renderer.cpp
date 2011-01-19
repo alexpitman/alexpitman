@@ -8,6 +8,11 @@
 
 #include "Renderer.h"
 
+#include "attribute/Colour.h"
+
+#include "geometry/Point.h"
+#include "geometry/Vector.h"
+
 #include <gl.h>
 
 // GL_MULTISAMPLE hack
@@ -31,9 +36,35 @@ void ree::Renderer::Flush() const
 }
 
 // Matrix Operations //////////////////////////////////////////////////////////
+void ree::Renderer::ProjectionMode() const
+{
+  glMatrixMode( GL_PROJECTION );
+}
+
+void ree::Renderer::ModelViewMode() const
+{
+  glMatrixMode( GL_MODELVIEW );
+}
+
 void ree::Renderer::LoadIdentity() const
 {
   glLoadIdentity();
+}
+
+void ree::Renderer::Push() const
+{
+  glPushMatrix();
+}
+
+void ree::Renderer::Pop() const
+{
+  glPopMatrix();
+}
+
+// Transform Operations ///////////////////////////////////////////////////////
+void ree::Renderer::Transform(const geo::Vector3D& Vector) const
+{
+  glTranslatef(Vector.X(), Vector.Y(), Vector.Z());
 }
 
 // Drawing Operations /////////////////////////////////////////////////////////
