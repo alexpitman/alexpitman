@@ -10,11 +10,18 @@
 
 #include "renderer/ree.h"
 
-#include "geometry/Point.h"
-
-#include "attribute/Colour.h"
-
 #include <memory>
+
+namespace att
+{
+  class Colour;
+}
+
+namespace geo
+{
+  class Point3D;
+  class Vector3D;
+}
 
 namespace ree
 {
@@ -33,8 +40,18 @@ namespace ree
     
     /////////////////////////////////////////////////////////////////////////////
     // Matrix operations
+	virtual void ProjectionMode() const = 0;
+	virtual void ModelViewMode() const = 0;
+	
     virtual void LoadIdentity() const = 0;
+	
+	virtual void Push() const = 0;
+	virtual void Pop() const = 0;
     
+	/////////////////////////////////////////////////////////////////////////////
+    // Transformation operations
+	virtual void Transform(const geo::Vector3D& Vector) const = 0;
+	
     /////////////////////////////////////////////////////////////////////////////
     // Drawing operations
     virtual void Begin( ree::DrawMode DrawMode ) const = 0;

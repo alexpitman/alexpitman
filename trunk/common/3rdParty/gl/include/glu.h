@@ -19,7 +19,9 @@ Abstract:
 #define __glu_h__
 #define __GLU_H__
 
-#include <GL/gl.h>
+// HACK ALEX PITMAN
+#include <gl.h>
+//#include <GL/gl.h>
 
 #ifdef __cplusplus
 extern "C" {

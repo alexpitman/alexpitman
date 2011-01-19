@@ -10,6 +10,8 @@
 
 //#include "scenetree/SceneTreeNode.h"
 
+#include "camera/Camera.h"
+
 #include "renderer/IRenderer.H"
 
 namespace wid
@@ -54,6 +56,9 @@ namespace vwr
   
     // Renderer for this view
     ree::T_RendererPtr myRendererPtr;
+    
+    // Camera for this view
+    cmr::Camera myCamera;
     
     bool isBuildPending; // Is a new build required?
     bool isRenderPending; // Is a new render required?

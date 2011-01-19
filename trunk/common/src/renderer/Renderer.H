@@ -25,8 +25,18 @@ namespace ree
     
     /////////////////////////////////////////////////////////////////////////////
     // Matrix operations
+	void ProjectionMode() const;
+	void ModelViewMode() const;
+	
     void LoadIdentity() const;
     
+	void Push() const;
+	void Pop() const;
+	
+	/////////////////////////////////////////////////////////////////////////////
+    // Transform operations
+	void Transform(const geo::Vector3D& Vector) const;
+	
     /////////////////////////////////////////////////////////////////////////////
     // Drawing operations
     void Begin( ree::DrawMode DrawMode ) const;
