@@ -23,6 +23,8 @@ namespace cmr
             geo::Vector3D UpDirection );
     
     void SetCamera() const;
+    
+    void Translate(const geo::Vector3D& Vector);
   
   private:
   

@@ -16,7 +16,7 @@ namespace wid
 {
   class GLWidget : public QGLWidget
   {
-  //  Q_OBJECT
+    Q_OBJECT
     
   public:
     GLWidget(QWidget* Parent = NULL);
@@ -24,6 +24,9 @@ namespace wid
 
     QSize minimumSizeHint() const;
     QSize sizeHint() const;
+    
+  public slots:
+    void animate();
     
   protected:
     
