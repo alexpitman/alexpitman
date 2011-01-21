@@ -155,3 +155,12 @@ vwr::View::Resize(int Width, int Height)
 
   Renderer()->ModelViewMode();
 }
+
+void
+vwr::View::Animate()
+{
+  static const geo::Vector3D move(0.1, 0, 0);
+  myCamera.Translate(move);
+}
+
+

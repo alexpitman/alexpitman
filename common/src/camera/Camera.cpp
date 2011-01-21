@@ -35,3 +35,10 @@ cmr::Camera::SetCamera() const
     myLookDirection.X(), myLookDirection.Y(), myLookDirection.Z(),
     myUpDirection.X(), myUpDirection.Y(), myUpDirection.Z() );
 }
+
+void
+cmr::Camera::Translate(const geo::Vector3D& Vector)
+{
+  myPosition += Vector;
+}
+

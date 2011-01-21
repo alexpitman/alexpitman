@@ -9,6 +9,7 @@
 #include "widget/ViewWindow.h"
 
 #include <QHBoxLayout>
+#include <QTimer>
 
 wid::ViewWindow::ViewWindow()
 : myGLWidget(new GLWidget())
@@ -17,6 +18,10 @@ wid::ViewWindow::ViewWindow()
   mainLayout->addWidget(myGLWidget);
   setLayout(mainLayout);
 
+  QTimer *timer = new QTimer(this);
+  connect(timer, SIGNAL(timeout()), myGLWidget, SLOT(animate()));
+  timer->start(10);
+  
   setWindowTitle(tr("Hello GL"));
 }
 

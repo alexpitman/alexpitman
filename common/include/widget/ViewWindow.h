@@ -16,7 +16,7 @@ namespace wid
 {
   class ViewWindow : public QWidget
   {
-  //  Q_OBJECT
+    Q_OBJECT
 
   public:
    

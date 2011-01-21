@@ -49,6 +49,9 @@ namespace vwr
     // Handle window resizes
     void Resize(int Width, int Height);
     
+    // Animate the view
+    void Animate();
+    
     // Scene tree for this view
   //  SceneTreeHeadNode mySceneTree;
   

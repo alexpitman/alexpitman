@@ -1,6 +1,6 @@
 #include "geometry/Point.h"
 
-#include <limits>
+#include "numeric/num.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 //
@@ -234,9 +234,9 @@ geo::Point3D::IsEmpty() const
 geo::Point3D& 
 geo::Point3D::Empty()
 {
-  static Point3D pt( std::numeric_limits<double>::quiet_NaN(),
-                     std::numeric_limits<double>::quiet_NaN(), 
-                     std::numeric_limits<double>::quiet_NaN() );
+  static Point3D pt( num::NaN<double>(),
+                     num::NaN<double>(), 
+                     num::NaN<double>() );
   return pt;
 }
 
