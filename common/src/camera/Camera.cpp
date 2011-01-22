@@ -65,6 +65,42 @@ cmr::Camera::Translate(const geo::Vector3D& Vector)
 }
 
 void
+cmr::Camera::Forward(double Distance)
+{
+  myPosition += myLookDirection * Distance;
+}
+
+void
+cmr::Camera::Backward(double Distance)
+{
+  myPosition -= myLookDirection * Distance;
+}
+
+void
+cmr::Camera::StrafeLeft(double Distance)
+{
+  myPosition -= (myLookDirection*myUpDirection) * Distance;
+}
+
+void
+cmr::Camera::StrafeRight(double Distance)
+{
+  myPosition += (myLookDirection*myUpDirection) * Distance;
+}
+
+void
+cmr::Camera::StrafeUp(double Distance)
+{
+  myPosition += myUpDirection * Distance;
+}
+
+void
+cmr::Camera::StrafeDown(double Distance)
+{
+  myPosition -= myUpDirection * Distance;
+}
+
+void
 cmr::Camera::RotateX(double Degrees)
 {
   const geo::Transform transform = geo::Transform::RotateX(Degrees);

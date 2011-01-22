@@ -8,10 +8,17 @@
 
 #include "widget/GLWidget.h"
 
+#include "input/Key.h"
+#include "input/Mouse.h"
+
+#include <iostream>
+
 wid::GLWidget::GLWidget(QWidget* Parent)
 : QGLWidget(QGLFormat(QGL::SampleBuffers), Parent),
   myView()
 {
+  setFocusPolicy(Qt::StrongFocus);
+  setMouseTracking(true);
 }
 
 wid::GLWidget::~GLWidget()
@@ -58,23 +65,30 @@ wid::GLWidget::animate()
 void 
 wid::GLWidget::mousePressEvent(QMouseEvent* Event)
 {
-  
+  myView.Mouse( in::Mouse(Event) );
+}
 
-  //lastPos = event->pos();
+void 
+wid::GLWidget::mouseReleaseEvent(QMouseEvent* Event)
+{
+  myView.Mouse( in::Mouse(Event) );
 }
 
 void 
 wid::GLWidget::mouseMoveEvent(QMouseEvent *Event)
 {
-/*     int dx = event->x() - lastPos.x();
-     int dy = event->y() - lastPos.y();
-
-     if (event->buttons() & Qt::LeftButton) {
-         setXRotation(xRot + 8 * dy);
-         setYRotation(yRot + 8 * dx);
-     } else if (event->buttons() & Qt::RightButton) {
-         setXRotation(xRot + 8 * dy);
-         setZRotation(zRot + 8 * dx);
-     }
-     lastPos = event->pos();*/
+  myView.Mouse( in::Mouse(Event) );
 }
+
+void 
+wid::GLWidget::keyPressEvent(QKeyEvent* Event)
+{
+  myView.KeyPress( in::Key(Event) );
+}
+
+void 
+wid::GLWidget::keyReleaseEvent(QKeyEvent* Event)
+{
+  myView.KeyRelease( in::Key(Event) );
+}
+

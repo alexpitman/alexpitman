@@ -6,7 +6,7 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-#include "camera/CameraController.h"
+#include "viewer/ViewHandler.h"
 
 vwr::ViewHandler::ViewHandler()
 : myViewPtr(NULL)
@@ -26,5 +26,15 @@ vwr::ViewHandler::CameraController()
     myCameraControllerPtr.reset(new cmr::CameraController(myViewPtr));
   }
   return myCameraControllerPtr;
+}
+
+in::T_InputControllerPtr
+vwr::ViewHandler::InputController()
+{
+  if ( !myInputControllerPtr )
+  {
+    myInputControllerPtr.reset(new in::InputController(myViewPtr));
+  }
+  return myInputControllerPtr;
 }
 

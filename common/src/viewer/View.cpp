@@ -24,12 +24,19 @@
 #endif
 
 vwr::View::View()
-: myRendererPtr(ree::Factory::CreateRenderer())
+: myRendererPtr(ree::Factory::CreateRenderer()),
+  myViewHandlerPtr(new ViewHandler(this))
 {
 }
 
 vwr::View::~View()
 {
+}
+
+vwr::ViewHandler*
+vwr::View::Handler()
+{
+  return myViewHandlerPtr.get();
 }
 
 void
@@ -65,57 +72,57 @@ vwr::View::Render()
   
   Renderer()->SetColour( att::Colour(0, 1, 0) );
   Renderer()->Vertex( geo::Point3D(-1, -1, -1) ); // Front
-  Renderer()->Vertex( geo::Point3D( 1,  1, -1) );
   Renderer()->Vertex( geo::Point3D(-1,  1, -1) );
+  Renderer()->Vertex( geo::Point3D( 1,  1, -1) );
   
   Renderer()->Vertex( geo::Point3D(-1, -1, -1) );
-  Renderer()->Vertex( geo::Point3D( 1, -1, -1) );
   Renderer()->Vertex( geo::Point3D( 1,  1, -1) );
+  Renderer()->Vertex( geo::Point3D( 1, -1, -1) );
   
   Renderer()->SetColour( att::Colour(1, 0, 0) );
   Renderer()->Vertex( geo::Point3D(-1, -1,  1) ); // Back
-  Renderer()->Vertex( geo::Point3D(-1,  1,  1) );
   Renderer()->Vertex( geo::Point3D( 1,  1,  1) );
+  Renderer()->Vertex( geo::Point3D(-1,  1,  1) );
   
   Renderer()->Vertex( geo::Point3D(-1, -1,  1) );
-  Renderer()->Vertex( geo::Point3D( 1,  1,  1) );
   Renderer()->Vertex( geo::Point3D( 1, -1,  1) );
+  Renderer()->Vertex( geo::Point3D( 1,  1,  1) );
   
   Renderer()->SetColour( att::Colour(1, 1, 0) );
   Renderer()->Vertex( geo::Point3D(-1, -1,  1) );
-  Renderer()->Vertex( geo::Point3D( 1, -1,  1) );
   Renderer()->Vertex( geo::Point3D(-1, -1, -1) );
+  Renderer()->Vertex( geo::Point3D( 1, -1,  1) );
   
   Renderer()->Vertex( geo::Point3D( 1, -1,  1) );
-  Renderer()->Vertex( geo::Point3D( 1, -1, -1) );
   Renderer()->Vertex( geo::Point3D(-1, -1, -1) );
+  Renderer()->Vertex( geo::Point3D( 1, -1, -1) );
   
   Renderer()->SetColour( att::Colour(0, 1, 1) );
   Renderer()->Vertex( geo::Point3D(-1,  1,  1) );
-  Renderer()->Vertex( geo::Point3D(-1, -1,  1) );
   Renderer()->Vertex( geo::Point3D(-1, -1, -1) );
+  Renderer()->Vertex( geo::Point3D(-1, -1,  1) );
   
   Renderer()->Vertex( geo::Point3D(-1,  1, -1) );
-  Renderer()->Vertex( geo::Point3D(-1,  1,  1) );
   Renderer()->Vertex( geo::Point3D(-1, -1, -1) );
+  Renderer()->Vertex( geo::Point3D(-1,  1,  1) );
   
   Renderer()->SetColour( att::Colour(1, 0, 1) );
   Renderer()->Vertex( geo::Point3D( 1,  1, -1) );
-  Renderer()->Vertex( geo::Point3D( 1, -1, -1) );
   Renderer()->Vertex( geo::Point3D( 1,  1,  1) );
+  Renderer()->Vertex( geo::Point3D( 1, -1, -1) );
   
   Renderer()->Vertex( geo::Point3D( 1, -1, -1) );
-  Renderer()->Vertex( geo::Point3D( 1, -1,  1) );
   Renderer()->Vertex( geo::Point3D( 1,  1,  1) );
+  Renderer()->Vertex( geo::Point3D( 1, -1,  1) );
   
   Renderer()->SetColour( att::Colour(1, 1, 1) );
   Renderer()->Vertex( geo::Point3D( 1,  1, -1) );
-  Renderer()->Vertex( geo::Point3D( 1,  1,  1) );
   Renderer()->Vertex( geo::Point3D(-1,  1, -1) );
+  Renderer()->Vertex( geo::Point3D( 1,  1,  1) );
   
   Renderer()->Vertex( geo::Point3D( 1,  1,  1) );
-  Renderer()->Vertex( geo::Point3D(-1,  1,  1) );
   Renderer()->Vertex( geo::Point3D(-1,  1, -1) );
+  Renderer()->Vertex( geo::Point3D(-1,  1,  1) );
   
   Renderer()->End();
 }
@@ -159,6 +166,8 @@ vwr::View::Resize(int Width, int Height)
 void
 vwr::View::Animate()
 {
+  Handler()->InputController()->Animate();
+
   //static const geo::Vector3D move(0.1, 0, 0);
   //myCamera.Translate(move);
   
@@ -167,7 +176,27 @@ vwr::View::Animate()
   //myCamera.RotateZ(1.0);
   //myCamera.RotateRoll(1.0);
   //myCamera.RotatePitch(1.0);
-  myCamera.RotateYaw(1.0);
+  //myCamera.RotateYaw(1.0);
+  
+  //myCamera.StrafeUp(0.1);
+}
+
+void
+vwr::View::Mouse( const in::Mouse& Mouse )
+{
+  Handler()->InputController()->Mouse(Mouse);
+}
+
+void
+vwr::View::KeyPress( const in::Key& Key )
+{
+  Handler()->InputController()->KeyPress(Key);
+}
+
+void
+vwr::View::KeyRelease( const in::Key& Key )
+{
+  Handler()->InputController()->KeyRelease(Key);
 }
 
 

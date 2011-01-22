@@ -9,6 +9,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 #include <QGLWidget>
+#include <QKeyEvent>
 
 #include "viewer/View.H"
 
@@ -33,8 +34,12 @@ namespace wid
     void initializeGL();
     void paintGL();
     void resizeGL(int Width, int Height);
+    
     void mousePressEvent(QMouseEvent* Event);
+    void mouseReleaseEvent(QMouseEvent* Event);
     void mouseMoveEvent(QMouseEvent* Event);
+    void keyPressEvent(QKeyEvent* Event);
+    void keyReleaseEvent(QKeyEvent* Event);
     
   private:
 
