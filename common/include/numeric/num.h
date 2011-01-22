@@ -16,9 +16,14 @@ namespace num
   // Angle related
   double Sin(double Degrees);
   double Cos(double Degrees);
+  double Tan(double Degrees);
   
   double RadiansToDegrees(double Radians);
   double DegreesToRadians(double Degrees);
+  
+  /////////////////////////////////////////////////////////////////////////////
+  // General math related
+  double Sqrt(double Num);
   
   /////////////////////////////////////////////////////////////////////////////
   // Limit related

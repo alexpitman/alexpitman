@@ -159,8 +159,15 @@ vwr::View::Resize(int Width, int Height)
 void
 vwr::View::Animate()
 {
-  static const geo::Vector3D move(0.1, 0, 0);
-  myCamera.Translate(move);
+  //static const geo::Vector3D move(0.1, 0, 0);
+  //myCamera.Translate(move);
+  
+  //myCamera.RotateX(1.0);
+  //myCamera.RotateY(1.0);
+  //myCamera.RotateZ(1.0);
+  //myCamera.RotateRoll(1.0);
+  //myCamera.RotatePitch(1.0);
+  myCamera.RotateYaw(1.0);
 }
 
 

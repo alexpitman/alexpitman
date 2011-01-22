@@ -22,9 +22,23 @@ namespace cmr
             geo::Vector3D LookDirection,
             geo::Vector3D UpDirection );
     
+    const geo::Point3D& Position() const;
+    const geo::Vector3D& LookDirection() const;
+    const geo::Vector3D& UpDirection() const;
+    
     void SetCamera() const;
     
     void Translate(const geo::Vector3D& Vector);
+    
+    // Rotate about static axes
+    void RotateX(double Degrees);
+    void RotateY(double Degrees);
+    void RotateZ(double Degrees);
+  
+    // Rotate about camera relative axes
+    void RotatePitch(double Degrees);
+    void RotateRoll(double Degrees); // Around look direction
+    void RotateYaw(double Degrees);
   
   private:
   

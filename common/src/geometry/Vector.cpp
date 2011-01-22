@@ -7,7 +7,7 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-#include <math.h>
+#include "numeric/num.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 geo::Vector2D::Vector2D() {}
@@ -204,18 +204,25 @@ geo::Vector3D::operator !=(const Vector3D& RHS) const
 
 ///////////////////////////////////////////////////////////////////////////////
 geo::Vector3D 
+geo::Vector3D::operator -() const
+{
+  return Vector3D(-myX, -myY, -myZ);
+}
+
+///////////////////////////////////////////////////////////////////////////////
+geo::Vector3D 
 geo::Vector3D::operator *(const Vector3D& RHS) const
 {
   return Vector3D( myY*RHS.Z() - myZ*RHS.Y(),
-                   myX*RHS.Z() - myZ*RHS.X(),
-                   myY*RHS.X() - myX*RHS.Y() );
+                   myZ*RHS.X() - myX*RHS.Z(),
+                   myX*RHS.Y() - myY*RHS.X() );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 double 
 geo::Vector3D::Length() const
 {
-  return sqrt( LengthSquared() );
+  return num::Sqrt( LengthSquared() );
 }
   
 ///////////////////////////////////////////////////////////////////////////////

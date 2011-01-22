@@ -8,6 +8,8 @@
 
 #include "camera/Camera.h"
 
+#include "geometry/Transform.h"
+
 #include <glu.h>
 
 cmr::Camera::Camera()
@@ -25,6 +27,26 @@ cmr::Camera::Camera(
   myLookDirection(LookDirection),
   myUpDirection(UpDirection)
 {
+  myLookDirection.Normalise();
+  myUpDirection.Normalise();
+}
+
+const geo::Point3D&
+cmr::Camera::Position() const
+{
+  return myPosition;
+}
+
+const geo::Vector3D&
+cmr::Camera::LookDirection() const
+{
+  return myLookDirection;
+}
+
+const geo::Vector3D&
+cmr::Camera::UpDirection() const
+{
+  return myUpDirection;
 }
 
 void
@@ -32,7 +54,7 @@ cmr::Camera::SetCamera() const
 {
   gluLookAt(
     myPosition.X(), myPosition.Y(), myPosition.Z(),
-    myLookDirection.X(), myLookDirection.Y(), myLookDirection.Z(),
+    myPosition.X() + myLookDirection.X(), myPosition.Y() + myLookDirection.Y(), myPosition.Z() + myLookDirection.Z(),
     myUpDirection.X(), myUpDirection.Y(), myUpDirection.Z() );
 }
 
@@ -42,3 +64,53 @@ cmr::Camera::Translate(const geo::Vector3D& Vector)
   myPosition += Vector;
 }
 
+void
+cmr::Camera::RotateX(double Degrees)
+{
+  const geo::Transform transform = geo::Transform::RotateX(Degrees);
+  myLookDirection = transform ^ myLookDirection;
+  myUpDirection = transform ^ myUpDirection;
+}
+
+void
+cmr::Camera::RotateY(double Degrees)
+{
+  const geo::Transform transform = geo::Transform::RotateY(Degrees);
+  myLookDirection = transform ^ myLookDirection;
+  myUpDirection = transform ^ myUpDirection;
+}
+
+void
+cmr::Camera::RotateZ(double Degrees)
+{
+  const geo::Transform transform = geo::Transform::RotateZ(Degrees);
+  myLookDirection = transform ^ myLookDirection;
+  myUpDirection = transform ^ myUpDirection;
+}
+
+void
+cmr::Camera::RotatePitch(double Degrees)
+{
+  const geo::Transform rotate = 
+    geo::Transform::Rotate(myPosition, myLookDirection*myUpDirection, Degrees);
+  myLookDirection = rotate ^ myLookDirection;
+  myUpDirection = rotate ^ myUpDirection;
+}
+
+void
+cmr::Camera::RotateRoll(double Degrees)
+{
+  const geo::Transform rotate = 
+    geo::Transform::Rotate(myPosition, myLookDirection, Degrees);
+  // Rotate the up vector (look at will not change as the rotation is about that axis)
+  myUpDirection = rotate ^ myUpDirection;
+}
+
+void 
+cmr::Camera::RotateYaw(double Degrees)
+{
+  const geo::Transform rotate = 
+    geo::Transform::Rotate(myPosition, myUpDirection, Degrees);
+  // Rotate the look vector (up at will not change as the rotation is about that axis)
+  myLookDirection = rotate ^ myLookDirection;
+}
