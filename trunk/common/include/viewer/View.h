@@ -16,6 +16,9 @@
 
 #include "renderer/IRenderer.h"
 
+#include "input/Key.h"
+#include "input/Mouse.h"
+
 namespace wid
 {
   class GLWidget;
@@ -39,7 +42,7 @@ namespace vwr
     ~View();
 
     // View handler
-    ViewHandler* Handler() { return myViewHandlerPtr.get(); };
+    ViewHandler* Handler();
     
   private:
 
@@ -61,6 +64,13 @@ namespace vwr
     
     // Animate the view
     void Animate();
+    
+    // Mouse events
+    void Mouse( const in::Mouse& Mouse );
+    
+    // Key presses/releases
+    void KeyPress( const in::Key& Key );
+    void KeyRelease( const in::Key& Key );
     
     // Handler for this view.
     T_ViewHandlerPtr myViewHandlerPtr;

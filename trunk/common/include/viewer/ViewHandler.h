@@ -10,6 +10,8 @@
 
 #include "camera/CameraController.h"
 
+#include "input/InputController.h"
+
 namespace vwr
 {
   class View;
@@ -27,11 +29,14 @@ namespace vwr
   
     cmr::T_CameraControllerPtr CameraController();
     
+    in::T_InputControllerPtr InputController();
+    
     //T_RendererControllerPtr RendererController();
   
   private:
   
     cmr::T_CameraControllerPtr myCameraControllerPtr;
+    in::T_InputControllerPtr myInputControllerPtr;
     //T_RendererControllerPtr myRendererControllerPtr;
   
     vwr::View* myViewPtr;
