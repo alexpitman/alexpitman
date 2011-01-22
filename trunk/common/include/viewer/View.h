@@ -10,13 +10,20 @@
 
 //#include "scenetree/SceneTreeNode.h"
 
+#include "viewer/ViewHandler.h"
+
 #include "camera/Camera.h"
 
-#include "renderer/IRenderer.H"
+#include "renderer/IRenderer.h"
 
 namespace wid
 {
   class GLWidget;
+}
+
+namespace cmr
+{
+  class CameraController;
 }
 
 namespace vwr
@@ -31,6 +38,9 @@ namespace vwr
     View();
     ~View();
 
+    // View handler
+    ViewHandler* Handler() { return myViewHandlerPtr.get(); };
+    
   private:
 
     // Build the scene tree
@@ -52,6 +62,9 @@ namespace vwr
     // Animate the view
     void Animate();
     
+    // Handler for this view.
+    T_ViewHandlerPtr myViewHandlerPtr;
+    
     // Scene tree for this view
   //  SceneTreeHeadNode mySceneTree;
   
@@ -68,6 +81,7 @@ namespace vwr
     
     // Classes that can access private members
     friend class wid::GLWidget;
+    friend class cmr::CameraController;
     friend class SceneTreeController;
     friend class RendererController;
   };

@@ -24,14 +24,18 @@ namespace geo
                double C0, double C1, double C2, double C3,
                double D0, double D1, double D2, double D3 );
     
-    Point3D operator ^(const Point3D& RHS);
-    Vector3D operator ^(const Vector3D& RHS);
-    Transform operator ^(const Transform& RHS);
+    Point3D operator ^(const Point3D& RHS) const;
+    Vector3D operator ^(const Vector3D& RHS) const;
+    Transform operator ^(const Transform& RHS) const;
     
     static Transform RotateX(double Degrees);
     static Transform RotateY(double Degrees);
     static Transform RotateZ(double Degrees);
     
+    static Transform Rotate(const Point3D& Position,
+                            const Vector3D& Direction,
+                            double Degrees);
+
     static Transform& Identity();
     static Transform& Zero();
   

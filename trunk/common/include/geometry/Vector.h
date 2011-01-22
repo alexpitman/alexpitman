@@ -114,6 +114,8 @@ namespace geo
     
     bool operator ==(const Vector3D& RHS) const;
     bool operator !=(const Vector3D& RHS) const;
+
+    Vector3D operator -() const;
     
     // Cross product
     Vector3D operator *(const Vector3D& RHS) const;

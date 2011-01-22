@@ -25,6 +25,12 @@ num::Cos(double Degrees)
 }
 
 double
+num::Tan(double Degrees)
+{
+  return tan( DegreesToRadians(Degrees) );
+}
+
+double
 num::RadiansToDegrees(double Radians)
 {
   return Radians*180/PI;
@@ -34,4 +40,10 @@ double
 num::DegreesToRadians(double Degrees)
 {
   return Degrees*PI/180;
+}
+
+double
+num::Sqrt(double Num)
+{
+  return sqrt(Num);
 }
