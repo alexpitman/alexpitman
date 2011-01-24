@@ -8,6 +8,8 @@
 
 #include "geometry/Transform.h"
 
+#include "geometry/Rotation.h"
+
 #include "numeric/num.h"
 
 geo::Transform::Transform()
@@ -15,9 +17,9 @@ geo::Transform::Transform()
 }
     
 geo::Transform::Transform( double A0, double A1, double A2, double A3,
-                      double B0, double B1, double B2, double B3,
-                      double C0, double C1, double C2, double C3,
-                      double D0, double D1, double D2, double D3 )
+                           double B0, double B1, double B2, double B3,
+                           double C0, double C1, double C2, double C3,
+                           double D0, double D1, double D2, double D3 )
 {
   myMatrix[0][0] = A0;
   myMatrix[0][1] = A1;
@@ -74,6 +76,12 @@ geo::Transform::operator ^(const Vector3D& RHS) const
 }
 
 geo::Transform
+geo::Transform::operator ^(const Rotation& RHS) const
+{
+  return *this ^ RHS.ToTransform();
+}
+
+geo::Transform
 geo::Transform::operator ^(const Transform& RHS) const
 {
   const double la0 = myMatrix[0][0];
@@ -127,6 +135,15 @@ geo::Transform::operator ^(const Transform& RHS) const
     ld0*ra1 + ld1*rb1 + ld2*rc1 + ld3*rd1,
     ld0*ra2 + ld1*rb2 + ld2*rc2 + ld3*rd2,
     ld0*ra3 + ld1*rb3 + ld2*rc3 + ld3*rd3 );
+}
+
+geo::Transform
+geo::Transform::Translate(const geo::Vector3D Vector)
+{
+  return Transform( 1, 0, 0, Vector.X(),
+                    0, 1, 0, Vector.Y(),
+                    0, 0, 1, Vector.Z(),
+                    0, 0, 0, 1 );
 }
 
 geo::Transform
