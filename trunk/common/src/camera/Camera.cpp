@@ -9,6 +9,7 @@
 #include "camera/Camera.h"
 
 #include "geometry/Transform.h"
+#include "geometry/Rotation.h"
 
 #include <glu.h>
 
@@ -127,8 +128,8 @@ cmr::Camera::RotateZ(double Degrees)
 void
 cmr::Camera::RotatePitch(double Degrees)
 {
-  const geo::Transform rotate = 
-    geo::Transform::Rotate(myPosition, myLookDirection*myUpDirection, Degrees);
+  const geo::Transform rotate = geo::Rotation(myLookDirection*myUpDirection, Degrees).ToTransform();
+
   myLookDirection = rotate ^ myLookDirection;
   myUpDirection = rotate ^ myUpDirection;
 }
@@ -136,8 +137,8 @@ cmr::Camera::RotatePitch(double Degrees)
 void
 cmr::Camera::RotateRoll(double Degrees)
 {
-  const geo::Transform rotate = 
-    geo::Transform::Rotate(myPosition, myLookDirection, Degrees);
+  const geo::Transform rotate = geo::Rotation(myLookDirection, Degrees).ToTransform();
+
   // Rotate the up vector (look at will not change as the rotation is about that axis)
   myUpDirection = rotate ^ myUpDirection;
 }
@@ -145,8 +146,8 @@ cmr::Camera::RotateRoll(double Degrees)
 void 
 cmr::Camera::RotateYaw(double Degrees)
 {
-  const geo::Transform rotate = 
-    geo::Transform::Rotate(myPosition, myUpDirection, Degrees);
+  const geo::Transform rotate = geo::Rotation(myUpDirection, Degrees).ToTransform();
+
   // Rotate the look vector (up at will not change as the rotation is about that axis)
   myLookDirection = rotate ^ myLookDirection;
 }

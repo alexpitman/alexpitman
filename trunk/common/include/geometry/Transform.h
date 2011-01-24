@@ -13,6 +13,8 @@
 
 namespace geo
 {
+  class Rotation;
+
   class Transform
   {
   public:
@@ -26,7 +28,10 @@ namespace geo
     
     Point3D operator ^(const Point3D& RHS) const;
     Vector3D operator ^(const Vector3D& RHS) const;
+    Transform operator ^(const Rotation& RHS) const;
     Transform operator ^(const Transform& RHS) const;
+    
+    static Transform Translate(const Vector3D Vector);
     
     static Transform RotateX(double Degrees);
     static Transform RotateY(double Degrees);

@@ -90,6 +90,7 @@ gsources = script.cwd([
   "common/src/geometry/Point.cpp",
   "common/src/geometry/Vector.cpp",
   "common/src/geometry/Extent.cpp",
+  "common/src/geometry/Rotation.cpp",
   "common/src/geometry/Transform.cpp",
   "common/src/input/Key.cpp",
   "common/src/input/Mouse.cpp",

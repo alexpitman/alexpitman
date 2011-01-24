@@ -146,7 +146,7 @@ vwr::View::GLInitialise()
   //glEnable(GL_LIGHT0);
   glEnable(GL_MULTISAMPLE);
   
-  myCamera = cmr::Camera( geo::Point3D(0, 0, 0),
+  myCamera = cmr::Camera( geo::Point3D(-1, -2, -3),
                           geo::Vector3D(8, 0, 0),
                           geo::Vector3D(0, 0, 1) );
 }

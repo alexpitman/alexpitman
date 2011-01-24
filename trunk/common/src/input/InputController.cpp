@@ -13,11 +13,11 @@
 
 namespace local
 {
-  static const double Sensitivity = 0.1;
-  static const double DegSensitivity = 0.1;
+  static const double Sensitivity = 0.5;
+  static const double DegSensitivity = 0.3;
 
-  static int IsForward = 0;
-  static int IsBackward = 0;
+  static int IsUp = 0;
+  static int IsDown = 0;
   static int IsLeft = 0;
   static int IsRight = 0;
   
@@ -48,8 +48,8 @@ in::InputController::Animate()
     local::lastMouse = local::newMouse;
   }*/
   
-  if ( local::IsForward ) cmrController->Forward(local::Sensitivity);
-  if ( local::IsBackward ) cmrController->Backward(local::Sensitivity);
+  if ( local::IsUp ) cmrController->Forward(local::Sensitivity);
+  if ( local::IsDown ) cmrController->Backward(local::Sensitivity);
   if ( local::IsLeft ) cmrController->StrafeLeft(local::Sensitivity);
   if ( local::IsRight ) cmrController->StrafeRight(local::Sensitivity);
 
@@ -100,11 +100,11 @@ in::InputController::SetButton( const Key& Key, int Increment)
   // Movement
   case W:
   case Up:
-    local::IsForward += Increment;
+    local::IsUp += Increment;
     break;
   case S:
   case Down:
-    local::IsBackward += Increment;
+    local::IsDown += Increment;
     break;
   case A:
   case Left:
