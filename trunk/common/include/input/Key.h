@@ -34,7 +34,9 @@ namespace in
   {
   public:
 
-    Key( QKeyEvent* Event );
+    //Key( QKeyEvent* Event );
+    
+    Key( signed long int KeyType, signed long int Modifiers );
     
     bool Is( T_Key Key ) const;
     //T_Key KeyType() const;
@@ -44,9 +46,9 @@ namespace in
     
   private:
   
-    //T_Key myKey;
-    //T_KeyModifiers myModifiers;
-    QKeyEvent* myEvent;
+    T_Key myKeyType;
+    T_Modifier myModifiers;
+    //QKeyEvent* myEvent;
 
   };
 }

@@ -8,32 +8,20 @@
 
 #include "input/Key.h"
 
-in::Key::Key( QKeyEvent* Event )
-: myEvent(Event)
+in::Key::Key( signed long int KeyType, signed long int Modifiers )
+: myKeyType( static_cast<T_Key>(KeyType) ),
+  myModifiers( static_cast<T_Modifier>(Modifiers) )
 {
 }
 
 bool in::Key::Is( T_Key Key ) const
 {
-  return Key == myEvent->key();
+  return Key == myKeyType;
 }
 
 in::T_Key
 in::Key::KeyType() const
 {
-  return static_cast<T_Key>( myEvent->key() );
+  return myKeyType;
 }
 
-/*
-in::Key::T_Key
-in::Key::KeyType() const
-{
-  return myKey;
-}
-
-in::Key::T_KeyModifiers
-in::Key::KeyModifiers() const
-{
-  return myModifiers;
-}
-*/
