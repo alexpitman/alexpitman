@@ -83,12 +83,12 @@ wid::GLWidget::mouseMoveEvent(QMouseEvent *Event)
 void 
 wid::GLWidget::keyPressEvent(QKeyEvent* Event)
 {
-  myView.KeyPress( in::Key(Event) );
+  myView.KeyPress( in::Key(Event->key(), Event->modifiers()) );
 }
 
 void 
 wid::GLWidget::keyReleaseEvent(QKeyEvent* Event)
 {
-  myView.KeyRelease( in::Key(Event) );
+  myView.KeyRelease( in::Key(Event->key(), Event->modifiers()) );
 }
 

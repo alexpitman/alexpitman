@@ -98,12 +98,7 @@ geo::Rotation::Normalise()
 
 geo::Transform
 geo::Rotation::ToTransform() const
-{
-/*  return Transform( myA, myB, myC, myD,
-                   -myB, myA,-myD, myC,
-                   -myC, myD, myA,-myB,
-                   -myD,-myC, myB, myA );*/
-  
+{ 
   const double bb2 = 2*myB*myB;
   const double cc2 = 2*myC*myC;
   const double dd2 = 2*myD*myD;
