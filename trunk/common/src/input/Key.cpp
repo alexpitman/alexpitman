@@ -25,3 +25,8 @@ in::Key::KeyType() const
   return myKeyType;
 }
 
+in::T_Modifier
+in::Key::Modifiers() const
+{
+  return myModifiers;
+}
