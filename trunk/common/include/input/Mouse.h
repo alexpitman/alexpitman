@@ -19,7 +19,7 @@ namespace in
   public:
 
     Mouse();
-    Mouse( QMouseEvent* Event );
+    Mouse( double X, double Y, bool IsLeft, bool IsRight, bool IsMiddle );
     
     geo::Point2D Position() const;
     
@@ -32,6 +32,7 @@ namespace in
 
     bool isLeftClick;
     bool isRightClick;
+    bool isMiddleClick;
     
   };
 }

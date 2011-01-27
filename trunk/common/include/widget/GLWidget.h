@@ -43,6 +43,8 @@ namespace wid
     
   private:
 
+    void handleMouse(QMouseEvent* Event);
+  
     vwr::View myView;
     
   };
