@@ -20,6 +20,8 @@ compiler.addIncludePath("common/3rdParty/qt/include")
 compiler.addIncludePath("common/3rdParty/qt/include/QtCore")
 compiler.addIncludePath("common/3rdParty/qt/include/QtGui")
 compiler.addIncludePath("common/3rdParty/qt/include/QtOpenGL")
+compiler.addIncludePath("common/3rdParty/directx/include")
+compiler.addIncludePath("common/3rdParty/windows/include")
 
 # Copy libraries
 filesys.copyFiles(
@@ -29,6 +31,7 @@ filesys.copyFiles(
     "common/3rdParty/qt/lib/QtOpenGL4.lib",
     "common/3rdParty/qt/lib/QtGui4.lib",
     "common/3rdParty/qt/lib/qtmain.lib",
+    "common/3rdParty/directx/lib/XInput.lib",
   ]),
   targetDir=script.cwd("build/testbed/lib"),
   )
@@ -75,6 +78,7 @@ compiler.addLibrary("QtCore4.lib")
 compiler.addLibrary("QtOpenGL4.lib")
 compiler.addLibrary("QtGui4.lib")
 compiler.addLibrary("qtmain.lib")
+compiler.addLibrary("XInput.lib")
 
 #script.include(script.cwd("common/use-geometry.cake"))
 
@@ -95,6 +99,7 @@ gsources = script.cwd([
   "common/src/input/Key.cpp",
   "common/src/input/Mouse.cpp",
   "common/src/input/InputController.cpp",
+  "common/src/input/XBox.cpp",
   "common/src/numeric/num.cpp",
   "common/src/renderer/Factory.cpp",
   "common/src/renderer/Renderer.cpp",

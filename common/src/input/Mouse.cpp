@@ -11,18 +11,17 @@
 in::Mouse::Mouse()
 : myPosition(geo::Point2D::Origin()),
   isLeftClick(false),
-  isRightClick(false)
+  isRightClick(false),
+  isMiddleClick(false)
 {
 }
 
-in::Mouse::Mouse( QMouseEvent* Event )
-: myPosition( Event->x(), Event->y() ),
-  isLeftClick(false),
-  isRightClick(false)
+in::Mouse::Mouse( double X, double Y, bool IsLeft, bool IsRight, bool IsMiddle )
+: myPosition( geo::Point2D(X, Y) ),
+  isLeftClick(IsLeft),
+  isRightClick(IsRight),
+  isMiddleClick(IsMiddle)
 {
-  Qt::MouseButtons mb = Event->buttons();
-  isLeftClick = mb & Qt::LeftButton;
-  isRightClick = mb & Qt::RightButton;
 }
     
 geo::Point2D

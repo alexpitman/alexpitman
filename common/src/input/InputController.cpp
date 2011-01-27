@@ -8,8 +8,11 @@
  
 #include "input/InputController.h"
 #include "input/Mouse.h"
+#include "input/XBox.h"
 
 #include "viewer/View.h"
+
+#include <iostream>
 
 namespace local
 {
@@ -20,11 +23,13 @@ namespace local
   static int IsDown = 0;
   static int IsLeft = 0;
   static int IsRight = 0;
+  static int IsVibrating = 0;
   
   static bool firstMouseEvent = false;
   static in::Mouse lastMouse;
   //static in::Mouse newMouse;
 
+  static in::XBox xbox(1);
 }
 
 in::InputController::InputController(vwr::View* ViewPtr)
@@ -53,6 +58,14 @@ in::InputController::Animate()
   if ( local::IsLeft ) cmrController->StrafeLeft(local::Sensitivity);
   if ( local::IsRight ) cmrController->StrafeRight(local::Sensitivity);
 
+  if ( local::IsVibrating )
+  {
+    local::xbox.Vibrate(65535, 65535);
+  }
+  else
+  {
+    local::xbox.Vibrate(0, 0);
+  }
 }
 
 void
@@ -114,6 +127,8 @@ in::InputController::SetButton( const Key& Key, int Increment)
   case Right:
     local::IsRight += Increment;
     break;
+  case V:
+    local::IsVibrating += Increment;
   default: break; // Do nothing
   }
 }

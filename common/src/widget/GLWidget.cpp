@@ -65,19 +65,19 @@ wid::GLWidget::animate()
 void 
 wid::GLWidget::mousePressEvent(QMouseEvent* Event)
 {
-  myView.Mouse( in::Mouse(Event) );
+  handleMouse(Event);
 }
 
 void 
 wid::GLWidget::mouseReleaseEvent(QMouseEvent* Event)
 {
-  myView.Mouse( in::Mouse(Event) );
+  handleMouse(Event);
 }
 
 void 
 wid::GLWidget::mouseMoveEvent(QMouseEvent *Event)
 {
-  myView.Mouse( in::Mouse(Event) );
+  handleMouse(Event);
 }
 
 void 
@@ -90,5 +90,13 @@ void
 wid::GLWidget::keyReleaseEvent(QKeyEvent* Event)
 {
   myView.KeyRelease( in::Key(Event->key(), Event->modifiers()) );
+}
+
+void
+wid::GLWidget::handleMouse(QMouseEvent* Event)
+{
+  Qt::MouseButtons mb = Event->buttons();
+
+  myView.Mouse( in::Mouse(Event->x(), Event->y(), mb & Qt::LeftButton, mb & Qt::RightButton, mb & Qt::MiddleButton) );
 }
 
