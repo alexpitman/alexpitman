@@ -8,6 +8,9 @@
 
 #include "viewer/View.h"
 
+#include "scenetree/SceneTreeNode.h"
+#include "scenetree/Light.h"
+
 #include "renderer/Factory.h"
 
 #include "attribute/Colour.h"
@@ -22,6 +25,12 @@
 #ifndef GL_MULTISAMPLE
 #define GL_MULTISAMPLE  0x809D
 #endif
+
+namespace local
+{
+  static st::PointLight light;
+  static st::DirectionLight sun;
+}
 
 vwr::View::View()
 : myRendererPtr(ree::Factory::CreateRenderer()),
@@ -60,12 +69,16 @@ vwr::View::Render()
   Renderer()->Clear();
   Renderer()->LoadIdentity();
   
+  local::sun.Render();
+  
   // Set up camera
-  myCamera.SetCamera();
+  myCamera.SetCamera();  
+  
+  // Set up lights
+  local::light.Render();
+  
   
   Renderer()->Transform( geo::Vector3D(8, 0, 0) );
-  //glRotatef(210, 1, 0, 0);
-  //glRotatef(210, 0, 0, 1);
   
   // Render Geometry
   Renderer()->Begin(ree::TRIANGLES);
@@ -136,18 +149,35 @@ vwr::View::SetRenderPending()
 void
 vwr::View::GLInitialise()
 {
+  mySceneTreePtr.reset( new st::SceneTreeNode(Renderer()) );
+
+  local::light = st::PointLight(
+    mySceneTreePtr,
+    geo::Point3D(-5, 0, 0),
+    att::Colour(0, 0, 0, 1),
+    att::Colour(0, 0, 0, 1),
+    att::Colour(0, 0, 0, 1) );
+  local::sun = st::DirectionLight(
+    mySceneTreePtr,
+    geo::Vector3D(1, 0, 0),
+    att::Colour(1, 0, 0, 1),
+    att::Colour(1, 1, 0, 1),
+    att::Colour(1, 1, 1, 1) );
+  
+  Renderer()->EnableLighting();
+  glEnable(GL_COLOR_MATERIAL);
+  
   Renderer()->SetClearColour( att::Colour(0, 0, 0) );
   //glClearColor(0, 0, 0, 1) );
   
+  glPointSize(5);
   glEnable(GL_DEPTH_TEST);
   glEnable(GL_CULL_FACE);
   glShadeModel(GL_SMOOTH);
-  //glEnable(GL_LIGHTING);
-  //glEnable(GL_LIGHT0);
   glEnable(GL_MULTISAMPLE);
   
   myCamera = cmr::Camera( geo::Point3D(-1, -2, -3),
-                          geo::Vector3D(8, 0, 0),
+                          geo::Vector3D(1, 0, 0),
                           geo::Vector3D(0, 0, 1) );
 }
 

@@ -93,3 +93,76 @@ void ree::Renderer::SetClearColour( att::Colour Colour ) const
 {
   glClearColor(Colour.Red(), Colour.Green(), Colour.Blue(), Colour.Alpha());
 }
+
+// Light Operations ///////////////////////////////////////////////////////////
+void ree::Renderer::EnableLighting() const
+{
+  glEnable(GL_LIGHTING);
+}
+
+void ree::Renderer::DisableLighting() const
+{
+  glDisable(GL_LIGHTING);
+}
+
+void ree::Renderer::EnableLight(int Id) const
+{
+  switch (Id)
+  {
+  case 0: glEnable(GL_LIGHT0); break;
+  case 1: glEnable(GL_LIGHT1); break;
+  case 2: glEnable(GL_LIGHT2); break;
+  case 3: glEnable(GL_LIGHT3); break;
+  case 4: glEnable(GL_LIGHT4); break;
+  case 5: glEnable(GL_LIGHT5); break;
+  case 6: glEnable(GL_LIGHT6); break;
+  case 7: glEnable(GL_LIGHT7); break;
+  default: break;
+  }
+}
+
+void ree::Renderer::DisableLight(int Id) const
+{
+  switch (Id)
+  {
+  case 0: glDisable(GL_LIGHT0); break;
+  case 1: glDisable(GL_LIGHT1); break;
+  case 2: glDisable(GL_LIGHT2); break;
+  case 3: glDisable(GL_LIGHT3); break;
+  case 4: glDisable(GL_LIGHT4); break;
+  case 5: glDisable(GL_LIGHT5); break;
+  case 6: glDisable(GL_LIGHT6); break;
+  case 7: glDisable(GL_LIGHT7); break;
+  default: break;
+  }
+}
+
+void ree::Renderer::SetLightDirection(int Id, geo::Vector3D Direction) const
+{
+  float position[4] = {Direction.X(), Direction.Y(), Direction.Z(), 0.0 }; 
+  glLightfv(Id, GL_POSITION, position );
+}
+
+void ree::Renderer::SetLightPosition(int Id, geo::Point3D Position) const
+{
+  float position[4] = {Position.X(), Position.Y(), Position.Z(), 1.0 }; 
+  glLightfv(Id, GL_POSITION, position );
+}
+
+void ree::Renderer::SetAmbient(int Id, att::Colour Colour) const
+{
+  float colour[4] = {Colour.Red(), Colour.Green(), Colour.Blue(), Colour.Alpha()};
+  glLightfv(Id, GL_AMBIENT, colour );
+}
+
+void ree::Renderer::SetDiffuse(int Id, att::Colour Colour) const
+{
+  float colour[4] = {Colour.Red(), Colour.Green(), Colour.Blue(), Colour.Alpha()};
+  glLightfv(Id, GL_DIFFUSE, colour );  
+}
+
+void ree::Renderer::SetSpecular(int Id, att::Colour Colour) const
+{
+  float colour[4] = {Colour.Red(), Colour.Green(), Colour.Blue(), Colour.Alpha()};
+  glLightfv(Id, GL_SPECULAR, colour );
+}

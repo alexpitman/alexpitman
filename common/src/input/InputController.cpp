@@ -23,11 +23,12 @@ namespace local
   static int IsDown = 0;
   static int IsLeft = 0;
   static int IsRight = 0;
+  static int IsRise = 0;
+  static int IsFall = 0;
   static int IsVibrating = 0;
   
   static bool firstMouseEvent = false;
   static in::Mouse lastMouse;
-  //static in::Mouse newMouse;
 
   static in::XBox xbox(1);
 }
@@ -41,22 +42,14 @@ void
 in::InputController::Animate()
 {
   cmr::T_CameraControllerPtr cmrController = myViewPtr->Handler()->CameraController();
-
-/*  if ( local::firstMouseEvent )
-  {
-//    if ( local::newMouse.IsLeftClick() )
-//    {
-      geo::Vector2D diff = local::newMouse.Position() - local::lastMouse.Position();
-      cmrController->RotateYaw( local::DegSensitivity*diff.X() );
-      cmrController->RotatePitch( local::DegSensitivity*diff.Y() );
-//    }
-    local::lastMouse = local::newMouse;
-  }*/
   
+  // Camera translation movement
   if ( local::IsUp ) cmrController->Forward(local::Sensitivity);
   if ( local::IsDown ) cmrController->Backward(local::Sensitivity);
   if ( local::IsLeft ) cmrController->StrafeLeft(local::Sensitivity);
   if ( local::IsRight ) cmrController->StrafeRight(local::Sensitivity);
+  if ( local::IsRise ) cmrController->StrafeUp(local::Sensitivity);
+  if ( local::IsFall ) cmrController->StrafeDown(local::Sensitivity);
 
   if ( local::IsVibrating )
   {
@@ -84,6 +77,7 @@ in::InputController::Mouse( const in::Mouse& Mouse )
   {
     if ( Mouse.IsLeftClick() )
     {
+      // Camera panning
       geo::Vector2D diff = Mouse.Position() - local::lastMouse.Position();
       cmrController->RotateYaw( local::DegSensitivity*diff.X() );
       cmrController->RotatePitch( local::DegSensitivity*diff.Y() );
@@ -127,8 +121,15 @@ in::InputController::SetButton( const Key& Key, int Increment)
   case Right:
     local::IsRight += Increment;
     break;
+  case PageUp:
+    local::IsRise += Increment;
+    break;
+  case PageDown:
+    local::IsFall += Increment;
+    break;
   case V:
     local::IsVibrating += Increment;
+    break;
   default: break; // Do nothing
   }
 }

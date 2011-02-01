@@ -14,6 +14,8 @@
 
 #include "camera/Camera.h"
 
+#include "scenetree/SceneTreeNode.h"
+
 #include "renderer/IRenderer.h"
 
 #include "input/Key.h"
@@ -78,7 +80,7 @@ namespace vwr
     // Scene tree for this view
   //  SceneTreeHeadNode mySceneTree;
   
-    ree::IRenderer* Renderer() { return myRendererPtr.get(); }
+    inline ree::T_RendererPtr Renderer() { return myRendererPtr; }
   
     // Renderer for this view
     ree::T_RendererPtr myRendererPtr;
@@ -88,6 +90,8 @@ namespace vwr
     
     bool isBuildPending; // Is a new build required?
     bool isRenderPending; // Is a new render required?
+    
+    st::T_SceneTreePtr mySceneTreePtr;
     
     // Classes that can access private members
     friend class wid::GLWidget;
