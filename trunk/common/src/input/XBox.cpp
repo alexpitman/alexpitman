@@ -39,8 +39,8 @@ in::XBox::Vibrate(int Left, int Right)
   XInputSetState(myControllerNumber, &vibration);
 }
 
-void
-in::XBox::IsPressed( T_XKey Key )
+bool
+in::XBox::IsPressed( T_XKey Key ) const
 {
-  return myState & Key;
+  return myState.Gamepad.wButtons & Key;
 }

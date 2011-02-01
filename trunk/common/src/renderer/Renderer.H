@@ -25,18 +25,18 @@ namespace ree
     
     /////////////////////////////////////////////////////////////////////////////
     // Matrix operations
-	void ProjectionMode() const;
-	void ModelViewMode() const;
-	
+    void ProjectionMode() const;
+    void ModelViewMode() const;
+
     void LoadIdentity() const;
     
-	void Push() const;
-	void Pop() const;
-	
-	/////////////////////////////////////////////////////////////////////////////
+    void Push() const;
+    void Pop() const;
+    
+    /////////////////////////////////////////////////////////////////////////////
     // Transform operations
-	void Transform(const geo::Vector3D& Vector) const;
-	
+    void Transform(const geo::Vector3D& Vector) const;
+    
     /////////////////////////////////////////////////////////////////////////////
     // Drawing operations
     void Begin( ree::DrawMode DrawMode ) const;
@@ -48,6 +48,20 @@ namespace ree
     // Colour operations
     void SetColour( att::Colour Colour ) const;
     void SetClearColour( att::Colour Colour ) const;
+    
+    /////////////////////////////////////////////////////////////////////////////
+    // Lighting operations
+    void EnableLighting() const;
+    void DisableLighting() const;
+    
+    void EnableLight(int Id) const;
+    void DisableLight(int Id) const;
+    
+    void SetLightDirection(int Id, geo::Vector3D Direction) const;
+    void SetLightPosition(int Id, geo::Point3D Position) const;
+    void SetAmbient(int Id, att::Colour Colour) const;
+    void SetDiffuse(int Id, att::Colour Colour) const;
+    void SetSpecular(int Id, att::Colour Colour) const;
   };
 }
 

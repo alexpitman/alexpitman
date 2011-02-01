@@ -10,7 +10,7 @@
 
 #include "renderer/ree.h"
 
-#include <memory>
+#include "boost/shared_ptr.hpp"
 
 namespace att
 {
@@ -27,7 +27,7 @@ namespace ree
 {
   class IRenderer;
   
-  typedef std::auto_ptr<IRenderer> T_RendererPtr;
+  typedef boost::shared_ptr<IRenderer> T_RendererPtr;
 
   class IRenderer
   {
@@ -40,18 +40,18 @@ namespace ree
     
     /////////////////////////////////////////////////////////////////////////////
     // Matrix operations
-	virtual void ProjectionMode() const = 0;
-	virtual void ModelViewMode() const = 0;
-	
+    virtual void ProjectionMode() const = 0;
+    virtual void ModelViewMode() const = 0;
+
     virtual void LoadIdentity() const = 0;
-	
-	virtual void Push() const = 0;
-	virtual void Pop() const = 0;
+
+    virtual void Push() const = 0;
+    virtual void Pop() const = 0;
     
-	/////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////
     // Transformation operations
-	virtual void Transform(const geo::Vector3D& Vector) const = 0;
-	
+    virtual void Transform(const geo::Vector3D& Vector) const = 0;
+
     /////////////////////////////////////////////////////////////////////////////
     // Drawing operations
     virtual void Begin( ree::DrawMode DrawMode ) const = 0;
@@ -64,7 +64,19 @@ namespace ree
     virtual void SetColour( att::Colour Colour ) const = 0;
     virtual void SetClearColour( att::Colour Colour ) const = 0;
     
+    /////////////////////////////////////////////////////////////////////////////
+    // Lighting operations
+    virtual void EnableLighting() const  = 0;
+    virtual void DisableLighting() const  = 0;
     
+    virtual void EnableLight(int Id) const  = 0;
+    virtual void DisableLight(int Id) const  = 0;
+    
+    virtual void SetLightDirection(int Id, geo::Vector3D Direction) const = 0;
+    virtual void SetLightPosition(int Id, geo::Point3D Position) const = 0;
+    virtual void SetAmbient(int Id, att::Colour Colour) const = 0;
+    virtual void SetDiffuse(int Id, att::Colour Colour) const = 0;
+    virtual void SetSpecular(int Id, att::Colour Colour) const = 0;
   };
 }
 

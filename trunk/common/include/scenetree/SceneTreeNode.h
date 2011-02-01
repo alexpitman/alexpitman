@@ -1,5 +1,5 @@
-#ifndef __ST_SCENETREENODE_H
-#define __ST_SCENETREENODE_H
+#ifndef __ST_SCENE_TREE_NODE_H
+#define __ST_SCENE_TREE_NODE_H
 ///////////////////////////////////////////////////////////////////////////////
 //
 // Name           : SceneTreeNode
@@ -10,19 +10,33 @@
 
 #include "scenetree/Node.h"
 
+#include "renderer/IRenderer.h"
+
 namespace st
 {
+  class SceneTreeNode;
+  
+  typedef boost::shared_ptr<SceneTreeNode> T_SceneTreePtr;
+
   class SceneTreeNode : Node
   {
   public:
-    SceneTreeHeadNode();
+    SceneTreeNode(ree::T_RendererPtr RendererPtr);
 
+    void Render();
+    
     void Rebuild();
+    
+  protected:
+  
+    inline ree::T_RendererPtr Renderer() const { return myRendererPtr; }
     
   private:
 
-    
+    ree::T_RendererPtr myRendererPtr;
 
+    friend Node;
+    
   };
 }
 
