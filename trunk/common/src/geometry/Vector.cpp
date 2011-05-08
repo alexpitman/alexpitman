@@ -71,7 +71,7 @@ geo::Vector2D::operator ==(const Vector2D& RHS) const
 double 
 geo::Vector2D::Length() const
 {
-  return sqrt( LengthSquared() );
+  return num::Sqrt( LengthSquared() );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

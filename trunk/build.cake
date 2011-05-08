@@ -5,7 +5,7 @@ from cake.library.filesys import FileSystemTool
 from cake.filesys import makeDirs
 
 script = Script.getCurrent()
-compiler = findMsvcCompiler(script.configuration, '8.0', 'x86')
+compiler = findMsvcCompiler(script.configuration, '10.0', 'x86')
 shell = ShellTool(script.configuration)
 filesys = FileSystemTool(script.configuration)
 
