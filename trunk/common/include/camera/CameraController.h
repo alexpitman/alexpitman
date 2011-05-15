@@ -23,7 +23,7 @@ namespace cmr
   
   typedef boost::shared_ptr<CameraController> T_CameraControllerPtr;
   
-  class CameraController
+  class Dll_cmr CameraController
   {
   public:
     

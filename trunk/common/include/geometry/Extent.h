@@ -29,7 +29,7 @@
 
 namespace geo
 {
-  struct Extent3D
+  struct Dll_geo Extent3D
   {
   public:
     Extent3D();

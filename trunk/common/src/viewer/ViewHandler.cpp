@@ -28,12 +28,12 @@ vwr::ViewHandler::CameraController()
   return myCameraControllerPtr;
 }
 
-in::T_InputControllerPtr
+vwr::T_InputControllerPtr
 vwr::ViewHandler::InputController()
 {
   if ( !myInputControllerPtr )
   {
-    myInputControllerPtr.reset(new in::InputController(myViewPtr));
+    myInputControllerPtr.reset(new vwr::InputController(myViewPtr));
   }
   return myInputControllerPtr;
 }

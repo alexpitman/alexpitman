@@ -8,6 +8,8 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
+#include "input/Dll.h"
+
 #include <QKeyEvent>
 
 namespace in
@@ -159,7 +161,7 @@ namespace in
     KeypadM  = Qt::KeypadModifier,
   };
 
-  class Key
+  class Dll_in Key
   {
   public:
 

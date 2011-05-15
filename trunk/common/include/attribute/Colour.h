@@ -8,12 +8,11 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-//#include <stdlib.h>
-//#include <time.h>
+#include "attribute/Dll.h"
 
 namespace att
 {
-  class Colour
+  class Dll_att Colour
   {
   public:
     // Constructors

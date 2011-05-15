@@ -8,6 +8,8 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
+#include "geometry/Dll.h"
+
 ///////////////////////////////////////////////////////////////////////////////
 //
 // Name: Vector2D
@@ -17,7 +19,7 @@
 
 namespace geo
 {
-  struct Vector2D
+  struct Dll_geo Vector2D
   {
   public:
     // Default constructor.
@@ -87,7 +89,7 @@ geo::Vector2D::operator[] (unsigned short int Index) const
 
 namespace geo
 {
-  struct Vector3D
+  struct Dll_geo Vector3D
   {
   public:
     // Default constructor.

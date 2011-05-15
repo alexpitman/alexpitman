@@ -15,7 +15,7 @@ namespace geo
 {
   class Rotation;
 
-  class Transform
+  class Dll_geo Transform
   {
   public:
   

@@ -8,13 +8,15 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
+#include "input/Dll.h"
+
 #include "geometry/Point.h"
 
 #include <QMouseEvent>
 
 namespace in
 {
-  class Mouse
+  class Dll_in Mouse
   {
   public:
 

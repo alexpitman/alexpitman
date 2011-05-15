@@ -8,12 +8,14 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
+#include "camera/Dll.h"
+
 #include "geometry/Point.h"
 #include "geometry/Vector.h"
 
 namespace cmr
 {
-  class Camera
+  class Dll_cmr Camera
   {
   public:
     Camera();

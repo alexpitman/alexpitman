@@ -1,5 +1,5 @@
-#ifndef __IN_INPUT_CONTROLLER_H
-#define __IN_INPUT_CONTROLLER_H
+#ifndef __VWR_INPUT_CONTROLLER_H
+#define __VWR_INPUT_CONTROLLER_H
 ///////////////////////////////////////////////////////////////////////////////
 //
 // Name           : InputController
@@ -8,6 +8,8 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
+#include "viewer/Dll.h"
+
 #include "input/Key.h"
 #include "input/Mouse.h"
 
@@ -15,16 +17,12 @@
 
 namespace vwr
 {
-  class View;
-}
-
-namespace in
-{
+	class View;
   class InputController;
   
   typedef boost::shared_ptr<InputController> T_InputControllerPtr;
 
-  class InputController
+  class Dll_vwr InputController
   {
   public:
   
@@ -32,16 +30,16 @@ namespace in
     
     void Animate();
     
-    void Mouse( const Mouse& Mouse );
+    void Mouse( const in::Mouse& Mouse );
     
-    void KeyPress( const Key& Key );
-    void KeyRelease( const Key& Key );
+    void KeyPress( const in::Key& Key );
+    void KeyRelease( const in::Key& Key );
   
   private:
   
-    void SetButton( const Key& Key, int Increment);
+    void SetButton( const in::Key& Key, int Increment);
   
-    vwr::View* myViewPtr;
+    View* myViewPtr;
   
   };
 }

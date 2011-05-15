@@ -17,7 +17,7 @@
 
 namespace st
 {
-  class PointLight : public Node
+  class Dll_st PointLight : public Node
   {
   public:
   
@@ -54,7 +54,7 @@ namespace st
   
   };
   
-  class DirectionLight : public Node
+  class Dll_st DirectionLight : public Node
   {
   public:
   

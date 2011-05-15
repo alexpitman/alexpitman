@@ -19,7 +19,7 @@
 
 namespace geo
 {
-  struct Point2D
+  struct Dll_geo Point2D
   {
   public:
     // Default constructor.
@@ -112,7 +112,7 @@ geo::Point2D::operator[] (unsigned short int Index)
 
 namespace geo
 {
-  struct Point3D
+  struct Dll_geo Point3D
   {
   public:
     // Default constructor.

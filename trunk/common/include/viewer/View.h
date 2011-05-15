@@ -36,7 +36,7 @@ namespace vwr
   class SceneTreeController;
   class RendererController;
 
-  class View
+  class Dll_vwr View
   {
   public:
 
