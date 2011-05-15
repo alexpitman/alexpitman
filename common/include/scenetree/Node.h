@@ -8,6 +8,8 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
+#include "scenetree/Dll.h"
+
 #include "renderer/IRenderer.h"
 
 namespace st
@@ -18,7 +20,7 @@ namespace st
   typedef boost::shared_ptr<Node> T_NodePtr;
   typedef boost::shared_ptr<SceneTreeNode> T_SceneTreePtr;
 
-  class Node
+  class Dll_st Node
   {
   public:
     Node();

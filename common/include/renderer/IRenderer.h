@@ -8,6 +8,7 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
+#include "renderer/Dll.h"
 #include "renderer/ree.h"
 
 #include "boost/shared_ptr.hpp"
@@ -29,7 +30,7 @@ namespace ree
   
   typedef boost::shared_ptr<IRenderer> T_RendererPtr;
 
-  class IRenderer
+  class Dll_ree IRenderer
   {
   public:
   

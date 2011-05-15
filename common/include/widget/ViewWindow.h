@@ -10,11 +10,12 @@
 
 #include <QWidget>
 
+#include "widget/Dll.h"
 #include "widget/GLWidget.h"
 
 namespace wid
 {
-  class ViewWindow : public QWidget
+  class Dll_wid ViewWindow : public QWidget
   {
     Q_OBJECT
 

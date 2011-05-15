@@ -14,7 +14,7 @@
 
 namespace geo
 {
-  struct Rotation
+  struct Dll_geo Rotation
   {
   public:
     // Default constructor (identity)

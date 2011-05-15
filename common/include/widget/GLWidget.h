@@ -11,11 +11,13 @@
 #include <QGLWidget>
 #include <QKeyEvent>
 
-#include "viewer/View.H"
+#include "widget/Dll.h"
+
+#include "viewer/View.h"
 
 namespace wid
 {
-  class GLWidget : public QGLWidget
+  class Dll_wid GLWidget : public QGLWidget
   {
     Q_OBJECT
     

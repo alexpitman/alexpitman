@@ -6,11 +6,11 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
  
-#include "input/InputController.h"
+#include "viewer/InputController.h"
+#include "viewer/View.h"
+
 #include "input/Mouse.h"
 #include "input/XBox.h"
-
-#include "viewer/View.h"
 
 #include <iostream>
 
@@ -33,13 +33,13 @@ namespace local
   static in::XBox xbox(1);
 }
 
-in::InputController::InputController(vwr::View* ViewPtr)
+vwr::InputController::InputController(vwr::View* ViewPtr)
 : myViewPtr(ViewPtr)
 {
 }
 
 void
-in::InputController::Animate()
+vwr::InputController::Animate()
 {
   cmr::T_CameraControllerPtr cmrController = myViewPtr->Handler()->CameraController();
   
@@ -62,7 +62,7 @@ in::InputController::Animate()
 }
 
 void
-in::InputController::Mouse( const in::Mouse& Mouse )
+vwr::InputController::Mouse( const in::Mouse& Mouse )
 {
   if ( !local::firstMouseEvent )
   {
@@ -88,46 +88,46 @@ in::InputController::Mouse( const in::Mouse& Mouse )
 }
 
 void
-in::InputController::KeyPress( const Key& Key )
+vwr::InputController::KeyPress( const in::Key& Key )
 {
   SetButton(Key, 1);
 }
 
 void
-in::InputController::KeyRelease( const Key& Key )
+vwr::InputController::KeyRelease( const in::Key& Key )
 {
   SetButton(Key, -1);
 }
 
 void
-in::InputController::SetButton( const Key& Key, int Increment)
+vwr::InputController::SetButton( const in::Key& Key, int Increment)
 {
   switch( Key.KeyType() )
   {
   // Movement
-  case W:
-  case Up:
+  case in::W:
+  case in::Up:
     local::IsUp += Increment;
     break;
-  case S:
-  case Down:
+  case in::S:
+  case in::Down:
     local::IsDown += Increment;
     break;
-  case A:
-  case Left:
+  case in::A:
+  case in::Left:
     local::IsLeft += Increment;
     break;
-  case D:
-  case Right:
+  case in::D:
+  case in::Right:
     local::IsRight += Increment;
     break;
-  case PageUp:
+  case in::PageUp:
     local::IsRise += Increment;
     break;
-  case PageDown:
+  case in::PageDown:
     local::IsFall += Increment;
     break;
-  case V:
+  case in::V:
     local::IsVibrating += Increment;
     break;
   default: break; // Do nothing

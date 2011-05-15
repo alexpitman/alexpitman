@@ -12,7 +12,7 @@
 
 namespace st
 {
-  class TopologyNode : Node
+  class Dll_st TopologyNode : Node
   {
   public:
     TopologyNode();

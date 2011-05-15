@@ -18,7 +18,7 @@ namespace st
   
   typedef boost::shared_ptr<SceneTreeNode> T_SceneTreePtr;
 
-  class SceneTreeNode : Node
+  class Dll_st SceneTreeNode : Node
   {
   public:
     SceneTreeNode(ree::T_RendererPtr RendererPtr);

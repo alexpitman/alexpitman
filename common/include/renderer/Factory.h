@@ -12,7 +12,7 @@
 
 namespace ree
 {
-  class Factory
+  class Dll_ree Factory
   {
   public:
   

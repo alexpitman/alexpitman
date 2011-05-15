@@ -8,6 +8,8 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
+#include "input/Dll.h"
+
 #include <XInput.h>
 
 namespace in
@@ -30,7 +32,7 @@ namespace in
     XY             = 0x8000,
   };
 
-  class XBox
+  class Dll_in XBox
   {
   public:
   
