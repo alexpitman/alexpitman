@@ -1,17 +1,12 @@
-#ifndef __IN_DLL_H
-#define __IN_DLL_H
+#ifndef __CONFIG_DLL_H
+#define __CONFIG_DLL_H
 ///////////////////////////////////////////////////////////////////////////////
 //
 // Dll exporting
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-#include "config/Dll.h"
-
-#ifdef DLL
-# define Dll_in Dll_export
-#else
-# define Dll_in Dll_import
-#endif
+#define Dll_import __declspec(dllimport)
+#define Dll_export __declspec(dllexport)
 
 #endif

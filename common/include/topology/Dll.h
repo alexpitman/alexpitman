@@ -6,6 +6,12 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-#define Dll_tpo __declspec(dllexport)
+#include "config/Dll.h"
+
+#ifdef DLL
+# define Dll_tpo Dll_export
+#else
+# define Dll_tpo Dll_import
+#endif
 
 #endif

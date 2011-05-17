@@ -9,9 +9,6 @@ compiler = findMsvcCompiler(script.configuration, '10.0', 'x86')
 shell = ShellTool(script.configuration)
 filesys = FileSystemTool(script.configuration)
 
-# Set up compiler defines
-compiler.addDefine("QT_DLL", "")
-
 # Set up compiler flags
 compiler.addCppFlag("/EHsc")
 
@@ -36,10 +33,6 @@ filesys.copyFiles(
   ]),
   targetDir=script.cwd("build/testbed/lib"),
   )
-
-#compiler.addDefine("QT_DLL")
-  
-#compiler.addIncludePath("build/common/headers")
   
 compiler.addLibraryPath("build/testbed/lib")
 compiler.addLibrary("opengl32.Lib")
@@ -50,39 +43,11 @@ compiler.addLibrary("QtGui4.lib")
 compiler.addLibrary("qtmain.lib")
 compiler.addLibrary("XInput.lib")
 
-#script.include(script.cwd("common/use-geometry.cake"))
+mainCompiler = compiler.clone()
 
-# List of sources.
-
-
-#gsources = script.cwd([
-#  "common/src/attribute/Colour.cpp",
-#  "common/src/camera/Camera.cpp",
-#  "common/src/camera/CameraController.cpp",
-#  "common/src/geometry/Point.cpp",
-#  "common/src/geometry/Vector.cpp",
-#  "common/src/geometry/Extent.cpp",
-#  "common/src/geometry/Rotation.cpp",
-#  "common/src/geometry/Transform.cpp",
-#  "common/src/input/Key.cpp",
-#  "common/src/input/Mouse.cpp",
-#  "common/src/input/InputController.cpp",
-#  "common/src/input/XBox.cpp",
-#  "common/src/numeric/num.cpp",
-#  "common/src/renderer/Factory.cpp",
-#  "common/src/renderer/Renderer.cpp",
-#  "common/src/scenetree/Light.cpp",
-#  "common/src/scenetree/Node.cpp",
-#  "common/src/scenetree/SceneTreeNode.cpp",
-#  "common/src/scenetree/FacetNetworkNode.cpp",
-#  "common/src/topology/Triple.cpp",
-#  "common/src/widget/ViewWindow.cpp",
-#  "common/src/widget/GLWidget.cpp",
-#  "common/src/viewer/View.cpp",
-#  "common/src/viewer/ViewHandler.cpp",
-#  "build/common/moc/widget/mViewWindow.cpp",
-#  "build/common/moc/widget/mGLWidget.cpp",
-#  ])
+# Set up compiler defines
+compiler.addDefine("QT_DLL")
+compiler.addDefine("DLL")
 
 # Build the objects/libs/dlls.
 num_source = script.cwd([
@@ -294,12 +259,6 @@ wid_module = compiler.module(
 	
 wid_lib = script.cwd("build/testbed/bin/widget.lib")
 
-
-#gobjects = compiler.objects(
-#  targetDir=script.cwd("build/common/obj"),
-#  sources=gsources,
-#  )
-
 # Copy binaries
 filesys.copyFiles(
   sources=script.cwd([
@@ -317,20 +276,20 @@ main_source = script.cwd([
   "testbed/main.cpp",
   ])
 	
-main_objects = compiler.objects(
+main_objects = mainCompiler.objects(
   targetDir=script.cwd("build/testbed/obj/"),
   sources=main_source,
 	prerequisites=[geo_module, ree_module, st_module, wid_module]
   )
 	
-main_program = compiler.program(
+main_program = mainCompiler.program(
   target=script.cwd("build/testbed/bin/main"),
   sources=[main_objects, geo_lib, ree_lib, st_lib, wid_lib],
   )
 
 # Execute the program
-#shell.run(
-#  args=[main_program.path],
-#  targets=[],
-#  sources=[program],
-#  )
+shell.run(
+  args=[main_program.path],
+  targets=[],
+  sources=[main_program],
+  )
