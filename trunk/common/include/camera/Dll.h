@@ -6,6 +6,12 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-#define Dll_cmr __declspec(dllexport)
+#include "config/Dll.h"
+
+#ifdef DLL
+# define Dll_cmr Dll_export
+#else
+# define Dll_cmr Dll_import
+#endif
 
 #endif

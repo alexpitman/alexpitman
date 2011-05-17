@@ -6,6 +6,12 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-#define Dll_geo __declspec(dllexport)
+#include "config/Dll.h"
+
+#ifdef DLL
+# define Dll_geo Dll_export
+#else
+# define Dll_geo Dll_import
+#endif
 
 #endif

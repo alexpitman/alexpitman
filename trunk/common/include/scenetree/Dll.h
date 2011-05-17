@@ -6,6 +6,12 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-#define Dll_st __declspec(dllexport)
+#include "config/Dll.h"
+
+#ifdef DLL
+# define Dll_st Dll_export
+#else
+# define Dll_st Dll_import
+#endif
 
 #endif
