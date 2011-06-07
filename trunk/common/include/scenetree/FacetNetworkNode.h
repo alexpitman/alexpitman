@@ -10,28 +10,23 @@
 
 #include "scenetree/Node.h"
 
-#include "topology/Triple.H"
-
-#include "geometry/Point.H"
-
-#include <vector>
+#include "object/FacetNetwork.h"
 
 namespace st
 {
-	class Dll_st FacetNetworkNode : Node
+	class Dll_st FacetNetworkNode : public Node
 	{
 	public:
 	
 		FacetNetworkNode(
-			const geo::Point3D* PointsBegin,
-		  const geo::Point3D* PointsEnd,
-			const tpo::Triple* FacetsBegin,
-			const tpo::Triple* FacetsEnd );
+			st::Node Root,
+			obj::T_FacetNetworkPtr FacetNetwork );
+	
+		virtual void Render() const;
 	
 	private:
 	
-		std::vector<geo::Point3D> myPoints;
-		std::vector<tpo::Triple> myFacets;
+		obj::T_FacetNetworkPtr myFacetNetwork;
 	
 	};
 }

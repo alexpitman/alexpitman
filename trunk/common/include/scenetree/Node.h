@@ -26,13 +26,17 @@ namespace st
     Node();
     Node(T_SceneTreePtr SceneTreePtr);
 
+		virtual ~Node() {};
+		
     virtual void Render() const;
     
     virtual void Rebuild();
-    
+
   protected:
   
     ree::T_RendererPtr Renderer() const;
+		
+		T_SceneTreePtr Root() const;
     
   private:
 

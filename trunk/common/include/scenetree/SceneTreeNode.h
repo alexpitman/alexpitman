@@ -12,28 +12,34 @@
 
 #include "renderer/IRenderer.h"
 
+#include <vector>
+
 namespace st
 {
   class SceneTreeNode;
   
   typedef boost::shared_ptr<SceneTreeNode> T_SceneTreePtr;
 
-  class Dll_st SceneTreeNode : Node
+  class Dll_st SceneTreeNode : public Node
   {
   public:
+	
     SceneTreeNode(ree::T_RendererPtr RendererPtr);
-
-    void Render();
+		
+    virtual void Render() const;
     
     void Rebuild();
     
-  protected:
+		void AddNode(st::Node Node);
   
+		// Get a pointer to the renderer.
     inline ree::T_RendererPtr Renderer() const { return myRendererPtr; }
-    
+		
   private:
-
+	
     ree::T_RendererPtr myRendererPtr;
+
+		std::vector<st::Node> myNodes;
 
     friend Node;
     

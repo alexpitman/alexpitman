@@ -10,8 +10,12 @@
 
 #include "scenetree/SceneTreeNode.h"
 #include "scenetree/Light.h"
+#include "scenetree/FacetNetworkNode.h"
 
 #include "renderer/Factory.h"
+
+#include "object/FacetNetwork.h"
+#include "object/Object.h"
 
 #include "attribute/Colour.h"
 
@@ -30,6 +34,8 @@ namespace local
 {
   static st::PointLight light;
   static st::DirectionLight sun;
+	
+	std::vector<obj::T_FacetNetworkPtr> objects;
 }
 
 vwr::View::View()
@@ -81,6 +87,7 @@ vwr::View::Render()
   Renderer()->Transform( geo::Vector3D(8, 0, 0) );
   
   // Render Geometry
+	/*
   Renderer()->Begin(ree::TRIANGLES);
   
   Renderer()->SetColour( att::Colour(0, 1, 0) );
@@ -138,6 +145,8 @@ vwr::View::Render()
   Renderer()->Vertex( geo::Point3D(-1,  1,  1) );
   
   Renderer()->End();
+	*/
+	mySceneTreePtr->Render();
 }
 
 void
@@ -164,11 +173,27 @@ vwr::View::GLInitialise()
     att::Colour(1, 1, 0, 1),
     att::Colour(1, 1, 1, 1) );
   
+	geo::Point3D points[] = {
+		geo::Point3D(-1, -1,  1),
+		geo::Point3D(-1,  1,  1),
+		geo::Point3D( 1,  1,  1),
+		geo::Point3D( 1, -1,  1),
+	};
+	
+	tpo::Triple facets[] = {
+		tpo::Triple(0, 1, 2),
+		tpo::Triple(0, 2, 3),
+	};
+	
+	local::objects.push_back( obj::T_FacetNetworkPtr(new obj::FacetNetwork(points, points+4, facets, facets+2)) );
+	
+	
+	mySceneTreePtr->AddNode( st::FacetNetworkNode(*mySceneTreePtr, local::objects[0]) );
+	
   Renderer()->EnableLighting();
   glEnable(GL_COLOR_MATERIAL);
   
   Renderer()->SetClearColour( att::Colour(0, 0, 0) );
-  //glClearColor(0, 0, 0, 1) );
   
   glPointSize(5);
   glEnable(GL_DEPTH_TEST);

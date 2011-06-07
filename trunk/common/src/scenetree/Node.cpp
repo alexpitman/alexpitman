@@ -10,6 +10,8 @@
 
 #include "scenetree/SceneTreeNode.h"
 
+#include <iostream>
+
 st::Node::Node()
 {
 }
@@ -22,11 +24,18 @@ st::Node::Node(T_SceneTreePtr SceneTreePtr)
 void
 st::Node::Render() const
 {
+	//std::cout << "RENDER ELEMENT" << std::endl;
 }
 
 void
 st::Node::Rebuild()
 {
+}
+
+st::T_SceneTreePtr
+st::Node::Root() const
+{
+	return mySceneTreePtr;
 }
 
 ree::T_RendererPtr
