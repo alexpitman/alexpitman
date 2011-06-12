@@ -30,7 +30,7 @@ namespace st
     
     void Rebuild();
     
-		void AddNode(st::Node Node);
+		void AddNode(const st::T_NodePtr& Node);
   
 		// Get a pointer to the renderer.
     inline ree::T_RendererPtr Renderer() const { return myRendererPtr; }
@@ -39,7 +39,7 @@ namespace st
 	
     ree::T_RendererPtr myRendererPtr;
 
-		std::vector<st::Node> myNodes;
+		std::vector<st::T_NodePtr> myNodes;
 
     friend Node;
     

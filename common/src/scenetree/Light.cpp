@@ -14,6 +14,7 @@ namespace local
 }
 
 st::PointLight::PointLight()
+: Node()
 {
 }
 

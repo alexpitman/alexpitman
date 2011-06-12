@@ -19,8 +19,8 @@ namespace st
 	public:
 	
 		FacetNetworkNode(
-			st::Node Root,
-			obj::T_FacetNetworkPtr FacetNetwork );
+			const st::T_SceneTreePtr& Root,
+			const obj::T_FacetNetworkPtr& FacetNetwork );
 	
 		virtual void Render() const;
 	
