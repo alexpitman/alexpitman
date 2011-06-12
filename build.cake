@@ -127,6 +127,7 @@ att_lib = script.cwd("build/testbed/bin/attribute.lib")
 
 obj_source = script.cwd([
 	"common/src/object/FacetNetwork.cpp",
+	"common/src/object/PointSet.cpp",
 	])
 	
 obj_objects = compiler.objects(
@@ -147,6 +148,7 @@ st_source = script.cwd([
 	"common/src/scenetree/Node.cpp",
 	"common/src/scenetree/SceneTreeNode.cpp",
 	"common/src/scenetree/FacetNetworkNode.cpp",
+	"common/src/scenetree/PointSetNode.cpp",
 	])
 	
 st_objects = compiler.objects(
