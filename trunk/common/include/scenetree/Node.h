@@ -23,8 +23,9 @@ namespace st
   class Dll_st Node
   {
   public:
-    Node();
-    Node(T_SceneTreePtr SceneTreePtr);
+	
+		Node();
+    Node(const st::T_SceneTreePtr& SceneTreePtr);
 
 		virtual ~Node() {};
 		
@@ -33,7 +34,7 @@ namespace st
     virtual void Rebuild();
 
   protected:
-  
+	
     ree::T_RendererPtr Renderer() const;
 		
 		T_SceneTreePtr Root() const;

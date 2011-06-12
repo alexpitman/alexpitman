@@ -187,8 +187,7 @@ vwr::View::GLInitialise()
 	
 	local::objects.push_back( obj::T_FacetNetworkPtr(new obj::FacetNetwork(points, points+4, facets, facets+2)) );
 	
-	
-	mySceneTreePtr->AddNode( st::FacetNetworkNode(*mySceneTreePtr, local::objects[0]) );
+	mySceneTreePtr->AddNode( st::T_NodePtr(new st::FacetNetworkNode(mySceneTreePtr, local::objects[0])) );
 	
   Renderer()->EnableLighting();
   glEnable(GL_COLOR_MATERIAL);

@@ -12,6 +12,11 @@ filesys = FileSystemTool(script.configuration)
 # Set up compiler flags
 compiler.addCppFlag("/EHsc")
 
+# debug
+compiler.addCppFlag("/Zi")
+compiler.addCppFlag("/MDd")
+compiler.addCppFlag("/LDd")
+
 # Set up include paths
 compiler.addIncludePath("common/include")
 compiler.addIncludePath("common/3rdParty/boost/include")
@@ -120,6 +125,23 @@ att_module = compiler.module(
 	
 att_lib = script.cwd("build/testbed/bin/attribute.lib")
 
+obj_source = script.cwd([
+	"common/src/object/FacetNetwork.cpp",
+	])
+	
+obj_objects = compiler.objects(
+	targetDir=script.cwd("build/testbed/obj/object"),
+	sources=obj_source,
+	prerequisites=[geo_module, tpo_module]
+	)
+	
+obj_module = compiler.module(
+	target=script.cwd("build/testbed/bin/object.dll"),
+	sources=[obj_objects, geo_lib, tpo_lib],
+	)
+	
+obj_lib = script.cwd("build/testbed/bin/object.lib")
+
 st_source = script.cwd([
 	"common/src/scenetree/Light.cpp",
 	"common/src/scenetree/Node.cpp",
@@ -130,12 +152,12 @@ st_source = script.cwd([
 st_objects = compiler.objects(
 	targetDir=script.cwd("build/testbed/obj/scenetree"),
 	sources=st_source,
-	prerequisites=[geo_module, att_module, tpo_module]
+	prerequisites=[geo_module, att_module, tpo_module, obj_module]
 	)
 	
 st_module = compiler.module(
 	target=script.cwd("build/testbed/bin/scenetree.dll"),
-	sources=[st_objects, geo_lib, att_lib, tpo_lib],
+	sources=[st_objects, geo_lib, att_lib, tpo_lib, obj_lib],
 	)
 	
 st_lib = script.cwd("build/testbed/bin/scenetree.lib")
@@ -203,12 +225,12 @@ vwr_source = script.cwd([
 vwr_objects = compiler.objects(
 	targetDir=script.cwd("build/testbed/obj/viewer"),
 	sources=vwr_source,
-	prerequisites=[geo_module, att_module, in_module, ree_module, st_module, cmr_module]
+	prerequisites=[geo_module, tpo_module, att_module, in_module, ree_module, st_module, cmr_module, obj_module]
 	)
 	
 vwr_module = compiler.module(
 	target=script.cwd("build/testbed/bin/viewer.dll"),
-	sources=[vwr_objects, geo_lib, att_lib, in_lib, ree_lib, st_lib, cmr_lib ],
+	sources=[vwr_objects, geo_lib, tpo_lib, att_lib, in_lib, ree_lib, st_lib, cmr_lib, obj_lib ],
 	)
 	
 vwr_lib = script.cwd("build/testbed/bin/viewer.lib")

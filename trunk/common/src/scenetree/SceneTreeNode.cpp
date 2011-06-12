@@ -23,7 +23,7 @@ st::SceneTreeNode::Render() const
 	auto nv = myNodes.end();
 	while ( nu != nv )
 	{
-		(*nu++).Render();
+		(*nu++)->Render();
 	}
 }
 
@@ -33,7 +33,7 @@ st::SceneTreeNode::Rebuild()
 }
 
 void
-st::SceneTreeNode::AddNode(st::Node Node)
+st::SceneTreeNode::AddNode(const st::T_NodePtr& Node)
 {
 	myNodes.push_back(Node);
 }

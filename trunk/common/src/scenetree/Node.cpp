@@ -16,7 +16,7 @@ st::Node::Node()
 {
 }
 
-st::Node::Node(T_SceneTreePtr SceneTreePtr)
+st::Node::Node(const st::T_SceneTreePtr& SceneTreePtr)
 : mySceneTreePtr(SceneTreePtr)
 {
 }
