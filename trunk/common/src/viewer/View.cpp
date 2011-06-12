@@ -11,9 +11,11 @@
 #include "scenetree/SceneTreeNode.h"
 #include "scenetree/Light.h"
 #include "scenetree/FacetNetworkNode.h"
+#include "scenetree/PointSetNode.h"
 
 #include "renderer/Factory.h"
 
+#include "object/PointSet.h"
 #include "object/FacetNetwork.h"
 #include "object/Object.h"
 
@@ -34,8 +36,6 @@ namespace local
 {
   static st::PointLight light;
   static st::DirectionLight sun;
-	
-	std::vector<obj::T_FacetNetworkPtr> objects;
 }
 
 vwr::View::View()
@@ -185,9 +185,11 @@ vwr::View::GLInitialise()
 		tpo::Triple(0, 2, 3),
 	};
 	
-	local::objects.push_back( obj::T_FacetNetworkPtr(new obj::FacetNetwork(points, points+4, facets, facets+2)) );
+	obj::T_FacetNetworkPtr f(new obj::FacetNetwork(points, points+4, facets, facets+2));
+	obj::T_PointSetPtr p(new obj::PointSet(points, points+4));
 	
-	mySceneTreePtr->AddNode( st::T_NodePtr(new st::FacetNetworkNode(mySceneTreePtr, local::objects[0])) );
+	mySceneTreePtr->AddNode( st::T_NodePtr(new st::FacetNetworkNode(mySceneTreePtr, f)) );
+	mySceneTreePtr->AddNode( st::T_NodePtr(new st::PointSetNode(mySceneTreePtr, p)) );
 	
   Renderer()->EnableLighting();
   glEnable(GL_COLOR_MATERIAL);
