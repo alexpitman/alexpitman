@@ -8,7 +8,7 @@
 
 #include "config/Dll.h"
 
-#ifdef DLL
+#ifdef ATT_DLL
 # define Dll_att Dll_export
 #else
 # define Dll_att Dll_import

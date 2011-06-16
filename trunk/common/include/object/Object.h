@@ -14,11 +14,11 @@
 
 namespace obj
 {
-	class Dll_obj Object;
+	class Object;
 
 	typedef boost::shared_ptr<Object> T_ObjectPtr;
 
-	class Object
+	class Dll_obj Object
 	{
 	public:
 	

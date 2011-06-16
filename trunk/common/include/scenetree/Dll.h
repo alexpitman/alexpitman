@@ -8,7 +8,7 @@
 
 #include "config/Dll.h"
 
-#ifdef DLL
+#ifdef ST_DLL
 # define Dll_st Dll_export
 #else
 # define Dll_st Dll_import

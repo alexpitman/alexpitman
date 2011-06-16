@@ -8,7 +8,7 @@
 
 #include "config/Dll.h"
 
-#ifdef DLL
+#ifdef VWR_DLL
 # define Dll_vwr Dll_export
 #else
 # define Dll_vwr Dll_import
