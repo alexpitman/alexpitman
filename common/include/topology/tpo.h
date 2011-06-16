@@ -15,7 +15,7 @@ namespace tpo
 {
 	typedef unsigned long T_Index;
 	
-	Dll_tpo T_Index NullIndex = num::Upper<T_Index>();
+	Dll_tpo_extern T_Index NullIndex = num::Upper<tpo::T_Index>();
 }
 
 #endif

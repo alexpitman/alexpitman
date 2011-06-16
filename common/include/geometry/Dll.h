@@ -8,7 +8,7 @@
 
 #include "config/Dll.h"
 
-#ifdef DLL
+#ifdef GEO_DLL
 # define Dll_geo Dll_export
 #else
 # define Dll_geo Dll_import

@@ -1,5 +1,5 @@
-#ifndef __NUM_DLL_H
-#define __NUM_DLL_H
+#ifndef __SYS_DLL_H
+#define __SYS_DLL_H
 ///////////////////////////////////////////////////////////////////////////////
 //
 // Dll exporting
@@ -8,10 +8,10 @@
 
 #include "config/Dll.h"
 
-#ifdef NUM_DLL
-# define Dll_num Dll_export
+#ifdef SYS_DLL
+# define Dll_sys Dll_export
 #else
-# define Dll_num Dll_import
+# define Dll_sys Dll_import
 #endif
 
 #endif

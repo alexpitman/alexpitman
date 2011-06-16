@@ -8,7 +8,7 @@
 
 #include "config/Dll.h"
 
-#ifdef DLL
+#ifdef CMR_DLL
 # define Dll_cmr Dll_export
 #else
 # define Dll_cmr Dll_import
