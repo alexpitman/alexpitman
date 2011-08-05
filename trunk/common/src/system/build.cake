@@ -5,7 +5,7 @@ from cake.tools import compiler, script
 
 compiler.addIncludePath(script.cwd("../../include"))
 compiler.addIncludePath(script.cwd("../../3rdParty/boost/include"))
-compiler.addDefine("ST_DLL")
+compiler.addDefine("SYS_DLL")
 
 source = script.cwd([
 	"InputStream.cpp",

@@ -1,21 +1,9 @@
-#ifndef __TPO_H
-#define __TPO_H
 ///////////////////////////////////////////////////////////////////////////////
 //
 // Name           : tpo
 // Description    : tpo namespace functions
 //
 ///////////////////////////////////////////////////////////////////////////////
+#include "topology/tpo.h"
 
-#include "topology/Dll.h"
-
-#include "numeric/num.h"
-
-namespace tpo
-{
-	typedef unsigned long T_Index;
-	
-	const T_Index NullIndex = num::Upper<tpo::T_Index>();
-}
-
-#endif
+tpo::T_Index tpo::NullIndex = num::Upper<tpo::T_Index>();

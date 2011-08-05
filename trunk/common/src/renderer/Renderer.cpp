@@ -83,6 +83,11 @@ void ree::Renderer::Vertex( geo::Point3D Point ) const
   glVertex3f(Point.X(), Point.Y(), Point.Z());
 }
 
+void ree::Renderer::Normal( geo::Vector3D Normal ) const
+{
+  glNormal3f(Normal.X(), Normal.Y(), Normal.Z());
+}
+
 // Colour Operations //////////////////////////////////////////////////////////
 void ree::Renderer::SetColour( att::Colour Colour ) const
 {

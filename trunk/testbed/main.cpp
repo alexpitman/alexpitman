@@ -7,6 +7,7 @@
 #include "geometry/Point.h"
 
 #include "system/InputStream.h"
+#include "import/ImportObjFile.h"
 
 int main(int Argc, char** Argv)
 {
@@ -14,8 +15,6 @@ int main(int Argc, char** Argv)
 
   std::cout << "Hello Cake!" << std::endl;
   std::cout << p.X() << " " << p.Y() << " " << p.Z() << std::endl;
-  
-  //sys::InputStream in("test.txt");
 	
   QApplication app(Argc, Argv);
   wid::ViewWindow window;

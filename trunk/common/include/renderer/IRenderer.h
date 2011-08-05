@@ -58,7 +58,8 @@ namespace ree
     virtual void Begin( ree::DrawMode DrawMode ) const = 0;
     virtual void End() const = 0;
 
-    virtual void Vertex( geo::Point3D Point ) const = 0; 
+    virtual void Vertex( geo::Point3D Point ) const = 0;
+    virtual void Normal( geo::Vector3D Direction ) const = 0;
     
     /////////////////////////////////////////////////////////////////////////////
     // Colour operations

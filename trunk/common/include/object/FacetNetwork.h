@@ -33,18 +33,38 @@ namespace obj
 		  const geo::Point3D* PointsEnd,
 			const tpo::Triple* FacetsBegin,
 			const tpo::Triple* FacetsEnd );
-	
+		FacetNetwork(
+			std::vector<geo::Point3D>::const_iterator PointsBegin,
+		  std::vector<geo::Point3D>::const_iterator PointsEnd,
+			std::vector<tpo::Triple>::const_iterator FacetsBegin,
+			std::vector<tpo::Triple>::const_iterator FacetsEnd );
+		FacetNetwork(
+			std::vector<geo::Point3D>::const_iterator PointsBegin,
+		  std::vector<geo::Point3D>::const_iterator PointsEnd,
+			std::vector<tpo::Triple>::const_iterator FacetsBegin,
+			std::vector<tpo::Triple>::const_iterator FacetsEnd,
+			std::vector<geo::Vector3D>::const_iterator NormalsBegin,
+			std::vector<geo::Vector3D>::const_iterator NormalsEnd,
+      std::vector<tpo::Triple>::const_iterator FacetToNormalsBegin,
+			std::vector<tpo::Triple>::const_iterator FacetToNormalsEnd );
+		
 		// Const accessors
 		std::vector<geo::Point3D>::const_iterator PointsBegin() const;
 		std::vector<geo::Point3D>::const_iterator PointsEnd() const;
-		
 		std::vector<tpo::Triple>::const_iterator FacetsBegin() const;
 		std::vector<tpo::Triple>::const_iterator FacetsEnd() const;
+		std::vector<geo::Vector3D>::const_iterator NormalsBegin() const;
+		std::vector<geo::Vector3D>::const_iterator NormalsEnd() const;
+		std::vector<tpo::Triple>::const_iterator FacetToNormalsBegin() const;
+		std::vector<tpo::Triple>::const_iterator FacetToNormalsEnd() const;
 		
 	private:
 	
 		std::vector<geo::Point3D> myPoints;
 		std::vector<tpo::Triple> myFacets;
+		
+		std::vector<geo::Vector3D> myNormals;
+		std::vector<tpo::Triple> myFacetToNormals;
 		
 	};
 }

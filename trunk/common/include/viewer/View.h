@@ -33,7 +33,7 @@ namespace cmr
 
 namespace vwr
 {
-  class SceneTreeController;
+  class SceneController;
   class RendererController;
 
   class Dll_vwr View
@@ -96,7 +96,7 @@ namespace vwr
     // Classes that can access private members
     friend class wid::GLWidget;
     friend class cmr::CameraController;
-    friend class SceneTreeController;
+    friend class SceneController;
     friend class RendererController;
   };
 }

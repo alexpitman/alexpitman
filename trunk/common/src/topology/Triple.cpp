@@ -48,3 +48,11 @@ tpo::Triple::IsNull() const
 {
 	return my0 == NullIndex && my1 == NullIndex && my2 == NullIndex;
 }
+
+tpo::Triple&
+tpo::Triple::Null()
+{
+	static tpo::Triple t(tpo::NullIndex, tpo::NullIndex, tpo::NullIndex);
+	return t;
+}
+
