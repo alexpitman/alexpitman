@@ -12,6 +12,7 @@ script.include(script.cwd("../renderer/use.cake"))
 script.include(script.cwd("../scenetree/use.cake"))
 script.include(script.cwd("../camera/use.cake"))
 script.include(script.cwd("../object/use.cake"))
+script.include(script.cwd("../import/use.cake"))
 
 compiler.addIncludePath(script.cwd("../../include"))
 compiler.addIncludePath(script.cwd("../../3rdParty/boost/include"))
@@ -20,6 +21,7 @@ compiler.addLibrary("glu32.Lib")
 
 source = script.cwd([
   "InputController.cpp",
+  "SceneController.cpp",
 	"View.cpp",
 	"ViewHandler.cpp",
 	])

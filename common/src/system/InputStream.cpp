@@ -8,9 +8,16 @@
 
 #include "system/InputStream.h"
 
+#include <iostream>
+
 sys::InputStream::InputStream(const std::string& File)
-: myStream(File)
+: myStream(File, std::ifstream::in)
 {
+	if ( !myStream.good() )
+	{
+		std::cout << "BAD " << File << std::endl;
+		throw(std::exception());
+	}
 }
 
 sys::InputStream::~InputStream()

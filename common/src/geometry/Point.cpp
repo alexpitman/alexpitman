@@ -96,6 +96,22 @@ geo::Point2D::operator -=(const Point2D& RHS) const
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+bool 
+geo::Point2D::IsNull() const
+{
+  return ( myX != myX || myY != myY );
+}
+
+///////////////////////////////////////////////////////////////////////////////
+geo::Point2D& 
+geo::Point2D::Null()
+{
+  static Point2D pt( num::NaN<double>(),
+                     num::NaN<double>() );
+  return pt;
+}
+
+///////////////////////////////////////////////////////////////////////////////
 geo::Point2D& 
 geo::Point2D::Origin()
 {
@@ -225,14 +241,14 @@ geo::Point3D::ToVector() const
 
 ///////////////////////////////////////////////////////////////////////////////
 bool 
-geo::Point3D::IsEmpty() const
+geo::Point3D::IsNull() const
 {
   return ( myX != myX || myY != myY || myZ != myZ );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 geo::Point3D& 
-geo::Point3D::Empty()
+geo::Point3D::Null()
 {
   static Point3D pt( num::NaN<double>(),
                      num::NaN<double>(), 

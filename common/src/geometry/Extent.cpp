@@ -9,8 +9,8 @@
 
 geo::Extent3D::Extent3D()
 {
-  myMin = Point3D::Empty();
-  myMax = Point3D::Empty();
+  myMin = Point3D::Null();
+  myMax = Point3D::Null();
 }
 
 geo::Extent3D::Extent3D( const Extent3D& Extent3D )
@@ -32,7 +32,7 @@ geo::Extent3D::operator +(const Point3D& RHS) const
 geo::Extent3D& 
 geo::Extent3D::operator +=(const Point3D& RHS)
 {
-  if ( myMin.IsEmpty() && myMax.IsEmpty() )
+  if ( myMin.IsNull() && myMax.IsNull() )
   {
     myMin = RHS;
     myMax = RHS;

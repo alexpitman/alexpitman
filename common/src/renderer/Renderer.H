@@ -43,6 +43,7 @@ namespace ree
     void End() const;
 
     void Vertex( geo::Point3D Point ) const;
+    void Normal( geo::Vector3D Direction ) const;
     
     /////////////////////////////////////////////////////////////////////////////
     // Colour operations

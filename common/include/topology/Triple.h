@@ -36,6 +36,9 @@ namespace tpo
 		// Check for null
 		bool IsNull() const;
 		
+		// Special triples
+		static tpo::Triple& Null();
+		
 	private:
 	
 		T_Index my0;
