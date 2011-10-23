@@ -191,9 +191,11 @@ vwr::View::GLInitialise()
 	obj::T_PointSetPtr p(new obj::PointSet(points, points+4));
 	
 	obj::T_FacetNetworkPtr f2 = imp::ImportObjFile::Import("test.obj");
+	obj::T_FacetNetworkPtr f3 = imp::ImportObjFile::Import("candle.obj");
 	
 	mySceneTreePtr->AddNode( st::T_NodePtr(new st::FacetNetworkNode(mySceneTreePtr, f)) );
 	mySceneTreePtr->AddNode( st::T_NodePtr(new st::FacetNetworkNode(mySceneTreePtr, f2)) );
+	mySceneTreePtr->AddNode( st::T_NodePtr(new st::FacetNetworkNode(mySceneTreePtr, f3)) );
 	mySceneTreePtr->AddNode( st::T_NodePtr(new st::PointSetNode(mySceneTreePtr, p)) );
 	
   Renderer()->EnableLighting();
@@ -218,7 +220,7 @@ vwr::View::Resize(int Width, int Height)
   Renderer()->ProjectionMode();
   Renderer()->LoadIdentity();
   
-  gluPerspective( 80, (GLfloat) Width / Height, 1.0, 30.0 );
+  gluPerspective( 80, (GLfloat) Width / Height, 1.0, 100.0 );
   glViewport(0, 0, Width, Height);
 
   Renderer()->ModelViewMode();
