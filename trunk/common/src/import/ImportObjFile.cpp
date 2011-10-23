@@ -20,7 +20,7 @@
 namespace local
 {
 	geo::Point3D ParsePoint(const std::string& Line);
-	void ParseFacet(const std::string& Line, tpo::Triple* Facet, tpo::Triple* Normals);
+	void ParseFacet(const std::string& Line, std::vector<tpo::Triple>* Facet, std::vector<tpo::Triple>* Normals);
 	geo::Vector3D ParseNormal(const std::string& Line);
 	//tpo::Double ParseUV(const std::string& Line);
 }
@@ -48,60 +48,77 @@ geo::Point3D local::ParsePoint(const std::string& Line)
 	return geo::Point3D(coord[0], coord[1], coord[2]);
 }
 
-void local::ParseFacet(const std::string& Line, tpo::Triple* Facet, tpo::Triple* Normal)
+void local::ParseFacet(const std::string& Line, std::vector<tpo::Triple>* Facets, std::vector<tpo::Triple>* Normals)
 {
 	int size = Line.size();
 	int i = 0;
-	int start = Line.find_first_of(" ", 0, size)+1;
+	int start = Line.find_first_of(' ')+1;
 	int next, subStart, subEnd;
 	int findex[3] = { tpo::NullIndex, tpo::NullIndex, tpo::NullIndex };
 	int nindex[3] = { tpo::NullIndex, tpo::NullIndex, tpo::NullIndex };
 	int tindex[3] = { tpo::NullIndex, tpo::NullIndex, tpo::NullIndex };
-	while ( i < 3 && start != size )
+	while ( start < size )
 	{
-		next = Line.find_first_of(" ", start, size);
-		if ( next < 0 ) next = size;
-		std::cout << "substr[" << Line.substr(start, next-start) << "]" << std::endl;
+		//std::cout << i << std::endl;
+
+		next = Line.find_first_of(' ', start);
 		
-		subEnd = Line.find_first_of("/", start, next);
+		//std::cout << start << " " << size << " " << next << std::endl;
+		if ( next < 0 ) next = size;
+		//std::cout << "substr[" << Line.substr(start, next-start) << "]" << std::endl;
+		
+		subEnd = Line.find_first_of('/', start);
+		
+		int index = i;
+		if (i > 2) index = 2;
 		
 		if ( subEnd < 0 )
 		{
 			// only facet indicies
-			findex[i] = atoi(Line.substr(start, next-start).c_str()) - 1;
+			findex[index] = atoi(Line.substr(start, next-start).c_str()) - 1;
 		}
 		else
 		{
 			// must have texture/normal indicies as well
-			findex[i] = atoi(Line.substr(start, subEnd-start).c_str()) - 1;
+			findex[index] = atoi(Line.substr(start, subEnd-start).c_str()) - 1;
 			
-			std::cout << Line.substr(start, subEnd-start) << std::endl;
+			//std::cout << Line.substr(start, subEnd-start) << std::endl;
 			
 			subStart = subEnd + 1;
-			subEnd = Line.find_first_of("/", subStart, next);
-			std::cout << Line.substr(subStart, subEnd-subStart) << std::endl;
+			subEnd = Line.find_first_of('/', subStart);
+			//std::cout << Line.substr(subStart, subEnd-subStart) << std::endl;
 			// TODO UV
 			
 			subStart = subEnd + 1;
-			std::cout << Line.substr(subStart, next-subStart) << std::endl;
+			//std::cout << Line.substr(subStart, next-subStart) << std::endl;
 			if ( subStart != next )
 			{
-				nindex[i] = atoi(Line.substr(subStart, next-subStart).c_str()) - 1;
+				nindex[index] = atoi(Line.substr(subStart, next-subStart).c_str()) - 1;
 			}
 		}
 		
 		start = next+1;
 		++i;
-	}
-	if ( findex[0] == tpo::NullIndex || findex[1] == tpo::NullIndex || findex[2] == tpo::NullIndex ) throw std::exception(); // Parse error
+		
+		if (i > 2)
+		{
+			if ( findex[0] == tpo::NullIndex || findex[1] == tpo::NullIndex || findex[2] == tpo::NullIndex ) throw std::exception(); // Parse error
 	
-	*Facet = tpo::Triple(findex[0], findex[1], findex[2]);
+			Facets->push_back( tpo::Triple(findex[0], findex[1], findex[2]) );
 	
-	if ( nindex[0] != tpo::NullIndex || nindex[1] != tpo::NullIndex || nindex[2] != tpo::NullIndex )
-	{
-		if ( nindex[0] == tpo::NullIndex || nindex[1] == tpo::NullIndex || nindex[2] == tpo::NullIndex ) throw std::exception(); // Parse error
+			if ( nindex[0] != tpo::NullIndex || nindex[1] != tpo::NullIndex || nindex[2] != tpo::NullIndex )
+			{
+				if ( nindex[0] == tpo::NullIndex || nindex[1] == tpo::NullIndex || nindex[2] == tpo::NullIndex ) throw std::exception(); // Parse error
 	
-		*Normal = tpo::Triple(nindex[0], nindex[1], nindex[2]);
+				Normals->push_back( tpo::Triple(nindex[0], nindex[1], nindex[2]));
+			}
+			
+			if (start < size)
+			{
+				findex[1] = findex[2];
+				nindex[1] = nindex[2];
+			}
+		}
 	}
 }
 
@@ -141,11 +158,13 @@ imp::ImportObjFile::Import(const std::string& File)
 	int highestNormalIndex = -1;
 	
 	std::string line;
+	int num = 1;
 	while (!in.EndOfFile())
 	{
 		in.Line(&line);
 		
-		std::cout << line << std::endl;
+		//std::cout << num << " : " << line << std::endl;
+		++num;
 		
 		// Ignore blank lines.
 		if ( line.size() == 0 ) continue;
@@ -166,7 +185,7 @@ imp::ImportObjFile::Import(const std::string& File)
 			else if ( second == 't' )
 			{
 				// local::ParseUV(line);
-				throw(std::exception()); // Not handled yet
+				//throw(std::exception()); // Not handled yet
 			}
 			else
 			{
@@ -175,23 +194,28 @@ imp::ImportObjFile::Import(const std::string& File)
 		}
 		else if ( first == 'f' )
 		{
-			tpo::Triple facet, normal;
-			local::ParseFacet(line, &facet, &normal);
+			std::vector<tpo::Triple> newFacets, newNormals;
+			local::ParseFacet(line, &newFacets, &newNormals);
 			
-			for (int i = 0; i < 3; ++i )
+			for (int i = 0; i < newFacets.size(); ++i)
 			{
-				if ( static_cast<int>(facet[i]) > highestPointIndex ) highestPointIndex = facet[i];
-			}
-			
-			facets.push_back( facet );
-			if ( !normal.IsNull() )
-			{
-				facetToNormal.push_back(normal);
-				for (int i = 0; i < 3; ++i )
+				const tpo::Triple& f = newFacets[i];
+				for (int j = 0; j < 3; ++j )
 				{
-					if ( static_cast<int>(normal[i]) > highestNormalIndex ) highestNormalIndex = normal[i];
+					if (static_cast<int>(f[j]) > highestPointIndex) highestPointIndex = f[j];
 				}
 			}
+			facets.insert( facets.end(), newFacets.begin(), newFacets.end() );
+			
+			for (int i = 0; i < newNormals.size(); ++i)
+			{
+				const tpo::Triple& f = newNormals[i];
+				for (int j = 0; j < 3; ++j )
+				{
+					if (static_cast<int>(f[j]) > highestNormalIndex) highestNormalIndex = f[j];
+				}
+			}
+			facetToNormal.insert(facetToNormal.end(), newNormals.begin(), newNormals.end());
 		}
 		else
 		{
@@ -201,6 +225,5 @@ imp::ImportObjFile::Import(const std::string& File)
 	
 	if ( highestPointIndex >= points.size() ) throw(std::exception()); // index too big
 	
-	//return obj::T_FacetNetworkPtr();
 	return obj::T_FacetNetworkPtr(new obj::FacetNetwork(points.cbegin(), points.cend(), facets.cbegin(), facets.cend()));
 }
