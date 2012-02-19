@@ -21,6 +21,10 @@
 #include "object/FacetNetwork.h"
 #include "object/Object.h"
 
+#include "voxel/Factory.h"
+#include "voxel/SubBlock.h"
+#include "voxel/Triangulate.h"
+
 #include "attribute/Colour.h"
 
 #include "geometry/Point.h"
@@ -89,7 +93,7 @@ vwr::View::Render()
   Renderer()->Transform( geo::Vector3D(8, 0, 0) );
   
   // Render Geometry
-	/*
+  /*
   Renderer()->Begin(ree::TRIANGLES);
   
   Renderer()->SetColour( att::Colour(0, 1, 0) );
@@ -147,8 +151,8 @@ vwr::View::Render()
   Renderer()->Vertex( geo::Point3D(-1,  1,  1) );
   
   Renderer()->End();
-	*/
-	mySceneTreePtr->Render();
+  */
+  mySceneTreePtr->Render();
 }
 
 void
@@ -175,29 +179,37 @@ vwr::View::GLInitialise()
     att::Colour(1, 1, 0, 1),
     att::Colour(1, 1, 1, 1) );
   
-	geo::Point3D points[] = {
-		geo::Point3D(-1, -1,  1),
-		geo::Point3D(-1,  1,  1),
-		geo::Point3D( 1,  1,  1),
-		geo::Point3D( 1, -1,  1),
-	};
-	
-	tpo::Triple facets[] = {
-		tpo::Triple(0, 1, 2),
-		tpo::Triple(0, 2, 3),
-	};
-	
-	obj::T_FacetNetworkPtr f(new obj::FacetNetwork(points, points+4, facets, facets+2));
-	obj::T_PointSetPtr p(new obj::PointSet(points, points+4));
-	
-	obj::T_FacetNetworkPtr f2 = imp::ImportObjFile::Import("test.obj");
-	obj::T_FacetNetworkPtr f3 = imp::ImportObjFile::Import("candle.obj");
-	
-	mySceneTreePtr->AddNode( st::T_NodePtr(new st::FacetNetworkNode(mySceneTreePtr, f)) );
-	mySceneTreePtr->AddNode( st::T_NodePtr(new st::FacetNetworkNode(mySceneTreePtr, f2)) );
-	mySceneTreePtr->AddNode( st::T_NodePtr(new st::FacetNetworkNode(mySceneTreePtr, f3)) );
-	mySceneTreePtr->AddNode( st::T_NodePtr(new st::PointSetNode(mySceneTreePtr, p)) );
-	
+  geo::Point3D points[] = {
+    geo::Point3D(-1, -1,  1),
+    geo::Point3D(-1,  1,  1),
+    geo::Point3D( 1,  1,  1),
+    geo::Point3D( 1, -1,  1),
+  };
+  
+  tpo::Triple facets[] = {
+    tpo::Triple(0, 1, 2),
+    tpo::Triple(0, 2, 3),
+  };
+  
+  obj::T_FacetNetworkPtr f(new obj::FacetNetwork(points, points+4, facets, facets+2));
+  obj::T_PointSetPtr p(new obj::PointSet(points, points+4));
+  
+  mySceneTreePtr->AddNode( st::T_NodePtr(new st::FacetNetworkNode(mySceneTreePtr, f)) );
+  mySceneTreePtr->AddNode( st::T_NodePtr(new st::PointSetNode(mySceneTreePtr, p)) );
+  
+  /*
+  obj::T_FacetNetworkPtr f2 = imp::ImportObjFile::Import("test.obj");
+  obj::T_FacetNetworkPtr f3 = imp::ImportObjFile::Import("candle.obj");
+  
+  mySceneTreePtr->AddNode( st::T_NodePtr(new st::FacetNetworkNode(mySceneTreePtr, f2)) );
+  mySceneTreePtr->AddNode( st::T_NodePtr(new st::FacetNetworkNode(mySceneTreePtr, f3)) );
+  */
+  
+  vxl::SubBlock<10> blockModel = vxl::Factory::GenerateSubBlock<10>();
+  obj::T_FacetNetworkPtr blockModelRep = vxl::Triangulate::SubBlock(blockModel);
+  mySceneTreePtr->AddNode( st::T_NodePtr(new st::FacetNetworkNode(mySceneTreePtr, blockModelRep)) );
+  
+  
   Renderer()->EnableLighting();
   glEnable(GL_COLOR_MATERIAL);
   

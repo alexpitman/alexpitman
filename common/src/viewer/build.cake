@@ -13,6 +13,7 @@ script.include(script.cwd("../scenetree/use.cake"))
 script.include(script.cwd("../camera/use.cake"))
 script.include(script.cwd("../object/use.cake"))
 script.include(script.cwd("../import/use.cake"))
+script.include(script.cwd("../voxel/use.cake"))
 
 compiler.addIncludePath(script.cwd("../../include"))
 compiler.addIncludePath(script.cwd("../../3rdParty/boost/include"))

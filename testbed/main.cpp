@@ -15,7 +15,7 @@ int main(int Argc, char** Argv)
 
   std::cout << "Hello Cake!" << std::endl;
   std::cout << p.X() << " " << p.Y() << " " << p.Z() << std::endl;
-	
+
   QApplication app(Argc, Argv);
   wid::ViewWindow window;
   

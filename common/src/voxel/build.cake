@@ -1,32 +1,31 @@
 #-------------------------------------------------------------------------------
-# Script used to build the geometry library.
+# Script used to build the voxel library.
 #-------------------------------------------------------------------------------
 from cake.tools import compiler, script
 
 # include dependencies
-script.include(script.cwd("../numeric/use.cake"))
+script.include(script.cwd("../object/use.cake"))
 
 compiler.addIncludePath(script.cwd("../../include"))
-compiler.addDefine("GEO_DLL")
+compiler.addDefine("VXL_DLL")
 
 source = script.cwd([
-  "Extent.cpp",
-  "Point.cpp",
-  "Rotation.cpp",
-  "Transform.cpp",
-  "Vector.cpp",
+  "Factory.cpp",
+  "SubBlock.cpp",
+  "Triangulate.cpp",
+  "Voxel.cpp",
   ])
 
 objects = compiler.objects(
-  targetDir=script.cwd("../../../build/testbed/obj/geometry"),
+  targetDir=script.cwd("../../../build/testbed/obj/voxel"),
   sources=source,
   )
 
 module = compiler.module(
-  target=script.cwd("../../../build/testbed/bin/geometry.dll"),
+  target=script.cwd("../../../build/testbed/bin/voxel.dll"),
   sources=objects,
   )
 
-lib = script.cwd("../../../build/testbed/bin/geometry.lib")
+lib = script.cwd("../../../build/testbed/bin/voxel.lib")
 
 script.setResult(library=lib)
