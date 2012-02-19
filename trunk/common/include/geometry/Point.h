@@ -53,10 +53,10 @@ namespace geo
     Vector2D operator -(const Point2D& RHS) const;
     Vector2D operator -=(const Point2D& RHS) const;
 
-		bool IsNull() const;
-		
+    bool IsNull() const;
+    
     // Special points
-		static Point2D& Null();
+    static Point2D& Null();
     static Point2D& Origin();
 
     // Unit vector positions
