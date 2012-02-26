@@ -8,10 +8,12 @@
 
 #include "voxel/Factory.h"
 
+#include <iostream>
+
 template <unsigned short N>
-vxl::SubBlock<N> vxl::Factory::GenerateSubBlock()
+vxl::SubBlock<N>* vxl::Factory::GenerateSubBlock()
 {
-  vxl::SubBlock<N> subBlock;
+  vxl::SubBlock<N>* subBlock = new vxl::SubBlock<N>();
   
   for (unsigned short x = 0; x < N; ++x)
   {
@@ -20,7 +22,7 @@ vxl::SubBlock<N> vxl::Factory::GenerateSubBlock()
       for (unsigned short z = 0; z < N; ++z)
       {
         //subBlock(x, y, z) = Voxel(z > N/2.0f ? 1 : 0, 0.0f);
-        subBlock(x, y, z) = Voxel(x*x + y*y + z*z < 5*5 ? 1 : 0, 0.0f);
+        (*subBlock)(x, y, z) = Voxel(x*x + y*y + z*z > 25 ? 1 : 0, 0.0f);
       }
     }
   }
@@ -29,5 +31,5 @@ vxl::SubBlock<N> vxl::Factory::GenerateSubBlock()
 }
 
 // Explicit instantiations
-template Dll_vxl vxl::SubBlock<10> vxl::Factory::GenerateSubBlock<10>();
-template Dll_vxl vxl::SubBlock<256> vxl::Factory::GenerateSubBlock<256>();
+template Dll_vxl vxl::SubBlock<10>* vxl::Factory::GenerateSubBlock<10>();
+template Dll_vxl vxl::SubBlock<256>* vxl::Factory::GenerateSubBlock<256>();

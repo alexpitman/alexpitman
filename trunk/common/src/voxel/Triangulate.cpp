@@ -26,9 +26,9 @@ namespace local
   
   unsigned short FindClassification(C_PointStatus& PointStatus);
   
-  C_Triangulation GenerateTriangulation(const C_PointStatus& PointStatus, unsigned short ClassificationNumber);
+  C_Triangulation GenerateTriangulation(const C_PointStatus& PointStatus, unsigned short ClassificationNumber, bool print);
   
-  void CorrectFacets(const C_PointStatus& PointStatus, std::vector<tpo::Triple>& Facets);
+  void CorrectFacets(const C_PointStatus& PointStatus, std::vector<tpo::Triple>& Facets, bool print);
   
   unsigned short RotateEdgeX(unsigned short Index);
   unsigned short RotateEdgeY(unsigned short Index);
@@ -107,10 +107,10 @@ local::LookupTriangulation(unsigned short PointStatus)
 {
   assert(PointStatus < 256);
   
-  if (PointStatus != 0 && PointStatus != 255)
+  /*if (PointStatus != 0 && PointStatus != 255)
   {
     std::cout << PointStatus << " " << lookup[PointStatus].FacetsEnd() - lookup[PointStatus].FacetsBegin() << std::endl;
-  }
+  }*/
   return lookup[PointStatus];
 }
 
@@ -129,7 +129,7 @@ void local::GenerateLookupTable()
   
     //std::cout << bitPattern << " " << classificationNumber << std::endl;
   
-    lookup[bitPattern] = GenerateTriangulation(pointStatus, classificationNumber);
+    lookup[bitPattern] = GenerateTriangulation(pointStatus, classificationNumber, false);
   
     ++bitPattern;
   }
@@ -569,7 +569,7 @@ local::C_PointStatus::C_PointStatus(unsigned char Status)
 }
 
 local::C_Triangulation
-local::GenerateTriangulation(const C_PointStatus& PointStatus, unsigned short ClassificationNumber)
+local::GenerateTriangulation(const C_PointStatus& PointStatus, unsigned short ClassificationNumber, bool print)
 {
   std::vector<tpo::Triple> facets;
 
@@ -582,7 +582,7 @@ local::GenerateTriangulation(const C_PointStatus& PointStatus, unsigned short Cl
     facets.push_back(tpo::Triple(0, 3, 8));
     break;
   case 2:
-    facets.push_back(tpo::Triple(1, 2, 8));
+    facets.push_back(tpo::Triple(1, 3, 8));
     facets.push_back(tpo::Triple(1, 8, 9));
     break;
   case 3:
@@ -653,7 +653,7 @@ local::GenerateTriangulation(const C_PointStatus& PointStatus, unsigned short Cl
   }
   
   // Use the point status rotations to rotate the facets to their correct edges.
-  CorrectFacets(PointStatus, facets);
+  CorrectFacets(PointStatus, facets, print);
   // This also once done undoing the rotations numbers the facets 0 through to N-1 where N is
   // the number of points that will be inserted. The ordering of the point insertion should be
   // the same as the the edge indexing.
@@ -661,7 +661,7 @@ local::GenerateTriangulation(const C_PointStatus& PointStatus, unsigned short Cl
   return C_Triangulation(facets);
 }
 
-void local::CorrectFacets(const C_PointStatus& PointStatus, std::vector<tpo::Triple>& Facets)
+void local::CorrectFacets(const C_PointStatus& PointStatus, std::vector<tpo::Triple>& Facets, bool print)
 {
   auto ru = PointStatus.RotationsBegin();
   auto rv = PointStatus.RotationsEnd();
@@ -691,18 +691,22 @@ void local::CorrectFacets(const C_PointStatus& PointStatus, std::vector<tpo::Tri
     case 'y':
       while (fu != fv)
       {
+        //if (print) std::cout << "BEFORE Y: " << (*fu)[0] << " " << (*fu)[1] << " " << (*fu)[2] << std::endl;
         (*fu)[0] = RotateEdgeY((*fu)[0]);
         (*fu)[1] = RotateEdgeY((*fu)[1]);
         (*fu)[2] = RotateEdgeY((*fu)[2]);
+        //if (print) std::cout << "AFTER Y: " << (*fu)[0] << " " << (*fu)[1] << " " << (*fu)[2] << std::endl;
         ++fu;
       }
       break;
     case 'z':
       while (fu != fv)
       {
+        //if (print) std::cout << "BEFORE Z: " << (*fu)[0] << " " << (*fu)[1] << " " << (*fu)[2] << std::endl;
         (*fu)[0] = RotateEdgeZ((*fu)[0]);
         (*fu)[1] = RotateEdgeZ((*fu)[1]);
         (*fu)[2] = RotateEdgeZ((*fu)[2]);
+        //if (print) std::cout << "AFTER Z: " << (*fu)[0] << " " << (*fu)[1] << " " << (*fu)[2] << std::endl;
         ++fu;
       }
       break;
@@ -1039,6 +1043,9 @@ obj::T_FacetNetworkPtr vxl::Triangulate::SubBlock(const vxl::SubBlock<N>& SubBlo
         if (v6.Type() != vxl::Type::SKY) pointStatus |= local::CUBE6;
         if (v7.Type() != vxl::Type::SKY) pointStatus |= local::CUBE7;
         // 0 represents outside the surface, 1 represents inside the surface
+        
+        // DEBUG HACK
+        //if (pointStatus != 187) continue;
         
         // Determine the triangulation based on cube classification.
         const local::C_Triangulation& triangulation = local::LookupTriangulation(pointStatus);
