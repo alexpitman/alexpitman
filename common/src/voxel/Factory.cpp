@@ -19,7 +19,8 @@ vxl::SubBlock<N> vxl::Factory::GenerateSubBlock()
     {
       for (unsigned short z = 0; z < N; ++z)
       {
-        subBlock(x, y, z) = Voxel(z > N/2.0f ? 1 : 0, 0.0f);
+        //subBlock(x, y, z) = Voxel(z > N/2.0f ? 1 : 0, 0.0f);
+        subBlock(x, y, z) = Voxel(x*x + y*y + z*z < 5*5 ? 1 : 0, 0.0f);
       }
     }
   }

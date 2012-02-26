@@ -81,13 +81,13 @@ vwr::View::Render()
   Renderer()->Clear();
   Renderer()->LoadIdentity();
   
-  local::sun.Render();
+  //local::sun.Render();
   
   // Set up camera
   myCamera.SetCamera();  
   
   // Set up lights
-  local::light.Render();
+  //local::light.Render();
   
   
   Renderer()->Transform( geo::Vector3D(8, 0, 0) );
@@ -152,6 +152,8 @@ vwr::View::Render()
   
   Renderer()->End();
   */
+  //glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
+  
   mySceneTreePtr->Render();
 }
 
@@ -210,7 +212,7 @@ vwr::View::GLInitialise()
   mySceneTreePtr->AddNode( st::T_NodePtr(new st::FacetNetworkNode(mySceneTreePtr, blockModelRep)) );
   
   
-  Renderer()->EnableLighting();
+  //Renderer()->EnableLighting();
   glEnable(GL_COLOR_MATERIAL);
   
   Renderer()->SetClearColour( att::Colour(0, 0, 0) );
