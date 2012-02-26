@@ -6,6 +6,8 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
+#include <iostream>
+
 #include "viewer/View.h"
 
 #include "scenetree/SceneTreeNode.h"
@@ -207,8 +209,9 @@ vwr::View::GLInitialise()
   mySceneTreePtr->AddNode( st::T_NodePtr(new st::FacetNetworkNode(mySceneTreePtr, f3)) );
   */
   
-  vxl::SubBlock<10> blockModel = vxl::Factory::GenerateSubBlock<10>();
-  obj::T_FacetNetworkPtr blockModelRep = vxl::Triangulate::SubBlock(blockModel);
+  std::unique_ptr<vxl::SubBlock<10>> ptr( vxl::Factory::GenerateSubBlock<10>());
+  //std::unique_ptr<vxl::SubBlock<256>> ptr( vxl::Factory::GenerateSubBlock<256>());
+  obj::T_FacetNetworkPtr blockModelRep = vxl::Triangulate::SubBlock(*ptr);
   mySceneTreePtr->AddNode( st::T_NodePtr(new st::FacetNetworkNode(mySceneTreePtr, blockModelRep)) );
   
   

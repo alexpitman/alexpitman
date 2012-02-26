@@ -15,7 +15,7 @@ namespace vxl
   namespace Factory
   {
     template <unsigned short N>
-    Dll_vxl SubBlock<N> GenerateSubBlock();
+    Dll_vxl SubBlock<N>* GenerateSubBlock();
   }
 }
 
