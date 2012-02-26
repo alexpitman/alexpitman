@@ -15,6 +15,7 @@ source = script.cwd([
   "Rotation.cpp",
   "Transform.cpp",
   "Vector.cpp",
+  "geo.cpp",
   ])
 
 objects = compiler.objects(
