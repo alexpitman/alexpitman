@@ -12,6 +12,8 @@
 
 #include "geometry/geo.H"
 
+#include "numeric/num.H"
+
 #include <iostream>
 #include <set>
 
@@ -35,6 +37,9 @@ namespace local
   unsigned short RotateEdgeZ(unsigned short Index);
   
   geo::Point3D Midpoint(const geo::Point3D& P0, const geo::Point3D& P1);
+  
+  geo::Point3D LinearInterp(const vxl::Voxel& V0, const geo::Point3D& P0,
+                            const vxl::Voxel& V1, const geo::Point3D& P1);
   
   class C_PointStatus
   {
@@ -838,6 +843,17 @@ geo::Point3D local::Midpoint(const geo::Point3D& P0, const geo::Point3D& P1)
   return geo::Centroid(P0, P1);
 }
 
+geo::Point3D local::LinearInterp(const vxl::Voxel& V0, const geo::Point3D& P0,
+                                 const vxl::Voxel& V1, const geo::Point3D& P1)
+{
+  geo::Vector3D direction = P1-P0;
+  double abs0 = num::Abs(V0.Weight());
+  double abs1 = num::Abs(V1.Weight());
+  double t = abs0 / (abs0+abs1);
+  
+  return P0 + direction*t;
+}
+
 local::C_PointStatus::C_PointStatus(const C_PointStatus& PointStatus)
 : myStatus(PointStatus.myStatus),
   isInverted(PointStatus.isInverted),
@@ -1044,9 +1060,6 @@ obj::T_FacetNetworkPtr vxl::Triangulate::SubBlock(const vxl::SubBlock<N>& SubBlo
         if (v7.Type() != vxl::Type::SKY) pointStatus |= local::CUBE7;
         // 0 represents outside the surface, 1 represents inside the surface
         
-        // DEBUG HACK
-        //if (pointStatus != 187) continue;
-        
         // Determine the triangulation based on cube classification.
         const local::C_Triangulation& triangulation = local::LookupTriangulation(pointStatus);
         
@@ -1077,7 +1090,8 @@ obj::T_FacetNetworkPtr vxl::Triangulate::SubBlock(const vxl::SubBlock<N>& SubBlo
         if (status[2] != status[6]) edgeStatus |= local::EDGE10;
         if (status[3] != status[7]) edgeStatus |= local::EDGE11;
         
-        // TODO Interpolate points based on Voxel weights.
+        
+        // Interpolate as midpoints - good for debugging
         if (edgeStatus & local::EDGE0) points.push_back(local::Midpoint(p0, p1));
         if (edgeStatus & local::EDGE1) points.push_back(local::Midpoint(p1, p2));
         if (edgeStatus & local::EDGE2) points.push_back(local::Midpoint(p2, p3));
@@ -1090,6 +1104,22 @@ obj::T_FacetNetworkPtr vxl::Triangulate::SubBlock(const vxl::SubBlock<N>& SubBlo
         if (edgeStatus & local::EDGE9) points.push_back(local::Midpoint(p1, p5));
         if (edgeStatus & local::EDGE10) points.push_back(local::Midpoint(p2, p6));
         if (edgeStatus & local::EDGE11) points.push_back(local::Midpoint(p3, p7));
+        
+        // Interpolate points based on Voxel weights.
+        /*
+        if (edgeStatus & local::EDGE0) points.push_back(local::LinearInterp(v0, p0, v1, p1));
+        if (edgeStatus & local::EDGE1) points.push_back(local::LinearInterp(v1, p1, v2, p2));
+        if (edgeStatus & local::EDGE2) points.push_back(local::LinearInterp(v2, p2, v3, p3));
+        if (edgeStatus & local::EDGE3) points.push_back(local::LinearInterp(v0, p0, v3, p3));
+        if (edgeStatus & local::EDGE4) points.push_back(local::LinearInterp(v4, p4, v5, p5));
+        if (edgeStatus & local::EDGE5) points.push_back(local::LinearInterp(v5, p5, v6, p6));
+        if (edgeStatus & local::EDGE6) points.push_back(local::LinearInterp(v6, p6, v7, p7));
+        if (edgeStatus & local::EDGE7) points.push_back(local::LinearInterp(v7, p4, v7, p7));
+        if (edgeStatus & local::EDGE8) points.push_back(local::LinearInterp(v0, p0, v4, p4));
+        if (edgeStatus & local::EDGE9) points.push_back(local::LinearInterp(v1, p1, v5, p5));
+        if (edgeStatus & local::EDGE10) points.push_back(local::LinearInterp(v2, p2, v6, p6));
+        if (edgeStatus & local::EDGE11) points.push_back(local::LinearInterp(v3, p3, v7, p7));
+        */
       }
     }
   }

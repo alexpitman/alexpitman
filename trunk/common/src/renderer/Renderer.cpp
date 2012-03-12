@@ -122,7 +122,7 @@ void ree::Renderer::EnableLight(int Id) const
   case 5: glEnable(GL_LIGHT5); break;
   case 6: glEnable(GL_LIGHT6); break;
   case 7: glEnable(GL_LIGHT7); break;
-  default: break;
+  default: assert(false); // Too many lights
   }
 }
 
@@ -138,7 +138,7 @@ void ree::Renderer::DisableLight(int Id) const
   case 5: glDisable(GL_LIGHT5); break;
   case 6: glDisable(GL_LIGHT6); break;
   case 7: glDisable(GL_LIGHT7); break;
-  default: break;
+  default: assert(false); // Too many lights
   }
 }
 
