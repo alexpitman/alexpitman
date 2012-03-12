@@ -84,7 +84,7 @@ vwr::View::Render()
   Renderer()->LoadIdentity();
   
   //local::sun.Render();
-  local::light.Render();
+  
   // Set up camera
   myCamera.SetCamera();  
   

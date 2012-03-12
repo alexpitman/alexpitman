@@ -48,6 +48,8 @@ namespace geo
     bool operator ==(const Point2D& RHS) const;
     bool operator !=(const Point2D& RHS) const;
 
+    bool operator <(const Point2D& RHS) const;
+    
     Vector2D ToVector() const;
     
     Vector2D operator -(const Point2D& RHS) const;
@@ -148,6 +150,8 @@ namespace geo
     bool operator ==(const Point3D& RHS) const;
     bool operator !=(const Point3D& RHS) const;
 
+    bool operator <(const Point3D& RHS) const;
+    
     Vector3D operator -(const Point3D& RHS) const;
     
     Vector3D ToVector() const;

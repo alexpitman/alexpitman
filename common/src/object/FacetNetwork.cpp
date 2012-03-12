@@ -7,6 +7,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include "object/FacetNetwork.h"
 
+#include <map>
 #include <set>
 
 obj::FacetNetwork::FacetNetwork()
@@ -24,6 +25,8 @@ obj::FacetNetwork::FacetNetwork(
   myFacets(FacetsBegin, FacetsEnd),
   myNormals()
 {
+  Reconcile();
+
   CalculatePerPointNormals();
 }
 
@@ -36,6 +39,8 @@ obj::FacetNetwork::FacetNetwork(
   myFacets(FacetsBegin, FacetsEnd),
   myNormals()
 {
+  Reconcile();
+  
   CalculatePerPointNormals();
 }
 
@@ -50,6 +55,7 @@ obj::FacetNetwork::FacetNetwork(
   myFacets(FacetsBegin, FacetsEnd),
   myNormals(NormalsBegin, NormalsEnd)
 {
+  Reconcile();
 }
 
 std::vector<geo::Point3D>::const_iterator
@@ -122,5 +128,46 @@ void obj::FacetNetwork::CalculatePerPointNormals()
     if (pointIndexToFacetIndices[i].size() != 0) normal.Normalise();
     
     myNormals.push_back(normal);
+  }
+}
+
+void obj::FacetNetwork::Reconcile()
+{
+  // Get rid of duplicate points.
+  std::map<geo::Point3D, unsigned int> uniquePointToIndexMap;
+  std::vector<unsigned int> newPointIndex(myPoints.size());
+  unsigned int currentIndex = 0;
+  unsigned int lowestIndex = 0;
+  myPoints.erase(
+    std::remove_if(
+      myPoints.begin(),
+      myPoints.end(),
+      [&](const geo::Point3D& Point) -> bool
+      {
+        auto pt = uniquePointToIndexMap.find(Point);
+        
+        if (pt != uniquePointToIndexMap.end())
+        {
+          newPointIndex[currentIndex++] = pt->second;
+          return true;
+        }
+        else
+        {
+          newPointIndex[currentIndex++] = lowestIndex++;
+          return false;
+        }
+      }),
+    myPoints.end());
+    
+  // Update myFacets
+  auto fu = myFacets.begin();
+  auto fv = myFacets.end();
+  while (fu != fv)
+  {
+    tpo::Triple& facet = *fu++;
+    
+    facet[0] = newPointIndex[facet[0]];
+    facet[1] = newPointIndex[facet[1]];
+    facet[2] = newPointIndex[facet[2]];
   }
 }

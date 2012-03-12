@@ -75,6 +75,15 @@ geo::Point2D::operator !=(const Point2D& RHS) const
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+bool
+geo::Point2D::operator <(const Point2D& RHS) const
+{
+  if (myX < RHS.myX) return true;
+  if (myX > RHS.myX) return false;
+  return myY < RHS.myY;
+}
+
+///////////////////////////////////////////////////////////////////////////////
 geo::Vector2D
 geo::Point2D::ToVector() const
 {
@@ -223,6 +232,17 @@ bool
 geo::Point3D::operator !=(const Point3D& RHS) const
 {
   return !operator==(RHS);
+}
+
+///////////////////////////////////////////////////////////////////////////////
+bool
+geo::Point3D::operator <(const Point3D& RHS) const
+{
+  if (myX < RHS.myX) return true;
+  if (myX > RHS.myX) return false;
+  if (myY < RHS.myY) return true;
+  if (myY > RHS.myY) return false;
+  return myZ < RHS.myZ;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

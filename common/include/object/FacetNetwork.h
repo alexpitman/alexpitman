@@ -58,6 +58,8 @@ namespace obj
   
     void CalculatePerPointNormals();
   
+    void Reconcile();
+  
     std::vector<geo::Point3D> myPoints;
     std::vector<tpo::Triple> myFacets;
     std::vector<geo::Vector3D> myNormals;
