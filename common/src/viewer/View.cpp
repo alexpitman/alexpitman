@@ -84,7 +84,7 @@ vwr::View::Render()
   Renderer()->LoadIdentity();
   
   //local::sun.Render();
-  
+  local::light.Render();
   // Set up camera
   myCamera.SetCamera();  
   
@@ -92,7 +92,7 @@ vwr::View::Render()
   //local::light.Render();
   
   
-  Renderer()->Transform( geo::Vector3D(8, 0, 0) );
+  //Renderer()->Transform( geo::Vector3D(8, 0, 0) );
   
   // Render Geometry
   /*
@@ -172,10 +172,10 @@ vwr::View::GLInitialise()
 
   local::light = st::PointLight(
     mySceneTreePtr,
-    geo::Point3D(-5, 0, 0),
-    att::Colour(0, 0, 0, 1),
-    att::Colour(0, 0, 0, 1),
-    att::Colour(0, 0, 0, 1) );
+    geo::Point3D(0, 0, 0),
+    att::Colour(1, 1, 1),
+    att::Colour(1, 1, 1),
+    att::Colour(1, 1, 1) );
   local::sun = st::DirectionLight(
     mySceneTreePtr,
     geo::Vector3D(1, 0, 0),
@@ -203,9 +203,11 @@ vwr::View::GLInitialise()
   
   /*
   obj::T_FacetNetworkPtr f2 = imp::ImportObjFile::Import("test.obj");
-  obj::T_FacetNetworkPtr f3 = imp::ImportObjFile::Import("candle.obj");
-  
   mySceneTreePtr->AddNode( st::T_NodePtr(new st::FacetNetworkNode(mySceneTreePtr, f2)) );
+  */
+  
+  /*
+  obj::T_FacetNetworkPtr f3 = imp::ImportObjFile::Import("candle.obj");
   mySceneTreePtr->AddNode( st::T_NodePtr(new st::FacetNetworkNode(mySceneTreePtr, f3)) );
   */
   
@@ -215,7 +217,7 @@ vwr::View::GLInitialise()
   mySceneTreePtr->AddNode( st::T_NodePtr(new st::FacetNetworkNode(mySceneTreePtr, blockModelRep)) );
   
   
-  //Renderer()->EnableLighting();
+  Renderer()->EnableLighting();
   glEnable(GL_COLOR_MATERIAL);
   
   Renderer()->SetClearColour( att::Colour(0, 0, 0) );
@@ -226,7 +228,7 @@ vwr::View::GLInitialise()
   glShadeModel(GL_SMOOTH);
   glEnable(GL_MULTISAMPLE);
   
-  myCamera = cmr::Camera( geo::Point3D(-1, -2, -3),
+  myCamera = cmr::Camera( geo::Point3D(-8, -2, -3),
                           geo::Vector3D(1, 0, 0),
                           geo::Vector3D(0, 0, 1) );
 }

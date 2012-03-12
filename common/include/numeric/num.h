@@ -30,6 +30,8 @@ namespace num
   // General math related
   Dll_num double Sqrt(double Num);
   
+  Dll_num double Abs(double Num);
+  
   /////////////////////////////////////////////////////////////////////////////
   // Limit related
   template<typename T> inline Dll_num T NaN();

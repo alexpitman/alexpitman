@@ -47,3 +47,9 @@ num::Sqrt(double Num)
 {
   return sqrt(Num);
 }
+
+double
+num::Abs(double Num)
+{
+  return fabs(Num);
+}

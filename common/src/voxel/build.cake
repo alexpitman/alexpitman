@@ -7,6 +7,7 @@ from cake.tools import compiler, script
 script.include(script.cwd("../object/use.cake"))
 script.include(script.cwd("../geometry/use.cake"))
 script.include(script.cwd("../topology/use.cake"))
+script.include(script.cwd("../numeric/use.cake"))
 
 compiler.addIncludePath(script.cwd("../../include"))
 compiler.addDefine("VXL_DLL")
