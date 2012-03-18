@@ -98,7 +98,7 @@ void obj::FacetNetwork::CalculatePerPointNormals()
 {
   std::vector<std::set<unsigned int>> pointIndexToFacetIndices(myPoints.size());
   
-  std::vector<geo::Vector3D> facetNormals(myPoints.size());
+  std::vector<geo::Vector3D> facetNormals(myFacets.size());
   
   for (unsigned int i = 0; i < myFacets.size(); ++i)
   {

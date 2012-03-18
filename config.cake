@@ -34,9 +34,9 @@ compiler.addCppFlag("/EHsc")
 # debug
 compiler.addCppFlag("/bigobj")
 compiler.addCppFlag("/c")
-compiler.addCppFlag("/Zi")
 compiler.addCppFlag("/MDd")
 compiler.addCppFlag("/LDd")
+compiler.debugSymbols = True
 
 # And register it with the Configuration
 configuration.addVariant(base)

@@ -16,9 +16,14 @@
 
 #include <iostream>
 #include <set>
+#include <map>
 
 namespace local
 {
+  typedef std::map<tpo::T_Index, tpo::T_Index> T_IndexMap;
+  typedef std::map<tpo::T_Index, T_IndexMap> T_DoubleIndexMap;
+  typedef std::map<tpo::T_Index, T_DoubleIndexMap> T_TripleIndexMap;
+
   class C_Triangulation;
   class C_PointStatus;
 
@@ -35,6 +40,18 @@ namespace local
   unsigned short RotateEdgeX(unsigned short Index);
   unsigned short RotateEdgeY(unsigned short Index);
   unsigned short RotateEdgeZ(unsigned short Index);
+  
+  tpo::T_Index FindOrInsert(
+    const vxl::Voxel& V0,
+    const geo::Point3D& P0,
+    const vxl::Voxel& V1,
+    const geo::Point3D& P1,
+    tpo::T_Index X,
+    tpo::T_Index Y,
+    tpo::T_Index Z,
+    T_TripleIndexMap& IndexMap,
+    std::vector<geo::Point3D>* Points);
+  // Returns the point index.
   
   geo::Point3D Midpoint(const geo::Point3D& P0, const geo::Point3D& P1);
   
@@ -738,7 +755,7 @@ void local::CorrectFacets(const C_PointStatus& PointStatus, std::vector<tpo::Tri
   
   // Now change the indicies to be 0 to N with increments of 1.
   {
-    std::set<unsigned short> indicies;
+    std::set<tpo::T_Index> indicies;
     {
       auto fu = Facets.begin();
       auto fv = Facets.end();
@@ -836,6 +853,40 @@ unsigned short local::RotateEdgeZ(unsigned short Index)
 
   assert(false); // Should not be possible to get here.
   return 0;
+}
+
+tpo::T_Index local::FindOrInsert(
+  const vxl::Voxel& V0,
+  const geo::Point3D& P0,
+  const vxl::Voxel& V1,
+  const geo::Point3D& P1,
+  tpo::T_Index X,
+  tpo::T_Index Y,
+  tpo::T_Index Z,
+  T_TripleIndexMap& IndexMap,
+  std::vector<geo::Point3D>* Points)
+{
+  // Check if this point already exists.
+  auto tripleIndex = IndexMap.find(X);
+  if (tripleIndex != IndexMap.end())
+  {
+    auto doubleIndex = tripleIndex->second.find(Y);
+    if (doubleIndex != tripleIndex->second.end())
+    {
+      auto index = doubleIndex->second.find(Z);
+      if (index != doubleIndex->second.end())
+      {
+        // Point already exists return it.
+        return index->second;
+      }
+    }
+  }
+  
+  // Otherwise we need to generate a new point.
+  tpo::T_Index index = Points->size();
+  IndexMap[X][Y][Z] = index;
+  Points->push_back(Midpoint(P0, P1));
+  return index;
 }
 
 geo::Point3D local::Midpoint(const geo::Point3D& P0, const geo::Point3D& P1)
@@ -1023,14 +1074,19 @@ obj::T_FacetNetworkPtr vxl::Triangulate::SubBlock(const vxl::SubBlock<N>& SubBlo
   // Ensure the lookup table is initialised.
   local::GenerateLookupTable();
   
-  for (unsigned short x = 0; x < N-1; ++x)
+  // Maps for storing already calculated point indicies.
+  local::T_TripleIndexMap xEdgeIndexMap;
+  local::T_TripleIndexMap yEdgeIndexMap;
+  local::T_TripleIndexMap zEdgeIndexMap;
+  
+  for (tpo::T_Index x = 0; x < N-1; ++x)
   {
-    for (unsigned short y = 0; y < N-1; ++y)
+    for (tpo::T_Index y = 0; y < N-1; ++y)
     {
-      for (unsigned short z = 0; z < N-1; ++z)
+      for (tpo::T_Index z = 0; z < N-1; ++z)
       {
         // We centre position on the origin
-        const geo::Point3D p0(x - N/2, y - N/2, z - N/2);
+        const geo::Point3D p0(int(x) - N/2, int(y) - N/2, int(z) - N/2);
         const geo::Point3D p1(p0.X()+1, p0.Y(),   p0.Z());
         const geo::Point3D p2(p0.X()+1, p0.Y()+1, p0.Z());
         const geo::Point3D p3(p0.X(),   p0.Y()+1, p0.Z());
@@ -1063,17 +1119,7 @@ obj::T_FacetNetworkPtr vxl::Triangulate::SubBlock(const vxl::SubBlock<N>& SubBlo
         // Determine the triangulation based on cube classification.
         const local::C_Triangulation& triangulation = local::LookupTriangulation(pointStatus);
         
-        // Insert facets.
-        const unsigned int offset = points.size();
-        auto fu = triangulation.FacetsBegin();
-        auto fv = triangulation.FacetsEnd();
-        while (fu != fv)
-        {
-          facets.push_back(tpo::Triple((*fu)[0] + offset, (*fu)[1] + offset, (*fu)[2] + offset));
-          ++fu;
-        }
-        
-        local::C_PointStatus status(pointStatus);
+        const local::C_PointStatus status(pointStatus);
         
         // Calculate and insert points.
         unsigned short edgeStatus = 0;
@@ -1092,6 +1138,7 @@ obj::T_FacetNetworkPtr vxl::Triangulate::SubBlock(const vxl::SubBlock<N>& SubBlo
         
         
         // Interpolate as midpoints - good for debugging
+        /*
         if (edgeStatus & local::EDGE0) points.push_back(local::Midpoint(p0, p1));
         if (edgeStatus & local::EDGE1) points.push_back(local::Midpoint(p1, p2));
         if (edgeStatus & local::EDGE2) points.push_back(local::Midpoint(p2, p3));
@@ -1104,6 +1151,7 @@ obj::T_FacetNetworkPtr vxl::Triangulate::SubBlock(const vxl::SubBlock<N>& SubBlo
         if (edgeStatus & local::EDGE9) points.push_back(local::Midpoint(p1, p5));
         if (edgeStatus & local::EDGE10) points.push_back(local::Midpoint(p2, p6));
         if (edgeStatus & local::EDGE11) points.push_back(local::Midpoint(p3, p7));
+        */
         
         // Interpolate points based on Voxel weights.
         /*
@@ -1120,6 +1168,29 @@ obj::T_FacetNetworkPtr vxl::Triangulate::SubBlock(const vxl::SubBlock<N>& SubBlo
         if (edgeStatus & local::EDGE10) points.push_back(local::LinearInterp(v2, p2, v6, p6));
         if (edgeStatus & local::EDGE11) points.push_back(local::LinearInterp(v3, p3, v7, p7));
         */
+        
+        std::vector<tpo::T_Index> pointIndicies;
+        if (edgeStatus & local::EDGE0) pointIndicies.push_back(local::FindOrInsert(v0, p0, v1, p1, x, y, z, xEdgeIndexMap, &points));
+        if (edgeStatus & local::EDGE1) pointIndicies.push_back(local::FindOrInsert(v1, p1, v2, p2, x+1, y, z, yEdgeIndexMap, &points));
+        if (edgeStatus & local::EDGE2) pointIndicies.push_back(local::FindOrInsert(v2, p2, v3, p3, x, y+1, z, xEdgeIndexMap, &points));
+        if (edgeStatus & local::EDGE3) pointIndicies.push_back(local::FindOrInsert(v0, p0, v3, p3, x, y, z, yEdgeIndexMap, &points));
+        if (edgeStatus & local::EDGE4) pointIndicies.push_back(local::FindOrInsert(v4, p4, v5, p5, x, y, z+1, xEdgeIndexMap, &points));
+        if (edgeStatus & local::EDGE5) pointIndicies.push_back(local::FindOrInsert(v5, p5, v6, p6, x+1, y, z+1, yEdgeIndexMap, &points));
+        if (edgeStatus & local::EDGE6) pointIndicies.push_back(local::FindOrInsert(v6, p6, v7, p7, x, y+1, z+1, xEdgeIndexMap, &points));
+        if (edgeStatus & local::EDGE7) pointIndicies.push_back(local::FindOrInsert(v7, p4, v7, p7, x, y, z+1, yEdgeIndexMap, &points));
+        if (edgeStatus & local::EDGE8) pointIndicies.push_back(local::FindOrInsert(v0, p0, v4, p4, x, y, z, zEdgeIndexMap, &points));
+        if (edgeStatus & local::EDGE9) pointIndicies.push_back(local::FindOrInsert(v1, p1, v5, p5, x+1, y, z, zEdgeIndexMap, &points));
+        if (edgeStatus & local::EDGE10) pointIndicies.push_back(local::FindOrInsert(v2, p2, v6, p6, x+1, y+1, z, zEdgeIndexMap, &points));
+        if (edgeStatus & local::EDGE11) pointIndicies.push_back(local::FindOrInsert(v3, p3, v7, p7, x, y+1, z, zEdgeIndexMap, &points));
+        
+        // Insert facets.
+        auto fu = triangulation.FacetsBegin();
+        auto fv = triangulation.FacetsEnd();
+        while (fu != fv)
+        {
+          facets.push_back(tpo::Triple( pointIndicies[(*fu)[0]], pointIndicies[(*fu)[1]], pointIndicies[(*fu)[2]] ));
+          ++fu;
+        }
       }
     }
   }
