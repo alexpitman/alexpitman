@@ -876,6 +876,8 @@ tpo::T_Index local::FindOrInsert(
       auto index = doubleIndex->second.find(Z);
       if (index != doubleIndex->second.end())
       {
+        std::cout << "FOUND" << std::endl;
+      
         // Point already exists return it.
         return index->second;
       }
@@ -885,7 +887,12 @@ tpo::T_Index local::FindOrInsert(
   // Otherwise we need to generate a new point.
   tpo::T_Index index = Points->size();
   IndexMap[X][Y][Z] = index;
-  Points->push_back(Midpoint(P0, P1));
+  
+  // Interpolate as midpoints - good for debugging
+  //Points->push_back(Midpoint(P0, P1));
+  
+  // Interpolate points based on Voxel weights.
+  Points->push_back(LinearInterp(V0, P0, V1, P1));
   return index;
 }
 
@@ -1135,39 +1142,6 @@ obj::T_FacetNetworkPtr vxl::Triangulate::SubBlock(const vxl::SubBlock<N>& SubBlo
         if (status[1] != status[5]) edgeStatus |= local::EDGE9;
         if (status[2] != status[6]) edgeStatus |= local::EDGE10;
         if (status[3] != status[7]) edgeStatus |= local::EDGE11;
-        
-        
-        // Interpolate as midpoints - good for debugging
-        /*
-        if (edgeStatus & local::EDGE0) points.push_back(local::Midpoint(p0, p1));
-        if (edgeStatus & local::EDGE1) points.push_back(local::Midpoint(p1, p2));
-        if (edgeStatus & local::EDGE2) points.push_back(local::Midpoint(p2, p3));
-        if (edgeStatus & local::EDGE3) points.push_back(local::Midpoint(p0, p3));
-        if (edgeStatus & local::EDGE4) points.push_back(local::Midpoint(p4, p5));
-        if (edgeStatus & local::EDGE5) points.push_back(local::Midpoint(p5, p6));
-        if (edgeStatus & local::EDGE6) points.push_back(local::Midpoint(p6, p7));
-        if (edgeStatus & local::EDGE7) points.push_back(local::Midpoint(p4, p7));
-        if (edgeStatus & local::EDGE8) points.push_back(local::Midpoint(p0, p4));
-        if (edgeStatus & local::EDGE9) points.push_back(local::Midpoint(p1, p5));
-        if (edgeStatus & local::EDGE10) points.push_back(local::Midpoint(p2, p6));
-        if (edgeStatus & local::EDGE11) points.push_back(local::Midpoint(p3, p7));
-        */
-        
-        // Interpolate points based on Voxel weights.
-        /*
-        if (edgeStatus & local::EDGE0) points.push_back(local::LinearInterp(v0, p0, v1, p1));
-        if (edgeStatus & local::EDGE1) points.push_back(local::LinearInterp(v1, p1, v2, p2));
-        if (edgeStatus & local::EDGE2) points.push_back(local::LinearInterp(v2, p2, v3, p3));
-        if (edgeStatus & local::EDGE3) points.push_back(local::LinearInterp(v0, p0, v3, p3));
-        if (edgeStatus & local::EDGE4) points.push_back(local::LinearInterp(v4, p4, v5, p5));
-        if (edgeStatus & local::EDGE5) points.push_back(local::LinearInterp(v5, p5, v6, p6));
-        if (edgeStatus & local::EDGE6) points.push_back(local::LinearInterp(v6, p6, v7, p7));
-        if (edgeStatus & local::EDGE7) points.push_back(local::LinearInterp(v7, p4, v7, p7));
-        if (edgeStatus & local::EDGE8) points.push_back(local::LinearInterp(v0, p0, v4, p4));
-        if (edgeStatus & local::EDGE9) points.push_back(local::LinearInterp(v1, p1, v5, p5));
-        if (edgeStatus & local::EDGE10) points.push_back(local::LinearInterp(v2, p2, v6, p6));
-        if (edgeStatus & local::EDGE11) points.push_back(local::LinearInterp(v3, p3, v7, p7));
-        */
         
         std::vector<tpo::T_Index> pointIndicies;
         if (edgeStatus & local::EDGE0) pointIndicies.push_back(local::FindOrInsert(v0, p0, v1, p1, x, y, z, xEdgeIndexMap, &points));
