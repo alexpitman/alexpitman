@@ -26,7 +26,7 @@ vxl::SubBlock<N>* vxl::Factory::GenerateSubBlock()
         int cx = int(x) - 5;
         int cy = int(y) - 5;
         int cz = int(z) - 5;
-        double distance = num::Sqrt(cx*cx + cy*cy + cz*cz) - 9.0f;
+        double distance = num::Sqrt(cx*cx + cy*cy + cz*cz) - 3.0f;
         //subBlock(x, y, z) = Voxel(z > N/2.0f ? 1 : 0, 0.0f);
         (*subBlock)(x, y, z) = Voxel(cx*cx + cy*cy + cz*cz > 9 ? 0 : 1, distance);
       }
