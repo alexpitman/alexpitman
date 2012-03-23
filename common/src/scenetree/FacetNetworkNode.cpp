@@ -47,4 +47,24 @@ st::FacetNetworkNode::Render() const
   }
   
   Renderer()->End();
+  
+  Renderer()->Begin( ree::LINES );
+  
+  Renderer()->SetColour( att::Colour(1, 0, 0) );
+  
+  
+  // Render normals.
+  /*
+  auto pu = myFacetNetwork->PointsBegin();
+  auto pv = myFacetNetwork->PointsEnd();
+  auto nu = myFacetNetwork->NormalsBegin();
+  while (pu != pv)
+  {
+    //std::cout << pu->X() << " " << pu->Y() << " " << pu->Z() << std::endl;
+    Renderer()->Vertex( *pu );
+    Renderer()->Vertex( *pu++ + *nu++ );
+  }
+  */
+  
+  Renderer()->End();
 }

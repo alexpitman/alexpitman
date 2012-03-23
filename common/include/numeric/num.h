@@ -19,6 +19,8 @@ namespace num
 {
   /////////////////////////////////////////////////////////////////////////////
   // Angle related
+  Dll_num double Pi();
+  
   Dll_num double Sin(double Degrees);
   Dll_num double Cos(double Degrees);
   Dll_num double Tan(double Degrees);

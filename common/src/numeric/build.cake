@@ -7,6 +7,10 @@ compiler.addIncludePath(script.cwd("../../include"))
 compiler.addDefine("NUM_DLL")
 
 source = script.cwd([
+	"Fractal.cpp",
+	"Interpolate.cpp",
+	"Noise.cpp",
+	"Random.cpp",
 	"num.cpp",
 	])
 

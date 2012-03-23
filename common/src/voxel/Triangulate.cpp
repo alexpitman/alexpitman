@@ -129,10 +129,6 @@ local::LookupTriangulation(unsigned short PointStatus)
 {
   assert(PointStatus < 256);
   
-  /*if (PointStatus != 0 && PointStatus != 255)
-  {
-    std::cout << PointStatus << " " << lookup[PointStatus].FacetsEnd() - lookup[PointStatus].FacetsBegin() << std::endl;
-  }*/
   return lookup[PointStatus];
 }
 
@@ -148,8 +144,6 @@ void local::GenerateLookupTable()
     C_PointStatus pointStatus(bitPattern);
   
     unsigned short classificationNumber = FindClassification(pointStatus);
-  
-    //std::cout << bitPattern << " " << classificationNumber << std::endl;
   
     lookup[bitPattern] = GenerateTriangulation(pointStatus, classificationNumber, false);
   
@@ -876,8 +870,6 @@ tpo::T_Index local::FindOrInsert(
       auto index = doubleIndex->second.find(Z);
       if (index != doubleIndex->second.end())
       {
-        std::cout << "FOUND" << std::endl;
-      
         // Point already exists return it.
         return index->second;
       }
@@ -1174,4 +1166,5 @@ obj::T_FacetNetworkPtr vxl::Triangulate::SubBlock(const vxl::SubBlock<N>& SubBlo
 
 // Explicit instantiations
 template Dll_vxl obj::T_FacetNetworkPtr vxl::Triangulate::SubBlock(const vxl::SubBlock<10>& SubBlock);
+template Dll_vxl obj::T_FacetNetworkPtr vxl::Triangulate::SubBlock(const vxl::SubBlock<64>& SubBlock);
 template Dll_vxl obj::T_FacetNetworkPtr vxl::Triangulate::SubBlock(const vxl::SubBlock<256>& SubBlock);

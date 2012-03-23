@@ -27,4 +27,5 @@ const vxl::Voxel& vxl::SubBlock<N>::operator() (int X, int Y, int Z) const
 
 // Explicit instantiations
 template class vxl::SubBlock<10>;
+template class vxl::SubBlock<64>;
 template class vxl::SubBlock<256>;

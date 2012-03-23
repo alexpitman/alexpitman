@@ -9,6 +9,7 @@
 
 #include <map>
 #include <set>
+#include <iostream>
 
 obj::FacetNetwork::FacetNetwork()
 : myPoints(),
@@ -138,27 +139,28 @@ void obj::FacetNetwork::Reconcile()
   std::vector<unsigned int> newPointIndex(myPoints.size());
   unsigned int currentIndex = 0;
   unsigned int lowestIndex = 0;
-  myPoints.erase(
-    std::remove_if(
-      myPoints.begin(),
-      myPoints.end(),
-      [&](const geo::Point3D& Point) -> bool
-      {
-        auto pt = uniquePointToIndexMap.find(Point);
-        
-        if (pt != uniquePointToIndexMap.end())
-        {
-          newPointIndex[currentIndex++] = pt->second;
-          return true;
-        }
-        else
-        {
-          newPointIndex[currentIndex++] = lowestIndex++;
-          return false;
-        }
-      }),
-    myPoints.end());
+  
+  auto pu = myPoints.begin();
+  auto pv = myPoints.end();
+  auto currentU = pu;
+  while (pu != pv)
+  {
+    auto pt = uniquePointToIndexMap.find(*pu);
     
+    if (pt != uniquePointToIndexMap.end())
+    {
+      newPointIndex[currentIndex++] = pt->second;
+    }
+    else
+    {
+      uniquePointToIndexMap[*pu] = lowestIndex;
+      newPointIndex[currentIndex++] = lowestIndex++;
+      *currentU++ = *pu;
+    }
+    ++pu;
+  }
+  myPoints.erase(currentU, myPoints.end());
+  
   // Update myFacets
   auto fu = myFacets.begin();
   auto fv = myFacets.end();
