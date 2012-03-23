@@ -8,12 +8,38 @@
 
 #include "voxel/Factory.h"
 
+#include "numeric/Fractal.h"
 #include "numeric/num.h"
 
 #include <iostream>
 
 template <unsigned short N>
 vxl::SubBlock<N>* vxl::Factory::GenerateSubBlock()
+{
+  vxl::SubBlock<N>* subBlock = new vxl::SubBlock<N>();
+  
+  for (unsigned short x = 0; x < N; ++x)
+  {
+    for (unsigned short y = 0; y < N; ++y)
+    {
+      double fbm = num::Fractal::FBM(x, y, 4, 0.5, 1, 1);
+      
+      //std::cout << fbm << std::endl;
+    
+      for (unsigned short z = 0; z < N; ++z)
+      {
+        double distance = fbm/2.0f + double(z) - 2.0f;
+
+        (*subBlock)(x, y, z) = Voxel(distance > 0 ? 0 : 1, distance);
+      }
+    }
+  }
+  
+  return subBlock;
+}
+
+template <unsigned short N>
+vxl::SubBlock<N>* vxl::Factory::GenerateSphere()
 {
   vxl::SubBlock<N>* subBlock = new vxl::SubBlock<N>();
   
@@ -38,4 +64,6 @@ vxl::SubBlock<N>* vxl::Factory::GenerateSubBlock()
 
 // Explicit instantiations
 template Dll_vxl vxl::SubBlock<10>* vxl::Factory::GenerateSubBlock<10>();
+template Dll_vxl vxl::SubBlock<64>* vxl::Factory::GenerateSubBlock<64>();
 template Dll_vxl vxl::SubBlock<256>* vxl::Factory::GenerateSubBlock<256>();
+template Dll_vxl vxl::SubBlock<10>* vxl::Factory::GenerateSphere<10>();

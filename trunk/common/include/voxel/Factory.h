@@ -16,6 +16,9 @@ namespace vxl
   {
     template <unsigned short N>
     Dll_vxl SubBlock<N>* GenerateSubBlock();
+    
+    template <unsigned short N>
+    Dll_vxl SubBlock<N>* GenerateSphere();
   }
 }
 

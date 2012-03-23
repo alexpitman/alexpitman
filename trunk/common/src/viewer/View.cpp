@@ -194,13 +194,13 @@ vwr::View::GLInitialise()
     tpo::Triple(0, 1, 2),
     tpo::Triple(0, 2, 3),
   };
-  
+  /*
   obj::T_FacetNetworkPtr f(new obj::FacetNetwork(points, points+4, facets, facets+2));
   obj::T_PointSetPtr p(new obj::PointSet(points, points+4));
   
   mySceneTreePtr->AddNode( st::T_NodePtr(new st::FacetNetworkNode(mySceneTreePtr, f)) );
   mySceneTreePtr->AddNode( st::T_NodePtr(new st::PointSetNode(mySceneTreePtr, p)) );
-  
+  */
   /*
   obj::T_FacetNetworkPtr f2 = imp::ImportObjFile::Import("test.obj");
   mySceneTreePtr->AddNode( st::T_NodePtr(new st::FacetNetworkNode(mySceneTreePtr, f2)) );
@@ -211,11 +211,15 @@ vwr::View::GLInitialise()
   mySceneTreePtr->AddNode( st::T_NodePtr(new st::FacetNetworkNode(mySceneTreePtr, f3)) );
   */
   
-  std::unique_ptr<vxl::SubBlock<10>> ptr( vxl::Factory::GenerateSubBlock<10>());
-  //std::unique_ptr<vxl::SubBlock<256>> ptr( vxl::Factory::GenerateSubBlock<256>());
+  /*
+  std::unique_ptr<vxl::SubBlock<10>> ptr( vxl::Factory::GenerateSphere<10>());
   obj::T_FacetNetworkPtr blockModelRep = vxl::Triangulate::SubBlock(*ptr);
   mySceneTreePtr->AddNode( st::T_NodePtr(new st::FacetNetworkNode(mySceneTreePtr, blockModelRep)) );
+  */
   
+  std::unique_ptr<vxl::SubBlock<64>> ptr2( vxl::Factory::GenerateSubBlock<64>());
+  obj::T_FacetNetworkPtr blockModelRep2 = vxl::Triangulate::SubBlock(*ptr2);
+  mySceneTreePtr->AddNode( st::T_NodePtr(new st::FacetNetworkNode(mySceneTreePtr, blockModelRep2)) );
   
   Renderer()->EnableLighting();
   glEnable(GL_COLOR_MATERIAL);
@@ -228,7 +232,7 @@ vwr::View::GLInitialise()
   glShadeModel(GL_SMOOTH);
   glEnable(GL_MULTISAMPLE);
   
-  myCamera = cmr::Camera( geo::Point3D(-8, -2, -3),
+  myCamera = cmr::Camera( geo::Point3D(-8, -2, 3),
                           geo::Vector3D(1, 0, 0),
                           geo::Vector3D(0, 0, 1) );
 }

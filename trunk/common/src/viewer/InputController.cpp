@@ -25,6 +25,8 @@ namespace local
   static int IsRight = 0;
   static int IsRise = 0;
   static int IsFall = 0;
+  static int IsRollRight = 0;
+  static int IsRollLeft = 0;
   static int IsVibrating = 0;
   
   static bool firstMouseEvent = false;
@@ -50,7 +52,9 @@ vwr::InputController::Animate()
   if ( local::IsRight ) cmrController->StrafeRight(local::Sensitivity);
   if ( local::IsRise ) cmrController->StrafeUp(local::Sensitivity);
   if ( local::IsFall ) cmrController->StrafeDown(local::Sensitivity);
-
+  if ( local::IsRollRight ) cmrController->RotateRoll(local::Sensitivity * 3);
+  if ( local::IsRollLeft ) cmrController->RotateRoll(-local::Sensitivity * 3);
+  
   if ( local::IsVibrating )
   {
     local::xbox.Vibrate(65535, 65535);
@@ -126,6 +130,12 @@ vwr::InputController::SetButton( const in::Key& Key, int Increment)
     break;
   case in::PageDown:
     local::IsFall += Increment;
+    break;
+  case in::Q:
+    local::IsRollLeft += Increment;
+    break;
+  case in::E:
+    local::IsRollRight += Increment;
     break;
   case in::V:
     local::IsVibrating += Increment;

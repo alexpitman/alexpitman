@@ -13,6 +13,12 @@
 #define PI 3.14159265
 
 double
+num::Pi()
+{
+  return PI;
+}
+
+double
 num::Sin(double Degrees)
 {
   return sin( DegreesToRadians(Degrees) );
