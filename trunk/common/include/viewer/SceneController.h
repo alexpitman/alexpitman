@@ -8,32 +8,29 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
+#include "scenetree/ISceneController.h"
+
 #include "viewer/Dll.h"
-
-#include "boost/shared_ptr.hpp"
-
-namespace obj
-{
-	class Object;
-
-	typedef boost::shared_ptr<Object> T_ObjectPtr;
-}
 
 namespace vwr
 {
-	class View;
+  class View;
 
-	class Dll_vwr SceneController
-	{
-	public:
-	
-		void AddObject(const obj::T_ObjectPtr& Object);
-	
-	private:
+  class Dll_vwr SceneController : public st::ISceneController
+  {
+  public:
   
-    vwr::View* myViewPtr;
-		
-	};
+    SceneController(vwr::View* ViewPtr);
+  
+    virtual void AddObject(const obj::T_ObjectPtr& Object) override;
+  
+    virtual void SetFacetRenderMode(ree::FacetRenderMode FacetRenderMode) override;
+  
+  private:
+  
+    View* myViewPtr;
+    
+  };
 }
 
 #endif

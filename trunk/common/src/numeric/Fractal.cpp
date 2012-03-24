@@ -18,8 +18,8 @@ double num::Fractal::FBM(
   double Frequency,
   double H)
 {
-  const double xFreq = X*Frequency;
-  const double yFreq = Y*Frequency;
+  double xFreq = X*Frequency;
+  double yFreq = Y*Frequency;
   
   double result = 0.0f;
   

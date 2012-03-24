@@ -34,6 +34,8 @@ namespace num
   
   Dll_num double Abs(double Num);
   
+  Dll_num double Pow(double Num, double Exponent);
+  
   /////////////////////////////////////////////////////////////////////////////
   // Limit related
   template<typename T> inline Dll_num T NaN();

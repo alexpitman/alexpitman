@@ -9,7 +9,7 @@
 #include "input/Mouse.h"
 
 in::Mouse::Mouse()
-: myPosition(geo::Point2D::Origin()),
+: myPosition(geo::Point2D::Null()),
   isLeftClick(false),
   isRightClick(false),
   isMiddleClick(false)

@@ -50,6 +50,8 @@ namespace vwr
     void SetButton( const in::Key& Key, int Increment);
     void SetButton( const in::XKey& Key, int Increment);
   
+    void ToggleFacetRenderMode();
+  
     View* myViewPtr;
   
     in::XBox myXboxController;

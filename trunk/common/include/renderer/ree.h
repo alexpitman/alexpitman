@@ -22,6 +22,13 @@ namespace ree
     TRIANGLE_FAN    = GL_TRIANGLE_FAN,
     TRIANGLES       = GL_TRIANGLES,
   };
+  
+  enum FacetRenderMode
+  {
+    RENDER_POINTS,
+    RENDER_WIREFRAME,
+    RENDER_TRIANGLES,
+  };
 }
 
 #endif

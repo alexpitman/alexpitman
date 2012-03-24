@@ -14,7 +14,10 @@ namespace num
 {
   namespace Noise
   {
-    Dll_num double Basic(double x, double y);
+    Dll_num float Basic(int x, int y);
+    Dll_num float Smooth(float x, float y);
+    Dll_num float Interpolated(float x, float y);
+    Dll_num float Perlin(float x, float y);
   }
 }
 

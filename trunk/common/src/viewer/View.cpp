@@ -48,7 +48,8 @@ namespace local
 
 vwr::View::View()
 : myRendererPtr(ree::Factory::CreateRenderer()),
-  myViewHandlerPtr(new ViewHandler(this))
+  myViewHandlerPtr(new ViewHandler(this)),
+  myFacetRenderMode(ree::RENDER_TRIANGLES)
 {
 }
 
@@ -91,71 +92,21 @@ vwr::View::Render()
   // Set up lights
   //local::light.Render();
   
-  
-  //Renderer()->Transform( geo::Vector3D(8, 0, 0) );
+  switch(myFacetRenderMode)
+  {
+  case ree::RENDER_POINTS:
+    glPolygonMode( GL_FRONT_AND_BACK, GL_POINT );
+    break;
+  case ree::RENDER_WIREFRAME:
+    glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
+    break;
+  case ree::RENDER_TRIANGLES:
+    glPolygonMode( GL_FRONT, GL_FILL );
+    break;
+  default: assert(false); // Unreachable
+  }
   
   // Render Geometry
-  /*
-  Renderer()->Begin(ree::TRIANGLES);
-  
-  Renderer()->SetColour( att::Colour(0, 1, 0) );
-  Renderer()->Vertex( geo::Point3D(-1, -1, -1) ); // Front
-  Renderer()->Vertex( geo::Point3D(-1,  1, -1) );
-  Renderer()->Vertex( geo::Point3D( 1,  1, -1) );
-  
-  Renderer()->Vertex( geo::Point3D(-1, -1, -1) );
-  Renderer()->Vertex( geo::Point3D( 1,  1, -1) );
-  Renderer()->Vertex( geo::Point3D( 1, -1, -1) );
-  
-  Renderer()->SetColour( att::Colour(1, 0, 0) );
-  Renderer()->Vertex( geo::Point3D(-1, -1,  1) ); // Back
-  Renderer()->Vertex( geo::Point3D( 1,  1,  1) );
-  Renderer()->Vertex( geo::Point3D(-1,  1,  1) );
-  
-  Renderer()->Vertex( geo::Point3D(-1, -1,  1) );
-  Renderer()->Vertex( geo::Point3D( 1, -1,  1) );
-  Renderer()->Vertex( geo::Point3D( 1,  1,  1) );
-  
-  Renderer()->SetColour( att::Colour(1, 1, 0) );
-  Renderer()->Vertex( geo::Point3D(-1, -1,  1) );
-  Renderer()->Vertex( geo::Point3D(-1, -1, -1) );
-  Renderer()->Vertex( geo::Point3D( 1, -1,  1) );
-  
-  Renderer()->Vertex( geo::Point3D( 1, -1,  1) );
-  Renderer()->Vertex( geo::Point3D(-1, -1, -1) );
-  Renderer()->Vertex( geo::Point3D( 1, -1, -1) );
-  
-  Renderer()->SetColour( att::Colour(0, 1, 1) );
-  Renderer()->Vertex( geo::Point3D(-1,  1,  1) );
-  Renderer()->Vertex( geo::Point3D(-1, -1, -1) );
-  Renderer()->Vertex( geo::Point3D(-1, -1,  1) );
-  
-  Renderer()->Vertex( geo::Point3D(-1,  1, -1) );
-  Renderer()->Vertex( geo::Point3D(-1, -1, -1) );
-  Renderer()->Vertex( geo::Point3D(-1,  1,  1) );
-  
-  Renderer()->SetColour( att::Colour(1, 0, 1) );
-  Renderer()->Vertex( geo::Point3D( 1,  1, -1) );
-  Renderer()->Vertex( geo::Point3D( 1,  1,  1) );
-  Renderer()->Vertex( geo::Point3D( 1, -1, -1) );
-  
-  Renderer()->Vertex( geo::Point3D( 1, -1, -1) );
-  Renderer()->Vertex( geo::Point3D( 1,  1,  1) );
-  Renderer()->Vertex( geo::Point3D( 1, -1,  1) );
-  
-  Renderer()->SetColour( att::Colour(1, 1, 1) );
-  Renderer()->Vertex( geo::Point3D( 1,  1, -1) );
-  Renderer()->Vertex( geo::Point3D(-1,  1, -1) );
-  Renderer()->Vertex( geo::Point3D( 1,  1,  1) );
-  
-  Renderer()->Vertex( geo::Point3D( 1,  1,  1) );
-  Renderer()->Vertex( geo::Point3D(-1,  1, -1) );
-  Renderer()->Vertex( geo::Point3D(-1,  1,  1) );
-  
-  Renderer()->End();
-  */
-  //glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
-  
   mySceneTreePtr->Render();
 }
 
@@ -226,7 +177,7 @@ vwr::View::GLInitialise()
   
   Renderer()->SetClearColour( att::Colour(0, 0, 0) );
   
-  glPointSize(5);
+  //glPointSize(5);
   glEnable(GL_DEPTH_TEST);
   glEnable(GL_CULL_FACE);
   glShadeModel(GL_SMOOTH);
@@ -253,18 +204,6 @@ void
 vwr::View::Animate()
 {
   Handler()->InputController()->Animate();
-
-  //static const geo::Vector3D move(0.1, 0, 0);
-  //myCamera.Translate(move);
-  
-  //myCamera.RotateX(1.0);
-  //myCamera.RotateY(1.0);
-  //myCamera.RotateZ(1.0);
-  //myCamera.RotateRoll(1.0);
-  //myCamera.RotatePitch(1.0);
-  //myCamera.RotateYaw(1.0);
-  
-  //myCamera.StrafeUp(0.1);
 }
 
 void
@@ -285,4 +224,8 @@ vwr::View::KeyRelease( const in::Key& Key )
   Handler()->InputController()->KeyRelease(Key);
 }
 
-
+void
+vwr::View::SetFacetRenderMode(ree::FacetRenderMode FacetRenderMode)
+{
+  myFacetRenderMode = FacetRenderMode;
+}

@@ -4,6 +4,8 @@
 
 #include "widget/ViewWindow.h"
 
+#include "export/ExportImage.h"
+
 #include "geometry/Point.h"
 
 #include "system/InputStream.h"
@@ -15,7 +17,10 @@ int main(int Argc, char** Argv)
 
   std::cout << "Hello Cake!" << std::endl;
   std::cout << p.X() << " " << p.Y() << " " << p.Z() << std::endl;
-
+/*
+  img::Image image(10, 10);
+  ept::ExportImage::Png(image, "test.png");
+  */
   QApplication app(Argc, Argv);
   wid::ViewWindow window;
   
