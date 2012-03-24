@@ -8,22 +8,32 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
+#include "renderer/ree.h"
+
+#include "boost/shared_ptr.hpp"
+
 namespace obj
 {
-	class Object;
+  class Object;
 
-	typedef boost::shared_ptr<Object> T_ObjectPtr;
+  typedef boost::shared_ptr<Object> T_ObjectPtr;
 }
 
 namespace st
 {
-	class ISceneController
-	{
-	public:
-	
-		virtual void AddObject(const obj::T_ObjectPtr& Object) = 0;
-	
-	};
+  class ISceneController;
+
+  typedef boost::shared_ptr<ISceneController> T_SceneControllerPtr;
+
+  class ISceneController
+  {
+  public:
+  
+    virtual void AddObject(const obj::T_ObjectPtr& Object) = 0;
+  
+    virtual void SetFacetRenderMode(ree::FacetRenderMode FacetRenderMode) = 0;
+  
+  };
 }
 
 #endif

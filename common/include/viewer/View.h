@@ -76,11 +76,10 @@ namespace vwr
     
     // Handler for this view.
     T_ViewHandlerPtr myViewHandlerPtr;
-    
-    // Scene tree for this view
-  //  SceneTreeHeadNode mySceneTree;
   
     inline ree::T_RendererPtr Renderer() { return myRendererPtr; }
+  
+    void SetFacetRenderMode(ree::FacetRenderMode FacetRenderMode);
   
     // Renderer for this view
     ree::T_RendererPtr myRendererPtr;
@@ -92,6 +91,8 @@ namespace vwr
     bool isRenderPending; // Is a new render required?
     
     st::T_SceneTreePtr mySceneTreePtr;
+    
+    ree::FacetRenderMode myFacetRenderMode;
     
     // Classes that can access private members
     friend class wid::GLWidget;

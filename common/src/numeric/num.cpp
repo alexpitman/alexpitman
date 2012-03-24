@@ -59,3 +59,9 @@ num::Abs(double Num)
 {
   return fabs(Num);
 }
+
+double
+num::Pow(double Num, double Exponent)
+{
+  return pow(Num, Exponent);
+}

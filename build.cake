@@ -7,10 +7,25 @@ filesys.copyFiles(
     "common/3rdParty/qt/lib/QtGui4.lib",
     "common/3rdParty/qt/lib/qtmain.lib",
     "common/3rdParty/directx/lib/XInput.lib",
+    "common/3rdParty/libpng/lib/libpng.lib",
+    "common/3rdParty/zlib/lib/zlib.lib",
   ]),
   targetDir=script.cwd("build/testbed/lib"),
   )
 
+# Copy binaries
+filesys.copyFiles(
+  sources=script.cwd([
+    "common/3rdParty/gl/bin/opengl32.dll",
+    "common/3rdParty/gl/bin/glu32.dll",
+    "common/3rdParty/qt/bin/QtCore4.dll",
+    "common/3rdParty/qt/bin/QtOpenGL4.dll",
+    "common/3rdParty/qt/bin/QtGui4.dll",
+    "common/3rdParty/libpng/bin/libpng12.dll",
+  ]),
+  targetDir=script.cwd("build/testbed/bin"),
+  )
+  
 # Build libraries
 script.include(script.cwd("common/src/system/use.cake"))
 script.include(script.cwd("common/src/numeric/use.cake"))
@@ -20,6 +35,8 @@ script.include(script.cwd("common/src/voxel/use.cake"))
 script.include(script.cwd("common/src/topology/use.cake"))
 script.include(script.cwd("common/src/input/use.cake"))
 script.include(script.cwd("common/src/import/use.cake"))
+script.include(script.cwd("common/src/image/use.cake"))
+script.include(script.cwd("common/src/export/use.cake"))
 script.include(script.cwd("common/src/camera/use.cake"))
 script.include(script.cwd("common/src/viewer/use.cake"))
 script.include(script.cwd("common/src/widget/use.cake"))
@@ -33,29 +50,17 @@ compiler.addLibrary(script.cwd("common/3rdParty/qt/lib/QtGui4.lib"))
 main_source = script.cwd([
   "testbed/main.cpp",
   ])
-	
+
 main_objects = compiler.objects(
   targetDir=script.cwd("build/testbed/obj/"),
   sources=main_source,
   )
-	
+
 main_program = compiler.program(
   target=script.cwd("build/testbed/bin/main"),
   sources=main_objects,
   )
 
-# Copy binaries
-filesys.copyFiles(
-  sources=script.cwd([
-    "common/3rdParty/gl/bin/opengl32.dll",
-    "common/3rdParty/gl/bin/glu32.dll",
-    "common/3rdParty/qt/bin/QtCore4.dll",
-    "common/3rdParty/qt/bin/QtOpenGL4.dll",
-    "common/3rdParty/qt/bin/QtGui4.dll",
-  ]),
-  targetDir=script.cwd("build/testbed/bin"),
-  )
-	
 # Execute the program
 shell.run(
   args=[main_program.path],

@@ -33,12 +33,6 @@ namespace in
     XX             = 0x4000,
     XY             = 0x8000,
   };
-
-  enum T_XTrigger
-  {
-    XTriggerLeft,
-    XTriggerRight,
-  };
   
   class Dll_in XKey
   {

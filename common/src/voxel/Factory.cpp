@@ -8,7 +8,7 @@
 
 #include "voxel/Factory.h"
 
-#include "numeric/Fractal.h"
+#include "numeric/Noise.h"
 #include "numeric/num.h"
 
 #include <iostream>
@@ -22,15 +22,18 @@ vxl::SubBlock<N>* vxl::Factory::GenerateSubBlock()
   {
     for (unsigned short y = 0; y < N; ++y)
     {
-      double fbm = num::Fractal::FBM(x, y, 4, 0.5, 1, 1);
-      
+      const double fbm =
+        num::Noise::Perlin(x, y) / 20.0f +
+        num::Noise::Perlin(x+23, x-y-419) / 20.0f;
+        
       //std::cout << fbm << std::endl;
-    
       for (unsigned short z = 0; z < N; ++z)
       {
-        double distance = fbm/2.0f + double(z) - 2.0f;
+        const float distance = z/float(N) + fbm;
 
-        (*subBlock)(x, y, z) = Voxel(distance > 0 ? 0 : 1, distance);
+        //std::cout << distance << std::endl;
+
+        (*subBlock)(x, y, z) = Voxel(distance > 0.5f ? 0 : 1, distance);
       }
     }
   }

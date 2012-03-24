@@ -38,3 +38,12 @@ vwr::ViewHandler::InputController()
   return myInputControllerPtr;
 }
 
+st::T_SceneControllerPtr
+vwr::ViewHandler::SceneController()
+{
+  if ( !mySceneControllerPtr )
+  {
+    mySceneControllerPtr.reset(new vwr::SceneController(myViewPtr));
+  }
+  return mySceneControllerPtr;
+}
