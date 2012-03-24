@@ -12,12 +12,13 @@
 
 #include "input/Key.h"
 #include "input/Mouse.h"
+#include "input/XBox.h"
 
 #include "boost/shared_ptr.hpp"
 
 namespace vwr
 {
-	class View;
+  class View;
   class InputController;
   
   typedef boost::shared_ptr<InputController> T_InputControllerPtr;
@@ -32,15 +33,26 @@ namespace vwr
     
     void Mouse( const in::Mouse& Mouse );
     
+    // Keyboard key presses
     void KeyPress( const in::Key& Key );
     void KeyRelease( const in::Key& Key );
+  
+    // XBox controller key presses
+    void XKeyPress( const in::XKey& Key );
+    void XKeyRelease( const in::XKey& Key );
+    void LeftTriggerChange( short Value );
+    void RightTriggerChange( short Value );
+    void LeftThumbChange( short X, short Y );
+    void RightThumbChange( short X, short Y );
   
   private:
   
     void SetButton( const in::Key& Key, int Increment);
+    void SetButton( const in::XKey& Key, int Increment);
   
     View* myViewPtr;
   
+    in::XBox myXboxController;
   };
 }
 
