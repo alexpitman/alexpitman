@@ -38,3 +38,16 @@ img::Image::PixelColourEnd() const
 {
   return myPixelColours.end();
 }
+
+att::Colour&
+img::Image::operator() (unsigned int X, unsigned int Y)
+{
+  return myPixelColours[X + Y * myWidth];
+}
+
+const att::Colour&
+img::Image::operator() (unsigned int X, unsigned int Y) const
+{
+  return myPixelColours[X + Y * myWidth];
+}
+    

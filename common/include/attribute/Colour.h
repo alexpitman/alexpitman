@@ -37,6 +37,7 @@ namespace att
     static Colour Random();
     
   private:
+  
     float myRed;
     float myGreen;
     float myBlue;
