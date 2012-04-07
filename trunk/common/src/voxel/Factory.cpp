@@ -65,8 +65,38 @@ vxl::SubBlock<N>* vxl::Factory::GenerateSphere()
   return subBlock;
 }
 
+template <unsigned short N>
+vxl::SubBlock<N>* vxl::Factory::GeneratePlanet(float Radius)
+{
+  vxl::SubBlock<N>* subBlock = new vxl::SubBlock<N>();
+  
+  const float centre = N/2;
+  const float radiusSquared = Radius*Radius;
+  
+  for (unsigned short x = 0; x < N; ++x)
+  {
+    for (unsigned short y = 0; y < N; ++y)
+    {
+      for (unsigned short z = 0; z < N; ++z)
+      {
+        float cx = (float(x) - centre);
+        float cy = (float(y) - centre);
+        float cz = (float(z) - centre);
+        float distance = num::Sqrt(cx*cx + cy*cy + cz*cz) - Radius - num::Noise::Perlin(cx/3.0f, (cy-cz)/3.0f);
+        
+        (*subBlock)(x, y, z) = Voxel(cx*cx + cy*cy + cz*cz > radiusSquared ? 0 : 1, distance);
+      }
+    }
+  }
+  
+  return subBlock;
+}
+
 // Explicit instantiations
 template Dll_vxl vxl::SubBlock<10>* vxl::Factory::GenerateSubBlock<10>();
 template Dll_vxl vxl::SubBlock<64>* vxl::Factory::GenerateSubBlock<64>();
 template Dll_vxl vxl::SubBlock<256>* vxl::Factory::GenerateSubBlock<256>();
 template Dll_vxl vxl::SubBlock<10>* vxl::Factory::GenerateSphere<10>();
+template Dll_vxl vxl::SubBlock<10>* vxl::Factory::GeneratePlanet<10>(float Radius);
+template Dll_vxl vxl::SubBlock<64>* vxl::Factory::GeneratePlanet<64>(float Radius);
+template Dll_vxl vxl::SubBlock<256>* vxl::Factory::GeneratePlanet<256>(float Radius);

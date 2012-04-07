@@ -8,10 +8,9 @@ script.include(script.cwd("../attribute/use.cake"))
 script.include(script.cwd("../image/use.cake"))
 
 compiler.addIncludePath(script.cwd("../../include"))
-compiler.addIncludePath(script.cwd("../../3rdParty/libpng/include"))
-compiler.addIncludePath(script.cwd("../../3rdParty/zlib/include"))
+compiler.addIncludePath(script.cwd("../../3rdParty/DevIL/include"))
 compiler.addDefine("EPT_DLL")
-compiler.addLibrary(script.cwd("../../3rdParty/libpng/lib/libpng.lib"))
+compiler.addLibrary(script.cwd("../../3rdParty/DevIL/lib/DevIL.lib"))
 
 source = script.cwd([
   "ExportImage.cpp",

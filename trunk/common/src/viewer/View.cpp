@@ -168,9 +168,15 @@ vwr::View::GLInitialise()
   mySceneTreePtr->AddNode( st::T_NodePtr(new st::FacetNetworkNode(mySceneTreePtr, blockModelRep)) );
   */
   
+  /*
   std::unique_ptr<vxl::SubBlock<64>> ptr2( vxl::Factory::GenerateSubBlock<64>());
   obj::T_FacetNetworkPtr blockModelRep2 = vxl::Triangulate::SubBlock(*ptr2);
   mySceneTreePtr->AddNode( st::T_NodePtr(new st::FacetNetworkNode(mySceneTreePtr, blockModelRep2)) );
+  */
+  
+  std::unique_ptr<vxl::SubBlock<64>> ptr3( vxl::Factory::GeneratePlanet<64>(20.0f));
+  obj::T_FacetNetworkPtr blockModelRep3 = vxl::Triangulate::SubBlock(*ptr3);
+  mySceneTreePtr->AddNode( st::T_NodePtr(new st::FacetNetworkNode(mySceneTreePtr, blockModelRep3)) );
   
   Renderer()->EnableLighting();
   glEnable(GL_COLOR_MATERIAL);

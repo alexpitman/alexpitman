@@ -7,8 +7,6 @@ filesys.copyFiles(
     "common/3rdParty/qt/lib/QtGui4.lib",
     "common/3rdParty/qt/lib/qtmain.lib",
     "common/3rdParty/directx/lib/XInput.lib",
-    "common/3rdParty/libpng/lib/libpng.lib",
-    "common/3rdParty/zlib/lib/zlib.lib",
   ]),
   targetDir=script.cwd("build/testbed/lib"),
   )
@@ -21,7 +19,6 @@ filesys.copyFiles(
     "common/3rdParty/qt/bin/QtCore4.dll",
     "common/3rdParty/qt/bin/QtOpenGL4.dll",
     "common/3rdParty/qt/bin/QtGui4.dll",
-    "common/3rdParty/libpng/bin/libpng12.dll",
   ]),
   targetDir=script.cwd("build/testbed/bin"),
   )

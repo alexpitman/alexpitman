@@ -28,6 +28,9 @@ namespace img
     std::vector<att::Colour>::const_iterator PixelColourBegin() const;
     std::vector<att::Colour>::const_iterator PixelColourEnd() const;
     
+    att::Colour& operator() (unsigned int X, unsigned int Y);
+    const att::Colour& operator() (unsigned int X, unsigned int Y) const;
+    
   private:
   
     std::vector<att::Colour> myPixelColours;
