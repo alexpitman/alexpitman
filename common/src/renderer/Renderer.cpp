@@ -78,23 +78,52 @@ void ree::Renderer::End() const
   glEnd();
 }
 
-void ree::Renderer::Vertex( geo::Point3D Point ) const
+GLuint ree::Renderer::BeginList() const
+{
+  GLuint id = glGenLists(1);
+  
+  glNewList(id, GL_COMPILE);
+  
+  return id;
+}
+
+void ree::Renderer::EndList() const
+{
+  glEndList();
+}
+
+void ree::Renderer::CallList(GLuint Id) const
+{
+  glCallList(Id);
+}
+
+void ree::Renderer::DeleteList(GLuint Id) const
+{
+  glDeleteLists(Id, 1);
+}
+
+void ree::Renderer::Vertex( const geo::Point3D& Point ) const
 {
   glVertex3f(Point.X(), Point.Y(), Point.Z());
 }
 
-void ree::Renderer::Normal( geo::Vector3D Normal ) const
+void ree::Renderer::Normal( const geo::Vector3D& Normal ) const
 {
   glNormal3f(Normal.X(), Normal.Y(), Normal.Z());
 }
 
 // Colour Operations //////////////////////////////////////////////////////////
-void ree::Renderer::SetColour( att::Colour Colour ) const
+void ree::Renderer::SetColour( const att::Colour& Colour ) const
 {
   glColor4f(Colour.Red(), Colour.Green(), Colour.Blue(), Colour.Alpha());
 }
 
-void ree::Renderer::SetClearColour( att::Colour Colour ) const
+void ree::Renderer::SetColour( const geo::Vector3D& Normal ) const
+{
+  glColor3f(Normal[0]/2 + 0.5f, Normal[1]/2 + 0.5f, Normal[2]/2 + 0.5f);
+}
+
+void ree::Renderer::SetClearColour( const att::Colour& Colour ) const
 {
   glClearColor(Colour.Red(), Colour.Green(), Colour.Blue(), Colour.Alpha());
 }

@@ -8,27 +8,39 @@
 
 #include "numeric/Fractal.h"
 
+/*
 #include "numeric/Noise.h"
+#include "numeric/num.h"
 
-double num::Fractal::FBM(
-  double X,
-  double Y,
-  double Octaves,
-  double Amplitude,
-  double Frequency,
-  double H)
+#include <assert.h>
+
+num::Fractal::FBM::FBM(unsigned int OctaveCount)
+: myOctaveCount(OctaveCount),
+  myLacunarity(0.5f),
+  myFrequency(2.0f)
 {
-  double xFreq = X*Frequency;
-  double yFreq = Y*Frequency;
-  
-  double result = 0.0f;
-  
-  for (int i = 0; i < Octaves-1; ++i)
+  assert(myOctaveCount <= NUMK_MAX_OCTAVES);
+
+  for (int i = 0; i < myOctaveCount; ++i)
   {
-    result += Noise::Basic(xFreq, yFreq) * Amplitude;
-    Amplitude *= H;
+    myExponentArray[i] = Pow(myLacunarity, -i);
   }
-  
-  return result;
 }
 
+float num::Fractal::FBM::Get(float x, float y) const
+{
+  float value = 0.0f;
+  
+  x *= myFrequency;
+  y *= myFrequency;
+  
+  for (unsigned int i = 0; i < myOctaveCount; ++i)
+  {
+    value += myExponentArray[i] * Noise::Interpolated(x, y);
+    x *= myLacunarity;
+    y *= myLacunarity;
+  }
+  
+  return value;
+}
+*/

@@ -22,12 +22,18 @@ namespace st
 			const st::T_SceneTreePtr& Root,
 			const obj::T_FacetNetworkPtr& FacetNetwork );
 	
+    ~FacetNetworkNode();
+  
+    virtual void Build() const;
+  
 		virtual void Render() const;
 	
 	private:
 	
 		obj::T_FacetNetworkPtr myFacetNetwork;
 	
+    mutable bool isRebuildRequired;
+    mutable GLuint myDisplayListId;
 	};
 }
 

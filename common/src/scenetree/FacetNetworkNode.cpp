@@ -16,16 +16,27 @@ st::FacetNetworkNode::FacetNetworkNode(
   const st::T_SceneTreePtr& Root,
   const obj::T_FacetNetworkPtr& FacetNetwork )
 : st::Node(Root),
-  myFacetNetwork(FacetNetwork)
+  myFacetNetwork(FacetNetwork),
+  isRebuildRequired(true),
+  myDisplayListId(0)
 {
 }
 
-void
-st::FacetNetworkNode::Render() const
+st::FacetNetworkNode::~FacetNetworkNode()
 {
-  Renderer()->Begin( ree::TRIANGLES );
+  if (myDisplayListId) Renderer()->DeleteList(myDisplayListId);
+}
+
+void
+st::FacetNetworkNode::Build() const
+{
+  isRebuildRequired = false;
+
+  if (myDisplayListId) Renderer()->DeleteList(myDisplayListId);
   
-  Renderer()->SetColour( att::Colour(0, 1, 0) );
+  myDisplayListId = Renderer()->BeginList();
+
+  Renderer()->Begin( ree::TRIANGLES );
   
   auto points = myFacetNetwork->PointsBegin();
   auto normals = myFacetNetwork->NormalsBegin();
@@ -38,10 +49,13 @@ st::FacetNetworkNode::Render() const
   {
     const tpo::Triple& facet = *fu++;
     
+    Renderer()->SetColour( normals[facet[0]] );
     Renderer()->Normal( normals[facet[0]] );
     Renderer()->Vertex( points[facet[0]] );
+    Renderer()->SetColour( normals[facet[1]] );
     Renderer()->Normal( normals[facet[1]] );
     Renderer()->Vertex( points[facet[1]] );
+    Renderer()->SetColour( normals[facet[2]] );
     Renderer()->Normal( normals[facet[2]] );
     Renderer()->Vertex( points[facet[2]] );
   }
@@ -67,4 +81,14 @@ st::FacetNetworkNode::Render() const
   */
   
   Renderer()->End();
+  
+  Renderer()->EndList();
+}
+
+void
+st::FacetNetworkNode::Render() const
+{
+  if (isRebuildRequired) Build();
+
+  Renderer()->CallList(myDisplayListId);
 }

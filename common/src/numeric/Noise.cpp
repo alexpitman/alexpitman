@@ -55,16 +55,17 @@ float num::Noise::Interpolated(float x, float y)
 float num::Noise::Perlin(float x, float y)
 {
   float total = 0.0f;
-  const float persistence = 0.3f;
-  const short octaves = 6;
-  const float frequencyMod = 0.3f;
   
-  for (short i = 0; i < octaves-1; ++i)
+  const float w = 0.5f;
+  const short octaves = 6;
+  const float s = 2.0f;
+  
+  for (short i = 1; i <= octaves; ++i)
   {
-    const float frequency = frequencyMod*Pow(2, i);
-    const float amplitude = Pow(persistence, i);
+    const float sToI = Pow(s, i);
+    const float wToI = Pow(w, i);
     
-    total += Pow(Interpolated(x*frequency, y*frequency), amplitude);
+    total += wToI * Interpolated(x*sToI, y*sToI);
   }
   return total;
 }

@@ -41,14 +41,20 @@ namespace ree
     // Drawing operations
     void Begin( ree::DrawMode DrawMode ) const;
     void End() const;
-
-    void Vertex( geo::Point3D Point ) const;
-    void Normal( geo::Vector3D Direction ) const;
+	
+	GLuint BeginList() const;
+	void EndList() const;
+	void CallList(GLuint Id) const;
+  void DeleteList(GLuint Id) const;
+	
+    void Vertex( const geo::Point3D& Point ) const;
+    void Normal( const geo::Vector3D& Direction ) const;
     
     /////////////////////////////////////////////////////////////////////////////
     // Colour operations
-    void SetColour( att::Colour Colour ) const;
-    void SetClearColour( att::Colour Colour ) const;
+    void SetColour( const att::Colour& Colour ) const;
+	void SetColour( const geo::Vector3D& Normal ) const;
+    void SetClearColour( const att::Colour& Colour ) const;
     
     /////////////////////////////////////////////////////////////////////////////
     // Lighting operations

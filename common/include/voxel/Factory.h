@@ -22,6 +22,9 @@ namespace vxl
     
     template <unsigned short N>
     Dll_vxl SubBlock<N>* GeneratePlanet(float Radius);
+    
+    template <unsigned short N>
+    Dll_vxl SubBlock<N>* GenerateTerrain();
   }
 }
 
