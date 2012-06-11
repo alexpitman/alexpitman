@@ -8,7 +8,7 @@ script.include(script.cwd("../../3rdParty/accidentalnoise/use.cake"))
 compiler.addIncludePath(script.cwd("../../include"))
 compiler.addIncludePath(script.cwd("../../3rdParty/accidentalnoise/include"))
 compiler.addDefine("NUM_DLL")
-compiler.addLibrary(script.cwd("../../3rdParty/accidentalnoise/bin/accidentalnoise.lib"))
+compiler.addLibrary(script.cwd("../../3rdParty/accidentalnoise/lib/accidentalnoise.lib"))
 
 source = script.cwd([
 	"Fractal.cpp",
