@@ -8,6 +8,9 @@
 
 #include "voxel/Factory.h"
 
+#include "geometry/Vector.h"
+
+#include "numeric/Fractal.h"
 #include "numeric/Noise.h"
 #include "numeric/num.h"
 
@@ -82,9 +85,59 @@ vxl::SubBlock<N>* vxl::Factory::GeneratePlanet(float Radius)
         float cx = (float(x) - centre);
         float cy = (float(y) - centre);
         float cz = (float(z) - centre);
-        float distance = num::Sqrt(cx*cx + cy*cy + cz*cz) - Radius - num::Noise::Perlin(cx/3.0f, (cy-cz)/3.0f);
+        //float distance = num::Sqrt(cx*cx + cy*cy + cz*cz) - Radius*(1.0f + num::Noise::Perlin(cx/3.0f, (cy-cz)/3.0f)*2.0f);
         
-        (*subBlock)(x, y, z) = Voxel(cx*cx + cy*cy + cz*cz > radiusSquared ? 0 : 1, distance);
+        geo::Vector3D dirVector(cx, cy, cz);
+        dirVector.Normalise();
+        
+        float radiusSquaredInDir = radiusSquared + 3.0f * radiusSquared * num::Noise::Perlin(dirVector.X()/5.0f, (dirVector.Z() - dirVector.Y())/3.0f);
+        float radialDistanceToPosition = cx*cx + cy*cy + cz*cz;
+        
+        (*subBlock)(x, y, z) = Voxel(radialDistanceToPosition > radiusSquaredInDir ? 0 : 1, radialDistanceToPosition - radiusSquaredInDir);
+      }
+    }
+  }
+  
+  return subBlock;
+}
+
+template <unsigned short N>
+vxl::SubBlock<N>* vxl::Factory::GenerateTerrain()
+{
+  vxl::SubBlock<N>* subBlock = new vxl::SubBlock<N>();
+
+  num::Gradient gradient;
+  gradient.setGradient(0, 0, 0, 0, 0, 1);
+  
+  num::Fractal fbm(num::FractalTypes::FBM, num::BasisTypes::GRADIENT, num::InterpTypes::QUINTIC);
+  fbm.setNumOctaves(4);
+  fbm.setFrequency(1.4f);
+  
+  num::ScaleOffset scaleOffset(0.5f, 0.0f);
+  scaleOffset.setSource(&fbm);
+  
+  num::ScaleDomain scaleDomain;
+  scaleDomain.setSource(&scaleOffset);
+  scaleDomain.setZScale(0.0f);
+  
+  num::TranslateDomain translateDomain;
+  translateDomain.setSource(&gradient);
+  translateDomain.setZAxisSource(&scaleDomain);
+  
+  for (unsigned short x = 0; x < N; ++x)
+  {
+    const float pX = x / float(N);
+    
+    for (unsigned short y = 0; y < N; ++y)
+    {
+      const float pY = y / float(N);
+      
+      for (unsigned short z = 0; z < N; ++z)
+      {
+        const float pZ = z / float(N);
+        
+        const float number = translateDomain.get(pX, pY, pZ);
+        (*subBlock)(x, y, z) = Voxel(number > 0.5f ? 0 : 1, number - 0.5f);
       }
     }
   }
@@ -100,3 +153,6 @@ template Dll_vxl vxl::SubBlock<10>* vxl::Factory::GenerateSphere<10>();
 template Dll_vxl vxl::SubBlock<10>* vxl::Factory::GeneratePlanet<10>(float Radius);
 template Dll_vxl vxl::SubBlock<64>* vxl::Factory::GeneratePlanet<64>(float Radius);
 template Dll_vxl vxl::SubBlock<256>* vxl::Factory::GeneratePlanet<256>(float Radius);
+template Dll_vxl vxl::SubBlock<10>* vxl::Factory::GenerateTerrain<10>();
+template Dll_vxl vxl::SubBlock<64>* vxl::Factory::GenerateTerrain<64>();
+template Dll_vxl vxl::SubBlock<256>* vxl::Factory::GenerateTerrain<256>();
