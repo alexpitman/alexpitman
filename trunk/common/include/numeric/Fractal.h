@@ -8,48 +8,29 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-#include "numeric/Dll.h"
-
 #include <anl.h>
 
-//#define NUMK_MAX_OCTAVES 16
+#include <implicitinvert.h>
 
 namespace num
 {
   // Enums
-  typedef anl::EFractalTypes FractalTypes;
   typedef anl::EBasisTypes BasisTypes;
+  typedef anl::ECombinerTypes CombinerTypes;
+  typedef anl::EFractalTypes FractalTypes;
   typedef anl::EInterpTypes InterpTypes;
-  
+
   // Classes
+  typedef anl::CImplicitBias Bias;
+  typedef anl::CImplicitCache Cache;
+  typedef anl::CImplicitCombiner Combiner;
   typedef anl::CImplicitFractal Fractal;
   typedef anl::CImplicitGradient Gradient;
+  typedef anl::CImplicitInvert Invert;
   typedef anl::CImplicitScaleDomain ScaleDomain;
   typedef anl::CImplicitScaleOffset ScaleOffset;
+  typedef anl::CImplicitSelect Select;
   typedef anl::CImplicitTranslateDomain TranslateDomain;
-  /*
-  namespace Fractal
-  {
-    
-  
-    
-    class Dll_num FBM
-    {
-    public:
-    
-      FBM(unsigned int OctaveCount);
-      
-      float Get(float x, float y) const;
-      
-    private:
-    
-      float myFrequency;
-      float myLacunarity;
-      float myExponentArray[NUMK_MAX_OCTAVES];
-      unsigned int myOctaveCount;
-    };
-  }
-  */
 }
 
 #endif

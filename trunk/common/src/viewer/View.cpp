@@ -101,10 +101,14 @@ vwr::View::Render()
     glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
     break;
   case ree::RENDER_TRIANGLES:
-    glPolygonMode( GL_FRONT, GL_FILL );
+    //glPolygonMode( GL_FRONT, GL_FILL );
+    glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
     break;
   default: assert(false); // Unreachable
   }
+  
+  // HACK
+  glDisable(GL_LIGHTING);
   
   // Render Geometry
   mySceneTreePtr->Render();
@@ -185,7 +189,6 @@ vwr::View::GLInitialise()
   
   Renderer()->SetClearColour( att::Colour(0, 0, 0) );
   
-  //glPointSize(5);
   glEnable(GL_DEPTH_TEST);
   glEnable(GL_CULL_FACE);
   glShadeModel(GL_SMOOTH);
