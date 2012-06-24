@@ -61,14 +61,12 @@ st::FacetNetworkNode::Build() const
   }
   
   Renderer()->End();
-  
+  /*
+  // Render normals.
   Renderer()->Begin( ree::LINES );
   
   Renderer()->SetColour( att::Colour(1, 0, 0) );
   
-  
-  // Render normals.
-  /*
   auto pu = myFacetNetwork->PointsBegin();
   auto pv = myFacetNetwork->PointsEnd();
   auto nu = myFacetNetwork->NormalsBegin();
@@ -78,10 +76,10 @@ st::FacetNetworkNode::Build() const
     Renderer()->Vertex( *pu );
     Renderer()->Vertex( *pu++ + *nu++ );
   }
-  */
+  
   
   Renderer()->End();
-  
+  */
   Renderer()->EndList();
 }
 
