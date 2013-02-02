@@ -13,7 +13,9 @@
 
 obj::FacetNetwork::FacetNetwork()
 : myPoints(),
-  myFacets()
+  myFacets(),
+  myNormals(),
+  myFacetColours()
 {
 }
 
@@ -24,7 +26,8 @@ obj::FacetNetwork::FacetNetwork(
   const tpo::Triple* FacetsEnd )
 : myPoints(PointsBegin, PointsEnd),
   myFacets(FacetsBegin, FacetsEnd),
-  myNormals()
+  myNormals(),
+  myFacetColours()
 {
   Reconcile();
 
@@ -38,7 +41,8 @@ obj::FacetNetwork::FacetNetwork(
   std::vector<tpo::Triple>::const_iterator FacetsEnd )
 : myPoints(PointsBegin, PointsEnd),
   myFacets(FacetsBegin, FacetsEnd),
-  myNormals()
+  myNormals(),
+  myFacetColours()
 {
   Reconcile();
   
@@ -54,9 +58,27 @@ obj::FacetNetwork::FacetNetwork(
   std::vector<geo::Vector3D>::const_iterator NormalsEnd )
 : myPoints(PointsBegin, PointsEnd),
   myFacets(FacetsBegin, FacetsEnd),
-  myNormals(NormalsBegin, NormalsEnd)
+  myNormals(NormalsBegin, NormalsEnd),
+  myFacetColours()
 {
   Reconcile();
+}
+
+obj::FacetNetwork::FacetNetwork(
+  std::vector<geo::Point3D>::const_iterator PointsBegin,
+  std::vector<geo::Point3D>::const_iterator PointsEnd,
+  std::vector<tpo::Triple>::const_iterator FacetsBegin,
+  std::vector<tpo::Triple>::const_iterator FacetsEnd,
+  std::vector<att::Colour>::const_iterator FacetColoursBegin,
+  std::vector<att::Colour>::const_iterator FacetColoursEnd )
+: myPoints(PointsBegin, PointsEnd),
+  myFacets(FacetsBegin, FacetsEnd),
+  myNormals(),
+  myFacetColours(FacetColoursBegin, FacetColoursEnd)
+{
+  Reconcile();
+  
+  CalculatePerPointNormals();
 }
 
 std::vector<geo::Point3D>::const_iterator
@@ -93,6 +115,18 @@ std::vector<geo::Vector3D>::const_iterator
 obj::FacetNetwork::NormalsEnd() const
 {
   return myNormals.cend();
+}
+
+std::vector<att::Colour>::const_iterator
+obj::FacetNetwork::FacetColoursBegin() const
+{
+  return myFacetColours.cbegin();
+}
+
+std::vector<att::Colour>::const_iterator
+obj::FacetNetwork::FacetColoursEnd() const
+{
+  return myFacetColours.cend();
 }
 
 void obj::FacetNetwork::CalculatePerPointNormals()
@@ -172,4 +206,6 @@ void obj::FacetNetwork::Reconcile()
     facet[1] = newPointIndex[facet[1]];
     facet[2] = newPointIndex[facet[2]];
   }
+  
+  // TODO remove duplicate facets
 }

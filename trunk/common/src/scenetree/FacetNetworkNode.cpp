@@ -44,18 +44,23 @@ st::FacetNetworkNode::Build() const
   auto fu = myFacetNetwork->FacetsBegin();
   auto fv = myFacetNetwork->FacetsEnd();
   
+  auto fcu = myFacetNetwork->FacetColoursBegin();
+  bool isFacetColoured = fcu != myFacetNetwork->FacetColoursEnd();
+  
   // Use specifed per-point normals
   while ( fu != fv )
   {
     const tpo::Triple& facet = *fu++;
     
-    Renderer()->SetColour( normals[facet[0]] );
+    if (isFacetColoured) Renderer()->SetColour( *fcu++ );
+    
+    if (!isFacetColoured) Renderer()->SetColour( normals[facet[0]] );
     Renderer()->Normal( normals[facet[0]] );
     Renderer()->Vertex( points[facet[0]] );
-    Renderer()->SetColour( normals[facet[1]] );
+    if (!isFacetColoured) Renderer()->SetColour( normals[facet[1]] );
     Renderer()->Normal( normals[facet[1]] );
     Renderer()->Vertex( points[facet[1]] );
-    Renderer()->SetColour( normals[facet[2]] );
+    if (!isFacetColoured) Renderer()->SetColour( normals[facet[2]] );
     Renderer()->Normal( normals[facet[2]] );
     Renderer()->Vertex( points[facet[2]] );
   }

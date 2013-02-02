@@ -4,6 +4,7 @@
 from cake.tools import compiler, script
 
 # include dependencies
+script.include(script.cwd("../attribute/use.cake"))
 script.include(script.cwd("../object/use.cake"))
 script.include(script.cwd("../geometry/use.cake"))
 script.include(script.cwd("../topology/use.cake"))
