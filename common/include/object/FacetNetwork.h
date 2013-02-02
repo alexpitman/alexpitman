@@ -14,6 +14,8 @@
 
 #include "geometry/Point.H"
 
+#include "attribute/Colour.H"
+
 #include <vector>
 
 namespace obj
@@ -45,6 +47,13 @@ namespace obj
       std::vector<tpo::Triple>::const_iterator FacetsEnd,
       std::vector<geo::Vector3D>::const_iterator NormalsBegin,
       std::vector<geo::Vector3D>::const_iterator NormalsEnd );
+    FacetNetwork(
+      std::vector<geo::Point3D>::const_iterator PointsBegin,
+      std::vector<geo::Point3D>::const_iterator PointsEnd,
+      std::vector<tpo::Triple>::const_iterator FacetsBegin,
+      std::vector<tpo::Triple>::const_iterator FacetsEnd,
+      std::vector<att::Colour>::const_iterator FacetColourBegin,
+      std::vector<att::Colour>::const_iterator FacetColourEnd );
     
     // Const accessors
     std::vector<geo::Point3D>::const_iterator PointsBegin() const;
@@ -53,6 +62,8 @@ namespace obj
     std::vector<tpo::Triple>::const_iterator FacetsEnd() const;
     std::vector<geo::Vector3D>::const_iterator NormalsBegin() const;
     std::vector<geo::Vector3D>::const_iterator NormalsEnd() const;
+    std::vector<att::Colour>::const_iterator FacetColoursBegin() const;
+    std::vector<att::Colour>::const_iterator FacetColoursEnd() const;
     
   private:
   
@@ -64,6 +75,7 @@ namespace obj
     std::vector<tpo::Triple> myFacets;
     std::vector<geo::Vector3D> myNormals;
     
+    std::vector<att::Colour> myFacetColours;
   };
 }
 

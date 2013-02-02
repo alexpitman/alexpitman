@@ -89,13 +89,16 @@ namespace local
   class C_Triangulation
   {
   public:
-    C_Triangulation();
-    C_Triangulation(const std::vector<tpo::Triple>& Facets);
+    C_Triangulation(unsigned short Classification = 0,
+                    const std::vector<tpo::Triple>& Facets = std::vector<tpo::Triple>());
     
     std::vector<tpo::Triple>::const_iterator FacetsBegin() const;
     std::vector<tpo::Triple>::const_iterator FacetsEnd() const;
     
+    unsigned short Classification() const;
+    
   private:
+    unsigned short myClassification;
     std::vector<tpo::Triple> myFacets;
   };
   
@@ -143,6 +146,8 @@ void local::GenerateLookupTable()
   {
     C_PointStatus pointStatus(bitPattern);
   
+    const unsigned char pointCount = pointStatus.PointCount();
+    
     unsigned short classificationNumber = FindClassification(pointStatus);
   
     lookup[bitPattern] = GenerateTriangulation(pointStatus, classificationNumber, false);
@@ -369,6 +374,7 @@ unsigned short local::FindClassification(C_PointStatus& PointStatus)
   //  1-----------1
   //
   // For higher numbers of "1"s the inverted case can be seen
+  // However this may require a different triangulation in these cases.
     
   switch (pointCount > 4 ? 8 - pointCount : pointCount)
   {
@@ -602,8 +608,10 @@ local::GenerateTriangulation(const C_PointStatus& PointStatus, unsigned short Cl
     facets.push_back(tpo::Triple(1, 8, 9));
     break;
   case 3:
-    facets.push_back(tpo::Triple(0, 3, 8));
-    facets.push_back(tpo::Triple(4, 5, 9));
+    facets.push_back(tpo::Triple(0, 5, 9));
+    facets.push_back(tpo::Triple(0, 3, 5));
+    facets.push_back(tpo::Triple(3, 8, 5));
+    facets.push_back(tpo::Triple(8, 4, 5));
     break;
   case 4:
     facets.push_back(tpo::Triple(0, 3, 8));
@@ -615,14 +623,26 @@ local::GenerateTriangulation(const C_PointStatus& PointStatus, unsigned short Cl
     facets.push_back(tpo::Triple(8, 9, 10));
     break;
   case 6:
-    facets.push_back(tpo::Triple(1, 2, 8));
+    if (PointStatus.IsInverted())
+    {
+      facets.push_back(tpo::Triple(1, 9, 5));
+      facets.push_back(tpo::Triple(1, 5,10));
+    }
+    facets.push_back(tpo::Triple(1, 3, 8));
     facets.push_back(tpo::Triple(1, 8, 9));
     facets.push_back(tpo::Triple(5, 6, 10));
     break;
   case 7:
-    facets.push_back(tpo::Triple(0, 3, 8));
-    facets.push_back(tpo::Triple(2, 1, 10));
-    facets.push_back(tpo::Triple(4, 5, 9));
+    if (PointStatus.IsInverted())
+    {
+      facets.push_back(tpo::Triple(0, 1, 2));
+    }
+    else
+    {
+      facets.push_back(tpo::Triple(0, 3, 8));
+      facets.push_back(tpo::Triple(2, 1, 10));
+      facets.push_back(tpo::Triple(4, 5, 9));
+    }
     break;
   case 8:
     facets.push_back(tpo::Triple(8, 9, 10));
@@ -659,10 +679,20 @@ local::GenerateTriangulation(const C_PointStatus& PointStatus, unsigned short Cl
     facets.push_back(tpo::Triple(0, 7, 3));
     break;
   case 14:
-    facets.push_back(tpo::Triple(1, 2, 8));
-    facets.push_back(tpo::Triple(1, 8, 9));
-    facets.push_back(tpo::Triple(5, 10, 11));
-    facets.push_back(tpo::Triple(5, 11, 7));
+    if (PointStatus.IsInverted())
+    {
+      facets.push_back(tpo::Triple(8, 9, 5));
+      facets.push_back(tpo::Triple(8, 5, 7));
+      facets.push_back(tpo::Triple(1, 3, 11));
+      facets.push_back(tpo::Triple(1, 11,10));
+    }
+    else
+    {
+      facets.push_back(tpo::Triple(1, 3, 8));
+      facets.push_back(tpo::Triple(1, 8, 9));
+      facets.push_back(tpo::Triple(5, 10, 11));
+      facets.push_back(tpo::Triple(5, 11, 7));
+    }
     break;
   default:
     assert(false); // Should not be possible to get here.
@@ -674,7 +704,9 @@ local::GenerateTriangulation(const C_PointStatus& PointStatus, unsigned short Cl
   // the number of points that will be inserted. The ordering of the point insertion should be
   // the same as the the edge indexing.
   
-  return C_Triangulation(facets);
+  assert(!facets.empty());
+  
+  return C_Triangulation(ClassificationNumber, facets);
 }
 
 void local::CorrectFacets(const C_PointStatus& PointStatus, std::vector<tpo::Triple>& Facets, bool print)
@@ -707,22 +739,18 @@ void local::CorrectFacets(const C_PointStatus& PointStatus, std::vector<tpo::Tri
     case 'y':
       while (fu != fv)
       {
-        //if (print) std::cout << "BEFORE Y: " << (*fu)[0] << " " << (*fu)[1] << " " << (*fu)[2] << std::endl;
         (*fu)[0] = RotateEdgeY((*fu)[0]);
         (*fu)[1] = RotateEdgeY((*fu)[1]);
         (*fu)[2] = RotateEdgeY((*fu)[2]);
-        //if (print) std::cout << "AFTER Y: " << (*fu)[0] << " " << (*fu)[1] << " " << (*fu)[2] << std::endl;
         ++fu;
       }
       break;
     case 'z':
       while (fu != fv)
       {
-        //if (print) std::cout << "BEFORE Z: " << (*fu)[0] << " " << (*fu)[1] << " " << (*fu)[2] << std::endl;
         (*fu)[0] = RotateEdgeZ((*fu)[0]);
         (*fu)[1] = RotateEdgeZ((*fu)[1]);
         (*fu)[2] = RotateEdgeZ((*fu)[2]);
-        //if (print) std::cout << "AFTER Z: " << (*fu)[0] << " " << (*fu)[1] << " " << (*fu)[2] << std::endl;
         ++fu;
       }
       break;
@@ -736,14 +764,9 @@ void local::CorrectFacets(const C_PointStatus& PointStatus, std::vector<tpo::Tri
   if (PointStatus.IsInverted())
   {
     // Flip the orientation of the facets.
-    auto fu = Facets.begin();
-    auto fv = Facets.end();
-    while (fu != fv)
+    for (auto fu = Facets.begin(), fv = Facets.end(); fu != fv; ++fu)
     {
-      unsigned short temp = (*fu)[1];
-      (*fu)[1] = (*fu)[2];
-      (*fu)[2] = temp;
-      ++fu;
+      std::swap((*fu)[1], (*fu)[2]);
     }
   }
   
@@ -1011,15 +1034,18 @@ void local::C_PointStatus::Invert()
   isInverted = !isInverted;
 }
 
-local::C_Triangulation::C_Triangulation()
-: myFacets()
+local::C_Triangulation::C_Triangulation(
+  unsigned short Classification,
+  const std::vector<tpo::Triple>& Facets)
+: myClassification(Classification),
+  myFacets(Facets.begin(), Facets.end())
 {
 }
 
-local::C_Triangulation::C_Triangulation(
-  const std::vector<tpo::Triple>& Facets)
-: myFacets(Facets.begin(), Facets.end())
+unsigned short
+local::C_Triangulation::Classification() const
 {
+  return myClassification;
 }
 
 std::vector<tpo::Triple>::const_iterator
@@ -1039,6 +1065,7 @@ obj::T_FacetNetworkPtr vxl::Triangulate::SubBlock(const vxl::SubBlock<N>& SubBlo
 {
   std::vector<geo::Point3D> points;
   std::vector<tpo::Triple> facets;
+  std::vector<att::Colour> facetColours;
   
   // We are numbering the neighbouring Voxels as such below:
   //      7-----------6
@@ -1154,14 +1181,63 @@ obj::T_FacetNetworkPtr vxl::Triangulate::SubBlock(const vxl::SubBlock<N>& SubBlo
         auto fv = triangulation.FacetsEnd();
         while (fu != fv)
         {
+          /*if (triangulation.Classification() != 8 &&
+              triangulation.Classification() != 7 &&
+              triangulation.Classification() != 1 &&
+              triangulation.Classification() != 6 &&
+              triangulation.Classification() != 11 &&
+              triangulation.Classification() != 2 &&
+              triangulation.Classification() != 3)
+          {
+            ++fu;
+            continue;
+          }*/
+        
           facets.push_back(tpo::Triple( pointIndicies[(*fu)[0]], pointIndicies[(*fu)[1]], pointIndicies[(*fu)[2]] ));
+          
+          switch (triangulation.Classification())
+          {
+          case 3:
+            facetColours.push_back(att::Colour(128, 0, 255));
+            break;
+          case 4:
+            facetColours.push_back(att::Colour(0, 128, 128));
+            break;
+          case 5:
+            facetColours.push_back(att::Colour(128, 128, 0));
+            break;
+          case 6:
+            facetColours.push_back(att::Colour(255, 0, 0));
+            break;
+          case 7:
+            facetColours.push_back(att::Colour(0, 0, 255));
+            break;
+          case 8:
+            facetColours.push_back(att::Colour(255, 0, 255));
+            break;
+          case 9:
+            facetColours.push_back(att::Colour(255, 255, 0));
+            break;
+          case 10:
+            facetColours.push_back(att::Colour(0, 255, 255));
+            break;
+          case 11:
+            facetColours.push_back(att::Colour(128, 128, 128));
+            break;
+          default:
+            facetColours.push_back(att::Colour(0, 255, 0));
+            break;
+          }
           ++fu;
         }
       }
     }
   }
   
-  return obj::T_FacetNetworkPtr( new obj::FacetNetwork(points.begin(), points.end(), facets.begin(), facets.end()) );
+  return obj::T_FacetNetworkPtr( new obj::FacetNetwork(
+    points.begin(), points.end(),
+    facets.begin(), facets.end()/*,
+    facetColours.begin(), facetColours.end()*/) );
 }
 
 // Explicit instantiations
