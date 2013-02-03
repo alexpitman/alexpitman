@@ -9,6 +9,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 #include "voxel/SubBlock.h"
+#include "voxel/TerrainDescriptor.h"
 
 namespace vxl
 {
@@ -24,7 +25,7 @@ namespace vxl
     Dll_vxl SubBlock<N>* GeneratePlanet(float Radius);
     
     template <unsigned short N>
-    Dll_vxl SubBlock<N>* GenerateTerrain();
+    Dll_vxl SubBlock<N>* GenerateTerrain(const vxl::TerrainDescriptor& Descriptor, const geo::Vector3D& Offset);
   }
 }
 

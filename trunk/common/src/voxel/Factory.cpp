@@ -102,96 +102,30 @@ vxl::SubBlock<N>* vxl::Factory::GeneratePlanet(float Radius)
 }
 
 template <unsigned short N>
-vxl::SubBlock<N>* vxl::Factory::GenerateTerrain()
+vxl::SubBlock<N>* vxl::Factory::GenerateTerrain(
+  const vxl::TerrainDescriptor& Descriptor,
+  const geo::Vector3D& Offset)
 {
-  vxl::SubBlock<N>* subBlock = new vxl::SubBlock<N>();
+  vxl::SubBlock<N>* subBlock = new vxl::SubBlock<N>(Offset);
 
-  // Ground level
-  num::Gradient gradient;
-  gradient.setGradient(0, 0, 0, 0, 1, 0);
-  
-  num::Fractal fbm(num::FractalTypes::FBM, num::BasisTypes::GRADIENT, num::InterpTypes::QUINTIC);
-  fbm.setNumOctaves(4);
-  fbm.setFrequency(1.4f);
-  
-  num::ScaleOffset scaleOffset(0.5f, 0.0f);
-  scaleOffset.setSource(&fbm);
-  
-  num::ScaleDomain scaleDomain;
-  scaleDomain.setSource(&scaleOffset);
-  scaleDomain.setZScale(0.0f);
-  
-  num::TranslateDomain translateDomain;
-  translateDomain.setSource(&gradient);
-  translateDomain.setZAxisSource(&scaleDomain);
-  
-  num::Cache groundDomainCache;
-  groundDomainCache.setSource(&translateDomain);
-  
-  num::Select groundSelect;
-  groundSelect.setLowSource(0.0f);
-  groundSelect.setHighSource(1.0f);
-  groundSelect.setControlSource(&groundDomainCache);
-  groundSelect.setThreshold(0.5f);
-  
-  // Caves
-  num::Bias cave_attenuate(0.5f);
-  cave_attenuate.setSource(&groundDomainCache);
-  
-  num::Fractal cave_rm0(num::FractalTypes::RIDGEDMULTI, num::BasisTypes::GRADIENT, num::InterpTypes::QUINTIC);
-  cave_rm0.setNumOctaves(1);
-  cave_rm0.setFrequency(1.5f);
-  num::Fractal cave_rm1(num::FractalTypes::RIDGEDMULTI, num::BasisTypes::GRADIENT, num::InterpTypes::QUINTIC);
-  cave_rm1.setNumOctaves(1);
-  cave_rm1.setFrequency(1.5f);
-  cave_rm1.setSeed(5);
-  
-  num::Combiner cave_combine(num::CombinerTypes::MULT);
-  cave_combine.setSource(0, &cave_rm0);
-  cave_combine.setSource(1, &cave_attenuate);
-  cave_combine.setSource(2, &cave_rm1);
-  
-  num::Fractal cave_perturb_fbm(num::FractalTypes::FBM, num::BasisTypes::GRADIENT, num::InterpTypes::QUINTIC);
-  cave_perturb_fbm.setNumOctaves(6);
-  cave_perturb_fbm.setFrequency(3.0f);
-  
-  num::ScaleOffset cave_perturb_scale(0.5f, 0.0f);
-  cave_perturb_scale.setSource(&cave_perturb_fbm);
-  
-  num::TranslateDomain cave_perturb;
-  cave_perturb.setSource(&cave_combine);
-  cave_perturb.setYAxisSource(&cave_perturb_scale);
-  
-  num::Select caveSelect;
-  caveSelect.setLowSource(1.0f);
-  caveSelect.setHighSource(0.0f);
-  caveSelect.setThreshold(0.48f);
-  caveSelect.setFalloff(0.0f);
-  caveSelect.setControlSource(&cave_perturb);
-
-  // Overall combination.
-  num::Combiner overallCombine(num::CombinerTypes::MULT);
-  overallCombine.setSource(0, &caveSelect);
-  overallCombine.setSource(1, &groundSelect);
-  
   for (unsigned short x = 0; x < N; ++x)
   {
-    const float pX = x / float(N);
+    const float pX = Offset.X() + x / float(N);
     
     for (unsigned short y = 0; y < N; ++y)
     {
-      const float pY = y / float(N);
+      const float pY = Offset.Y() + y / float(N);
       
       for (unsigned short z = 0; z < N; ++z)
       {
-        const float pZ = z / float(N);
+        const float pZ = Offset.Z() + z / float(N);
         
-        const float number = overallCombine.get(pX, pY, pZ);
+        const float number = Descriptor.Evaluate(pX, pY, pZ);
         (*subBlock)(x, y, z) = Voxel(number > 0.5f ? 1 : 0, number - 0.5f);
       }
     }
   }
-  
+
   return subBlock;
 }
 
@@ -203,6 +137,6 @@ template Dll_vxl vxl::SubBlock<10>* vxl::Factory::GenerateSphere<10>();
 template Dll_vxl vxl::SubBlock<10>* vxl::Factory::GeneratePlanet<10>(float Radius);
 template Dll_vxl vxl::SubBlock<64>* vxl::Factory::GeneratePlanet<64>(float Radius);
 template Dll_vxl vxl::SubBlock<256>* vxl::Factory::GeneratePlanet<256>(float Radius);
-template Dll_vxl vxl::SubBlock<10>* vxl::Factory::GenerateTerrain<10>();
-template Dll_vxl vxl::SubBlock<64>* vxl::Factory::GenerateTerrain<64>();
-template Dll_vxl vxl::SubBlock<256>* vxl::Factory::GenerateTerrain<256>();
+template Dll_vxl vxl::SubBlock<10>* vxl::Factory::GenerateTerrain<10>(const vxl::TerrainDescriptor& Descriptor, const geo::Vector3D& Offset);
+template Dll_vxl vxl::SubBlock<64>* vxl::Factory::GenerateTerrain<64>(const vxl::TerrainDescriptor& Descriptor, const geo::Vector3D& Offset);
+template Dll_vxl vxl::SubBlock<256>* vxl::Factory::GenerateTerrain<256>(const vxl::TerrainDescriptor& Descriptor, const geo::Vector3D& Offset);

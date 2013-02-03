@@ -16,6 +16,7 @@ compiler.addDefine("VXL_DLL")
 source = script.cwd([
   "Factory.cpp",
   "SubBlock.cpp",
+  "TerrainDescriptor.cpp",
   "Triangulate.cpp",
   "Voxel.cpp",
   ])

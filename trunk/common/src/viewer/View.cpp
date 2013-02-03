@@ -173,10 +173,19 @@ vwr::View::GLInitialise()
   */
   
   
-  std::unique_ptr<vxl::SubBlock<64>> ptr2( vxl::Factory::GenerateTerrain<64>());
-  obj::T_FacetNetworkPtr blockModelRep2 = vxl::Triangulate::SubBlock(*ptr2);
-  mySceneTreePtr->AddNode( st::T_NodePtr(new st::FacetNetworkNode(mySceneTreePtr, blockModelRep2)) );
+  vxl::TerrainDescriptor descriptor(false);
   
+  const int tileCountX = 2;
+  const int tileCountY = 2;
+  for (int x = 0; x < tileCountX; ++x)
+  {
+    for (int y = 0; y < tileCountY; ++y)
+    {
+      std::unique_ptr<vxl::SubBlock<64>> subBlockArea( vxl::Factory::GenerateTerrain<64>(descriptor, geo::Vector3D(x, y, 0.0)));
+      obj::T_FacetNetworkPtr blockModelRep = vxl::Triangulate::SubBlock(*subBlockArea);
+      mySceneTreePtr->AddNode( st::T_NodePtr(new st::FacetNetworkNode(mySceneTreePtr, blockModelRep)) );
+    }
+  }
   
   /*
   std::unique_ptr<vxl::SubBlock<64>> ptr3( vxl::Factory::GeneratePlanet<64>(20.0f));
