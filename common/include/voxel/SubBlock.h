@@ -11,6 +11,8 @@
 #include "voxel/Dll.h"
 #include "voxel/Voxel.h"
 
+#include "geometry/Vector.h"
+
 namespace vxl
 {
   template <unsigned short N>
@@ -18,13 +20,18 @@ namespace vxl
   {
   public:
   
-    SubBlock();
+    SubBlock(const geo::Vector3D& Offset = geo::Vector3D::Zero());
     
-    // Indexing
+    // Offset.
+    const geo::Vector3D& Offset() const;
+    
+    // Indexing.
     Voxel& operator() (int X, int Y, int Z);
     const Voxel& operator() (int X, int Y, int Z) const;
     
   private:
+  
+    geo::Vector3D myOffset;
   
     Voxel myVoxels[N][N][N];
   };

@@ -1105,6 +1105,9 @@ obj::T_FacetNetworkPtr vxl::Triangulate::SubBlock(const vxl::SubBlock<N>& SubBlo
   local::T_TripleIndexMap yEdgeIndexMap;
   local::T_TripleIndexMap zEdgeIndexMap;
   
+  const float offsetX = SubBlock.Offset().X() * N;
+  const float offsetY = SubBlock.Offset().Y() * N;
+  const float offsetZ = SubBlock.Offset().Z() * N;
   for (tpo::T_Index x = 0; x < N-1; ++x)
   {
     for (tpo::T_Index y = 0; y < N-1; ++y)
@@ -1112,7 +1115,7 @@ obj::T_FacetNetworkPtr vxl::Triangulate::SubBlock(const vxl::SubBlock<N>& SubBlo
       for (tpo::T_Index z = 0; z < N-1; ++z)
       {
         // We centre position on the origin
-        const geo::Point3D p0(int(x) - N/2, int(y) - N/2, int(z) - N/2);
+        const geo::Point3D p0(int(x) - N/2 + offsetX, int(y) - N/2 + offsetY, int(z) - N/2 + offsetZ);
         const geo::Point3D p1(p0.X()+1, p0.Y(),   p0.Z());
         const geo::Point3D p2(p0.X()+1, p0.Y()+1, p0.Z());
         const geo::Point3D p3(p0.X(),   p0.Y()+1, p0.Z());
