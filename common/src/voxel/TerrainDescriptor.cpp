@@ -51,10 +51,12 @@ vxl::TerrainDescriptor::TerrainDescriptor(bool EnableCaves)
   myGroundSelect.setControlSource(&myGroundDomainCache);
   myGroundSelect.setThreshold(0.5f);
   
-  myOverallCombine.setSource(1, &myGroundSelect);
+  myOverallCombine.setSource(1, &myGroundDomainCache);
   
   if (EnableCaves)
   {
+    // TODO SMOOTH CAVES
+  
     // Caves
     myCaveAttenuate.setSource(&myGroundDomainCache);
     
@@ -83,6 +85,7 @@ vxl::TerrainDescriptor::TerrainDescriptor(bool EnableCaves)
     myCaveSelect.setControlSource(&myCavePerturb);
     
     myOverallCombine.setSource(1, &myCaveSelect);
+    //myOverallCombine.setSource(1, &myCavePerturb);
   }
 }
 
