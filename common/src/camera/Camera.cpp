@@ -2,7 +2,7 @@
 //
 // Name           : Camera
 // Inheritance    : Base class
-// Desctription   : See header file.
+// Description    : See header file.
 //
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -10,8 +10,6 @@
 
 #include "geometry/Transform.h"
 #include "geometry/Rotation.h"
-
-#include <glu.h>
 
 cmr::Camera::Camera()
 : myPosition(geo::Point3D::Origin()),
@@ -48,15 +46,6 @@ const geo::Vector3D&
 cmr::Camera::UpDirection() const
 {
   return myUpDirection;
-}
-
-void
-cmr::Camera::SetCamera() const
-{
-  gluLookAt(
-    myPosition.X(), myPosition.Y(), myPosition.Z(),
-    myPosition.X() + myLookDirection.X(), myPosition.Y() + myLookDirection.Y(), myPosition.Z() + myLookDirection.Z(),
-    myUpDirection.X(), myUpDirection.Y(), myUpDirection.Z() );
 }
 
 void

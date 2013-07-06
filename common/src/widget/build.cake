@@ -1,66 +1,51 @@
+# GENERATED
 #-------------------------------------------------------------------------------
-# Script used to build the widget library.
+# Script that can be run to build the widget library.
 #-------------------------------------------------------------------------------
-from cake.tools import compiler, script, shell
+from glob import glob
+import re
+from os import path
 from cake.filesys import makeDirs
+from cake.tools import compiler, script, shell
 
-# include dependencies
-script.include(script.cwd("../geometry/use.cake"))
-script.include(script.cwd("../viewer/use.cake"))
-script.include(script.cwd("../scenetree/use.cake"))
-script.include(script.cwd("../input/use.cake"))
+script.include(script.cwd("../viewer/include.cake"))
+script.include(script.cwd("../input/include.cake"))
 
-compiler.addIncludePath(script.cwd("../../include"))
-compiler.addIncludePath(script.cwd("../../3rdParty/boost/include"))
-compiler.addIncludePath(script.cwd("../../3rdParty/gl/include"))
-compiler.addIncludePath(script.cwd("../../3rdParty/qt/include"))
-compiler.addIncludePath(script.cwd("../../3rdParty/qt/include/QtCore"))
-compiler.addIncludePath(script.cwd("../../3rdParty/qt/include/QtGui"))
-compiler.addIncludePath(script.cwd("../../3rdParty/qt/include/QtOpenGL"))
-compiler.addDefine("WID_DLL")
-compiler.addDefine("QT_DLL")
-compiler.addLibrary(script.cwd("../../3rdParty/qt/lib/QtCore4.lib"))
-compiler.addLibrary(script.cwd("../../3rdParty/qt/lib/QtGui4.lib"))
-compiler.addLibrary(script.cwd("../../3rdParty/qt/lib/QtOpenGL4.lib"))
+compiler.addDefine("WIDGET_DLL")
 
-moc_exe = script.cwd("../../3rdParty/qt/bin/moc.exe")
+source = glob(path.join(script.cwd(), "*.cpp"))
 
-moc_files = [
-	"GLWidget",
-	"ViewWindow",
-	]
+allHeaders = glob(path.join(script.cwd(), "../../include/widget/*.h"))
+mocHeaders = []
+for file in allHeaders:
+  with open(file, "r") as f:
+    fileContent = f.read()
+    match = re.search("Q_OBJECT", fileContent)
+    if match:
+      head, tail = path.split(file)
+      mocHeaders.append(file)
 
-source = []
-
-# Build the moc files
 makeDirs(script.cwd("../../../build/testbed/moc/widget"))
-for f in moc_files:
-	h_file = script.cwd("../../include/widget/" + f + ".h")
-	moc_file = script.cwd("../../../build/testbed/moc/widget/m" + f + ".cpp")
-	cpp_file = script.cwd(f + ".cpp")
+for file in mocHeaders:
+  head, tail = path.split(file)
+  mocFile = script.cwd("../../../build/testbed/moc/widget/m_" + tail)
+  shell.run(
+    args=[
+      script.cwd("../../3rdParty/qt/bin/moc.exe"),
+      "-i", file,
+      "-o", mocFile, "-f" ],
+    targets=[mocFile],
+    sources=[file])
+  source.append(mocFile)
 
-	shell.run(
-		args=[
-			moc_exe, 
-			"-i", h_file,
-			"-o", moc_file, "-f" ],
-		targets=[],
-		sources=[],
-  )
-	
-	source.append(moc_file)
-	source.append(cpp_file)
-	
 objects = compiler.objects(
-	targetDir=script.cwd("../../../build/testbed/obj/widget"),
-	sources=source,
-	)
-
+  targetDir=script.cwd("../../../build/testbed/obj/widget"),
+  sources=source,
+  )
 module = compiler.module(
-	target=script.cwd("../../../build/testbed/bin/widget.dll"),
-	sources=objects,
-	)
-
+  target=script.cwd("../../../build/testbed/bin/widget.dll"),
+  sources=objects,
+  )
 lib = script.cwd("../../../build/testbed/bin/widget.lib")
 
 script.setResult(library=lib)

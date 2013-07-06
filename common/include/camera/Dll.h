@@ -8,7 +8,7 @@
 
 #include "config/Dll.h"
 
-#ifdef CMR_DLL
+#ifdef CAMERA_DLL
 # define Dll_cmr Dll_export
 #else
 # define Dll_cmr Dll_import

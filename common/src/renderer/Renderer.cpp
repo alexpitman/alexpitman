@@ -2,11 +2,13 @@
 //
 // Name           : Renderer
 // Inheritance    : IRenderer
-// Desctription   : OpenGL Renderer
+// Description    : OpenGL Renderer
 //
 ///////////////////////////////////////////////////////////////////////////////
 
 #include "Renderer.h"
+
+#include "camera/Camera.h"
 
 #include "attribute/Colour.h"
 
@@ -14,6 +16,9 @@
 #include "geometry/Vector.h"
 
 #include <gl.h>
+#include <glu.h>
+
+#include <assert.h>
 
 // GL_MULTISAMPLE hack
 #ifndef GL_MULTISAMPLE
@@ -59,6 +64,18 @@ void ree::Renderer::Push() const
 void ree::Renderer::Pop() const
 {
   glPopMatrix();
+}
+
+void ree::Renderer::SetCamera(const cmr::Camera& Camera) const
+{
+  const auto& position = Camera.Position();
+  const auto& lookDirection = Camera.LookDirection();
+  const auto& upDirection = Camera.UpDirection();
+
+  gluLookAt(
+    position.X(), position.Y(), position.Z(),
+    position.X() + lookDirection.X(), position.Y() + lookDirection.Y(), position.Z() + lookDirection.Z(),
+    upDirection.X(), upDirection.Y(), upDirection.Z());
 }
 
 // Transform Operations ///////////////////////////////////////////////////////

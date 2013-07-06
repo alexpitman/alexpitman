@@ -8,7 +8,7 @@
 
 #include "config/Dll.h"
 
-#ifdef VXL_DLL
+#ifdef VOXEL_DLL
 # define Dll_vxl Dll_export
 #else
 # define Dll_vxl Dll_import

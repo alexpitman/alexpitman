@@ -8,7 +8,7 @@
 
 #include "config/Dll.h"
 
-#ifdef EPT_DLL
+#ifdef EXPORT_DLL
 # define Dll_ept Dll_export
 #else
 # define Dll_ept Dll_import

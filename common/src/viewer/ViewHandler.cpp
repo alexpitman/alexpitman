@@ -18,12 +18,12 @@ vwr::ViewHandler::ViewHandler(View* ViewPtr)
 {
 }
   
-cmr::T_CameraControllerPtr
+vwr::T_CameraControllerPtr
 vwr::ViewHandler::CameraController()
 {
   if ( !myCameraControllerPtr )
   {
-    myCameraControllerPtr.reset(new cmr::CameraController(myViewPtr));
+    myCameraControllerPtr.reset(new vwr::CameraController(myViewPtr));
   }
   return myCameraControllerPtr;
 }

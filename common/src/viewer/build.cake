@@ -1,43 +1,53 @@
+# GENERATED
 #-------------------------------------------------------------------------------
-# Script used to build the viewer library.
+# Script that can be run to build the viewer library.
 #-------------------------------------------------------------------------------
-from cake.tools import compiler, script
+from glob import glob
+import re
+from os import path
+from cake.filesys import makeDirs
+from cake.tools import compiler, script, shell
 
-# include dependencies
-script.include(script.cwd("../attribute/use.cake"))
-script.include(script.cwd("../geometry/use.cake"))
-script.include(script.cwd("../topology/use.cake"))
-script.include(script.cwd("../input/use.cake"))
-script.include(script.cwd("../renderer/use.cake"))
-script.include(script.cwd("../scenetree/use.cake"))
-script.include(script.cwd("../camera/use.cake"))
-script.include(script.cwd("../object/use.cake"))
-script.include(script.cwd("../import/use.cake"))
-script.include(script.cwd("../voxel/use.cake"))
-script.include(script.cwd("../numeric/use.cake"))
+script.include(script.cwd("../scenetree/include.cake"))
+script.include(script.cwd("../camera/include.cake"))
+script.include(script.cwd("../renderer/include.cake"))
+script.include(script.cwd("../input/include.cake"))
 
-compiler.addIncludePath(script.cwd("../../include"))
-compiler.addIncludePath(script.cwd("../../3rdParty/boost/include"))
-compiler.addDefine("VWR_DLL")
-compiler.addLibrary("glu32.Lib")
+compiler.addDefine("VIEWER_DLL")
 
-source = script.cwd([
-  "InputController.cpp",
-  "SceneController.cpp",
-	"View.cpp",
-	"ViewHandler.cpp",
-	])
+source = glob(path.join(script.cwd(), "*.cpp"))
+
+allHeaders = glob(path.join(script.cwd(), "../../include/viewer/*.h"))
+mocHeaders = []
+for file in allHeaders:
+  with open(file, "r") as f:
+    fileContent = f.read()
+    match = re.search("Q_OBJECT", fileContent)
+    if match:
+      head, tail = path.split(file)
+      mocHeaders.append(file)
+
+makeDirs(script.cwd("../../../build/testbed/moc/viewer"))
+for file in mocHeaders:
+  head, tail = path.split(file)
+  mocFile = script.cwd("../../../build/testbed/moc/viewer/m_" + tail)
+  shell.run(
+    args=[
+      script.cwd("../../3rdParty/qt/bin/moc.exe"),
+      "-i", file,
+      "-o", mocFile, "-f" ],
+    targets=[mocFile],
+    sources=[file])
+  source.append(mocFile)
 
 objects = compiler.objects(
-	targetDir=script.cwd("../../../build/testbed/obj/viewer"),
-	sources=source,
-	)
-
+  targetDir=script.cwd("../../../build/testbed/obj/viewer"),
+  sources=source,
+  )
 module = compiler.module(
-	target=script.cwd("../../../build/testbed/bin/viewer.dll"),
-	sources=objects,
-	)
-
+  target=script.cwd("../../../build/testbed/bin/viewer.dll"),
+  sources=objects,
+  )
 lib = script.cwd("../../../build/testbed/bin/viewer.lib")
 
 script.setResult(library=lib)

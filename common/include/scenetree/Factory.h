@@ -16,7 +16,7 @@ namespace st
 {
 	class Node;
   
-  typedef boost::shared_ptr<Node> T_NodePtr;
+  typedef std::shared_ptr<Node> T_NodePtr;
 
 	namespace Factory
 	{

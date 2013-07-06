@@ -18,7 +18,7 @@ namespace obj
 {
 	class PointSet;
 
-	typedef boost::shared_ptr<PointSet> T_PointSetPtr;
+	typedef std::shared_ptr<PointSet> T_PointSetPtr;
 
 	class Dll_obj PointSet : public Object
 	{

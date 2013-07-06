@@ -10,16 +10,15 @@
 
 #include "system/Dll.h"
 
-#include "boost/shared_ptr.hpp"
-
 #include <fstream>
+#include <memory>
 #include <string>
 
 namespace sys
 {
 	class InputStream;
 
-	typedef boost::shared_ptr<InputStream> T_InputStreamPtr;
+	typedef std::shared_ptr<InputStream> T_InputStreamPtr;
 
 	class Dll_sys InputStream
 	{

@@ -8,7 +8,7 @@
 
 #include "config/Dll.h"
 
-#ifdef NUM_DLL
+#ifdef NUMERIC_DLL
 # define Dll_num Dll_export
 #else
 # define Dll_num Dll_import

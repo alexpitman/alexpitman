@@ -10,13 +10,13 @@
 
 #include "object/Dll.h"
 
-#include "boost/shared_ptr.hpp"
+#include <memory>
 
 namespace obj
 {
 	class Object;
 
-	typedef boost::shared_ptr<Object> T_ObjectPtr;
+	typedef std::shared_ptr<Object> T_ObjectPtr;
 
 	class Dll_obj Object
 	{

@@ -1,32 +1,28 @@
+# GENERATED
 #-------------------------------------------------------------------------------
-# Script used to build the import library.
+# Script that can be run to build the import library.
 #-------------------------------------------------------------------------------
-from cake.tools import compiler, script
+from glob import glob
+import re
+from os import path
+from cake.filesys import makeDirs
+from cake.tools import compiler, script, shell
 
-# include dependencies
-script.include(script.cwd("../system/use.cake"))
-script.include(script.cwd("../geometry/use.cake"))
-script.include(script.cwd("../topology/use.cake"))
-script.include(script.cwd("../object/use.cake"))
+script.include(script.cwd("../object/include.cake"))
+script.include(script.cwd("../system/include.cake"))
 
-compiler.addIncludePath(script.cwd("../../include"))
-compiler.addIncludePath(script.cwd("../../3rdParty/boost/include"))
-compiler.addDefine("IMP_DLL")
+compiler.addDefine("IMPORT_DLL")
 
-source = script.cwd([
-  "ImportObjFile.cpp",
-	])
+source = glob(path.join(script.cwd(), "*.cpp"))
 
 objects = compiler.objects(
-	targetDir=script.cwd("../../../build/testbed/obj/import"),
-	sources=source,
-	)
-
+  targetDir=script.cwd("../../../build/testbed/obj/import"),
+  sources=source,
+  )
 module = compiler.module(
-	target=script.cwd("../../../build/testbed/bin/import.dll"),
-	sources=objects,
-	)
-
+  target=script.cwd("../../../build/testbed/bin/import.dll"),
+  sources=objects,
+  )
 lib = script.cwd("../../../build/testbed/bin/import.lib")
 
 script.setResult(library=lib)

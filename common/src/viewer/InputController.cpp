@@ -61,7 +61,7 @@ vwr::InputController::Animate()
 {
   myXboxController.Poll();
 
-  cmr::T_CameraControllerPtr cmrController = myViewPtr->Handler()->CameraController();
+  T_CameraControllerPtr cmrController = myViewPtr->Handler()->CameraController();
   
   ///////////////////////////////
   // Camera movement.
@@ -135,7 +135,7 @@ vwr::InputController::Mouse( const in::Mouse& Mouse )
     return;
   }
   
-  cmr::T_CameraControllerPtr cmrController = myViewPtr->Handler()->CameraController();
+  vwr::T_CameraControllerPtr cmrController = myViewPtr->Handler()->CameraController();
   
   if ( local::LastMouse.IsLeftClick() )
   {

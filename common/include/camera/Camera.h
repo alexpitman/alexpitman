@@ -28,8 +28,6 @@ namespace cmr
     const geo::Vector3D& LookDirection() const;
     const geo::Vector3D& UpDirection() const;
     
-    void SetCamera() const;
-    
     // Translate using an arbitrary vector.
     void Translate(const geo::Vector3D& Vector);
     

@@ -2,7 +2,7 @@
 //
 // Name           : Triangulate
 // Inheritance    : None
-// Desctription   : CUBE triangulation
+// Description    : CUBE triangulation
 //
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -17,6 +17,8 @@
 #include <iostream>
 #include <set>
 #include <map>
+
+#include <assert.h>
 
 namespace local
 {
@@ -51,12 +53,22 @@ namespace local
     tpo::T_Index Z,
     T_TripleIndexMap& IndexMap,
     std::vector<geo::Point3D>* Points);
+  tpo::T_Index FindOrInsert(
+    double Weight0,
+    const geo::Point3D& P0,
+    double Weight1,
+    const geo::Point3D& P1,
+    tpo::T_Index X,
+    tpo::T_Index Y,
+    tpo::T_Index Z,
+    T_TripleIndexMap& IndexMap,
+    std::vector<geo::Point3D>* Points);
   // Returns the point index.
   
   geo::Point3D Midpoint(const geo::Point3D& P0, const geo::Point3D& P1);
   
-  geo::Point3D LinearInterp(const vxl::Voxel& V0, const geo::Point3D& P0,
-                            const vxl::Voxel& V1, const geo::Point3D& P1);
+  geo::Point3D LinearInterp(double Weight0, const geo::Point3D& P0,
+                            double Weight1, const geo::Point3D& P1);
   
   class C_PointStatus
   {
@@ -883,6 +895,20 @@ tpo::T_Index local::FindOrInsert(
   T_TripleIndexMap& IndexMap,
   std::vector<geo::Point3D>* Points)
 {
+  return FindOrInsert(V0.Weight(), P0, V1.Weight(), P1, X, Y, Z, IndexMap, Points);
+}
+
+tpo::T_Index local::FindOrInsert(
+  double Weight0,
+  const geo::Point3D& P0,
+  double Weight1,
+  const geo::Point3D& P1,
+  tpo::T_Index X,
+  tpo::T_Index Y,
+  tpo::T_Index Z,
+  T_TripleIndexMap& IndexMap,
+  std::vector<geo::Point3D>* Points)
+{
   // Check if this point already exists.
   auto tripleIndex = IndexMap.find(X);
   if (tripleIndex != IndexMap.end())
@@ -907,7 +933,7 @@ tpo::T_Index local::FindOrInsert(
   //Points->push_back(Midpoint(P0, P1));
   
   // Interpolate points based on Voxel weights.
-  Points->push_back(LinearInterp(V0, P0, V1, P1));
+  Points->push_back(LinearInterp(Weight0, P0, Weight1, P1));
   return index;
 }
 
@@ -916,13 +942,13 @@ geo::Point3D local::Midpoint(const geo::Point3D& P0, const geo::Point3D& P1)
   return geo::Centroid(P0, P1);
 }
 
-geo::Point3D local::LinearInterp(const vxl::Voxel& V0, const geo::Point3D& P0,
-                                 const vxl::Voxel& V1, const geo::Point3D& P1)
+geo::Point3D local::LinearInterp(double Weight0, const geo::Point3D& P0,
+                                 double Weight1, const geo::Point3D& P1)
 {
-  geo::Vector3D direction = P1-P0;
-  double abs0 = num::Abs(V0.Weight());
-  double abs1 = num::Abs(V1.Weight());
-  double t = abs0 / (abs0+abs1);
+  const geo::Vector3D direction = P1-P0;
+  const double abs0 = num::Abs(Weight0);
+  const double abs1 = num::Abs(Weight1);
+  const double t = abs0 / (abs0+abs1);
   
   return P0 + direction*t;
 }
@@ -1184,53 +1210,7 @@ obj::T_FacetNetworkPtr vxl::Triangulate::SubBlock(const vxl::SubBlock<N>& SubBlo
         auto fv = triangulation.FacetsEnd();
         while (fu != fv)
         {
-          /*if (triangulation.Classification() != 8 &&
-              triangulation.Classification() != 7 &&
-              triangulation.Classification() != 1 &&
-              triangulation.Classification() != 6 &&
-              triangulation.Classification() != 11 &&
-              triangulation.Classification() != 2 &&
-              triangulation.Classification() != 3)
-          {
-            ++fu;
-            continue;
-          }*/
-        
           facets.push_back(tpo::Triple( pointIndicies[(*fu)[0]], pointIndicies[(*fu)[1]], pointIndicies[(*fu)[2]] ));
-          
-          switch (triangulation.Classification())
-          {
-          case 3:
-            facetColours.push_back(att::Colour(128, 0, 255));
-            break;
-          case 4:
-            facetColours.push_back(att::Colour(0, 128, 128));
-            break;
-          case 5:
-            facetColours.push_back(att::Colour(128, 128, 0));
-            break;
-          case 6:
-            facetColours.push_back(att::Colour(255, 0, 0));
-            break;
-          case 7:
-            facetColours.push_back(att::Colour(0, 0, 255));
-            break;
-          case 8:
-            facetColours.push_back(att::Colour(255, 0, 255));
-            break;
-          case 9:
-            facetColours.push_back(att::Colour(255, 255, 0));
-            break;
-          case 10:
-            facetColours.push_back(att::Colour(0, 255, 255));
-            break;
-          case 11:
-            facetColours.push_back(att::Colour(128, 128, 128));
-            break;
-          default:
-            facetColours.push_back(att::Colour(0, 255, 0));
-            break;
-          }
           ++fu;
         }
       }
@@ -1243,7 +1223,156 @@ obj::T_FacetNetworkPtr vxl::Triangulate::SubBlock(const vxl::SubBlock<N>& SubBlo
     facetColours.begin(), facetColours.end()*/) );
 }
 
+template <unsigned short N>
+obj::T_FacetNetworkPtr
+vxl::Triangulate::Terrain(const vxl::TerrainDescriptor& Terrain, const geo::Vector3D& Offset)
+{
+  std::vector<geo::Point3D> points;
+  std::vector<tpo::Triple> facets;
+  std::vector<att::Colour> facetColours;
+  
+  // We are numbering the neighbouring Voxels as such below:
+  //      7-----------6
+  //     /|          /|
+  //    / |         / |
+  //   /  |        /  |
+  //  4-----------5   |
+  //  |   3-------|---2   Z
+  //  |  /        |  /    |  Y 
+  //  | /         | /     | /
+  //  |/          |/      |/____X
+  //  0-----------1
+  //
+  // And edges as:
+  //      x-----6-----x
+  //     /|          /|
+  //    7 11        5 10
+  //   /  |        /  |
+  //  x-----4-----x   |
+  //  |   x----2--|---x   Z
+  //  8  /        9  /    |  Y 
+  //  | 3         | 1     | /
+  //  |/          |/      |/____X
+  //  x-----0-----x
+  //
+  // The numbers relate to the following bit field indicies.
+  //                _______________
+  // Point Status  |7|6|5|4|3|2|1|0|
+  //                _________________________
+  // Edge Status   |11|10|9|8|7|6|5|4|3|2|1|0|
+
+  // Ensure the lookup table is initialised.
+  local::GenerateLookupTable();
+  
+  // Maps for storing already calculated point indicies.
+  local::T_TripleIndexMap xEdgeIndexMap;
+  local::T_TripleIndexMap yEdgeIndexMap;
+  local::T_TripleIndexMap zEdgeIndexMap;
+  
+  const float offsetX = Offset.X() * N;
+  const float offsetY = Offset.Y() * N;
+  const float offsetZ = Offset.Z() * N;
+  for (tpo::T_Index x = 0; x < N; ++x)
+  {
+    for (tpo::T_Index y = 0; y < N; ++y)
+    {
+      for (tpo::T_Index z = 0; z < N; ++z)
+      {
+        const float v0Value = Terrain.Evaluate(Offset.X() + (x  ) / float(N), Offset.Y() + (y  ) / float(N), Offset.Z() + z / float(N)) - 0.5f;
+        const float v1Value = Terrain.Evaluate(Offset.X() + (x+1) / float(N), Offset.Y() + (y  ) / float(N), Offset.Z() + z / float(N)) - 0.5f;
+        const float v2Value = Terrain.Evaluate(Offset.X() + (x+1) / float(N), Offset.Y() + (y+1) / float(N), Offset.Z() + z / float(N)) - 0.5f;
+        const float v3Value = Terrain.Evaluate(Offset.X() + (x  ) / float(N), Offset.Y() + (y+1) / float(N), Offset.Z() + z / float(N)) - 0.5f;
+        const float v4Value = Terrain.Evaluate(Offset.X() + (x  ) / float(N), Offset.Y() + (y  ) / float(N), Offset.Z() + (z+1) / float(N)) - 0.5f;
+        const float v5Value = Terrain.Evaluate(Offset.X() + (x+1) / float(N), Offset.Y() + (y  ) / float(N), Offset.Z() + (z+1) / float(N)) - 0.5f;
+        const float v6Value = Terrain.Evaluate(Offset.X() + (x+1) / float(N), Offset.Y() + (y+1) / float(N), Offset.Z() + (z+1) / float(N)) - 0.5f;
+        const float v7Value = Terrain.Evaluate(Offset.X() + (x  ) / float(N), Offset.Y() + (y+1) / float(N), Offset.Z() + (z+1) / float(N)) - 0.5f;
+      
+        const unsigned short v0Type = v0Value < 0.0 ? vxl::Type::SKY : vxl::Type::DIRT;
+        const unsigned short v1Type = v1Value < 0.0 ? vxl::Type::SKY : vxl::Type::DIRT;
+        const unsigned short v2Type = v2Value < 0.0 ? vxl::Type::SKY : vxl::Type::DIRT;
+        const unsigned short v3Type = v3Value < 0.0 ? vxl::Type::SKY : vxl::Type::DIRT;
+        const unsigned short v4Type = v4Value < 0.0 ? vxl::Type::SKY : vxl::Type::DIRT;
+        const unsigned short v5Type = v5Value < 0.0 ? vxl::Type::SKY : vxl::Type::DIRT;
+        const unsigned short v6Type = v6Value < 0.0 ? vxl::Type::SKY : vxl::Type::DIRT;
+        const unsigned short v7Type = v7Value < 0.0 ? vxl::Type::SKY : vxl::Type::DIRT;
+        
+        // Classify the cube.
+        unsigned short pointStatus = 0;
+        if (v0Type != vxl::Type::SKY) pointStatus |= local::CUBE0;
+        if (v1Type != vxl::Type::SKY) pointStatus |= local::CUBE1;
+        if (v2Type != vxl::Type::SKY) pointStatus |= local::CUBE2;
+        if (v3Type != vxl::Type::SKY) pointStatus |= local::CUBE3;
+        if (v4Type != vxl::Type::SKY) pointStatus |= local::CUBE4;
+        if (v5Type != vxl::Type::SKY) pointStatus |= local::CUBE5;
+        if (v6Type != vxl::Type::SKY) pointStatus |= local::CUBE6;
+        if (v7Type != vxl::Type::SKY) pointStatus |= local::CUBE7;
+        // 0 represents outside the surface, 1 represents inside the surface
+        
+        if (pointStatus == 0 || pointStatus == 255) continue;
+        
+        // Determine the triangulation based on cube classification.
+        const local::C_Triangulation& triangulation = local::LookupTriangulation(pointStatus);
+        
+        const local::C_PointStatus status(pointStatus);
+        
+        // Calculate and insert points.
+        unsigned short edgeStatus = 0;
+        if (status[0] != status[1]) edgeStatus |= local::EDGE0;
+        if (status[1] != status[2]) edgeStatus |= local::EDGE1;
+        if (status[2] != status[3]) edgeStatus |= local::EDGE2;
+        if (status[0] != status[3]) edgeStatus |= local::EDGE3;
+        if (status[4] != status[5]) edgeStatus |= local::EDGE4;
+        if (status[5] != status[6]) edgeStatus |= local::EDGE5;
+        if (status[6] != status[7]) edgeStatus |= local::EDGE6;
+        if (status[4] != status[7]) edgeStatus |= local::EDGE7;
+        if (status[0] != status[4]) edgeStatus |= local::EDGE8;
+        if (status[1] != status[5]) edgeStatus |= local::EDGE9;
+        if (status[2] != status[6]) edgeStatus |= local::EDGE10;
+        if (status[3] != status[7]) edgeStatus |= local::EDGE11;
+        
+        // We centre position on the origin
+        const geo::Point3D p0(int(x) - N/2.0 + offsetX, int(y) - N/2.0 + offsetY, int(z) - N/2.0 + offsetZ);
+        const geo::Point3D p1(p0.X()+1, p0.Y(),   p0.Z());
+        const geo::Point3D p2(p0.X()+1, p0.Y()+1, p0.Z());
+        const geo::Point3D p3(p0.X(),   p0.Y()+1, p0.Z());
+        const geo::Point3D p4(p0.X(),   p0.Y(),   p0.Z()+1);
+        const geo::Point3D p5(p0.X()+1, p0.Y(),   p0.Z()+1);
+        const geo::Point3D p6(p0.X()+1, p0.Y()+1, p0.Z()+1);
+        const geo::Point3D p7(p0.X(),   p0.Y()+1, p0.Z()+1);
+        
+        std::vector<tpo::T_Index> pointIndicies;
+        if (edgeStatus & local::EDGE0) pointIndicies.push_back(local::FindOrInsert(v0Value, p0, v1Value, p1, x, y, z, xEdgeIndexMap, &points));
+        if (edgeStatus & local::EDGE1) pointIndicies.push_back(local::FindOrInsert(v1Value, p1, v2Value, p2, x+1, y, z, yEdgeIndexMap, &points));
+        if (edgeStatus & local::EDGE2) pointIndicies.push_back(local::FindOrInsert(v2Value, p2, v3Value, p3, x, y+1, z, xEdgeIndexMap, &points));
+        if (edgeStatus & local::EDGE3) pointIndicies.push_back(local::FindOrInsert(v0Value, p0, v3Value, p3, x, y, z, yEdgeIndexMap, &points));
+        if (edgeStatus & local::EDGE4) pointIndicies.push_back(local::FindOrInsert(v4Value, p4, v5Value, p5, x, y, z+1, xEdgeIndexMap, &points));
+        if (edgeStatus & local::EDGE5) pointIndicies.push_back(local::FindOrInsert(v5Value, p5, v6Value, p6, x+1, y, z+1, yEdgeIndexMap, &points));
+        if (edgeStatus & local::EDGE6) pointIndicies.push_back(local::FindOrInsert(v6Value, p6, v7Value, p7, x, y+1, z+1, xEdgeIndexMap, &points));
+        if (edgeStatus & local::EDGE7) pointIndicies.push_back(local::FindOrInsert(v7Value, p4, v7Value, p7, x, y, z+1, yEdgeIndexMap, &points));
+        if (edgeStatus & local::EDGE8) pointIndicies.push_back(local::FindOrInsert(v0Value, p0, v4Value, p4, x, y, z, zEdgeIndexMap, &points));
+        if (edgeStatus & local::EDGE9) pointIndicies.push_back(local::FindOrInsert(v1Value, p1, v5Value, p5, x+1, y, z, zEdgeIndexMap, &points));
+        if (edgeStatus & local::EDGE10) pointIndicies.push_back(local::FindOrInsert(v2Value, p2, v6Value, p6, x+1, y+1, z, zEdgeIndexMap, &points));
+        if (edgeStatus & local::EDGE11) pointIndicies.push_back(local::FindOrInsert(v3Value, p3, v7Value, p7, x, y+1, z, zEdgeIndexMap, &points));
+        
+        // Insert facets.
+        auto fu = triangulation.FacetsBegin();
+        auto fv = triangulation.FacetsEnd();
+        while (fu != fv)
+        {
+          facets.push_back(tpo::Triple( pointIndicies[(*fu)[0]], pointIndicies[(*fu)[1]], pointIndicies[(*fu)[2]] ));
+          ++fu;
+        }
+      }
+    }
+  }
+  
+  return obj::T_FacetNetworkPtr( new obj::FacetNetwork(
+    points.begin(), points.end(),
+    facets.begin(), facets.end()) );
+}
+
 // Explicit instantiations
 template Dll_vxl obj::T_FacetNetworkPtr vxl::Triangulate::SubBlock(const vxl::SubBlock<10>& SubBlock);
 template Dll_vxl obj::T_FacetNetworkPtr vxl::Triangulate::SubBlock(const vxl::SubBlock<64>& SubBlock);
 template Dll_vxl obj::T_FacetNetworkPtr vxl::Triangulate::SubBlock(const vxl::SubBlock<256>& SubBlock);
+template Dll_vxl obj::T_FacetNetworkPtr vxl::Triangulate::Terrain<64>(const vxl::TerrainDescriptor& Descriptor, const geo::Vector3D& Offset);

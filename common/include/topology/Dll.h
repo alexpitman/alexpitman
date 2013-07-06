@@ -8,7 +8,7 @@
 
 #include "config/Dll.h"
 
-#ifdef TPO_DLL
+#ifdef TOPOLOGY_DLL
 # define Dll_tpo Dll_export
 #else
 # define Dll_tpo Dll_import

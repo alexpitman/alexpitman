@@ -12,13 +12,15 @@
 
 #include "renderer/IRenderer.h"
 
+#include <memory>
+
 namespace st
 {
   class Node;
   class SceneTreeNode;
   
-  typedef boost::shared_ptr<Node> T_NodePtr;
-  typedef boost::shared_ptr<SceneTreeNode> T_SceneTreePtr;
+  typedef std::shared_ptr<Node> T_NodePtr;
+  typedef std::shared_ptr<SceneTreeNode> T_SceneTreePtr;
 
   class Dll_st Node
   {

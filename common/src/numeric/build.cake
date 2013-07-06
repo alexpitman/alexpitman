@@ -1,33 +1,28 @@
+# GENERATED
 #-------------------------------------------------------------------------------
-# Script used to build the numeric library.
+# Script that can be run to build the numeric library.
 #-------------------------------------------------------------------------------
-from cake.tools import compiler, script
+from glob import glob
+import re
+from os import path
+from cake.filesys import makeDirs
+from cake.tools import compiler, script, shell
 
-script.include(script.cwd("../../3rdParty/accidentalnoise/use.cake"))
+script.include(script.cwd("../../3rdParty/accidentalnoise/include.cake"))
+script.include(script.cwd("../config/include.cake"))
 
-compiler.addIncludePath(script.cwd("../../include"))
-compiler.addIncludePath(script.cwd("../../3rdParty/accidentalnoise/include"))
-compiler.addDefine("NUM_DLL")
-compiler.addLibrary(script.cwd("../../3rdParty/accidentalnoise/lib/accidentalnoise.lib"))
+compiler.addDefine("NUMERIC_DLL")
 
-source = script.cwd([
-	"Fractal.cpp",
-	"Interpolate.cpp",
-	"Noise.cpp",
-	"Random.cpp",
-	"num.cpp",
-	])
+source = glob(path.join(script.cwd(), "*.cpp"))
 
 objects = compiler.objects(
-	targetDir=script.cwd("../../../build/testbed/obj/numeric"),
-	sources=source,
-	)
-
+  targetDir=script.cwd("../../../build/testbed/obj/numeric"),
+  sources=source,
+  )
 module = compiler.module(
-	target=script.cwd("../../../build/testbed/bin/numeric.dll"),
-	sources=objects,
-	)
-
+  target=script.cwd("../../../build/testbed/bin/numeric.dll"),
+  sources=objects,
+  )
 lib = script.cwd("../../../build/testbed/bin/numeric.lib")
 
 script.setResult(library=lib)

@@ -22,7 +22,7 @@ namespace obj
 {
   class FacetNetwork;
 
-  typedef boost::shared_ptr<FacetNetwork> T_FacetNetworkPtr;
+  typedef std::shared_ptr<FacetNetwork> T_FacetNetworkPtr;
 
   class Dll_obj FacetNetwork : public Object
   {

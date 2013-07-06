@@ -10,6 +10,8 @@
 
 #include "voxel/Dll.H"
 
+#include "geometry/Point.h"
+
 #include "numeric/Fractal.h"
 #include "numeric/Noise.h"
 
@@ -21,6 +23,7 @@ namespace vxl
   
     TerrainDescriptor(bool EnableCaves);
   
+    float Evaluate(const geo::Point3D& Point) const;
     float Evaluate(float X, float Y, float Z) const;
   
   private:

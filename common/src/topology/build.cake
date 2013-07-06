@@ -1,25 +1,27 @@
+# GENERATED
 #-------------------------------------------------------------------------------
-# Script used to build the topology library.
+# Script that can be run to build the topology library.
 #-------------------------------------------------------------------------------
-from cake.tools import compiler, script
+from glob import glob
+import re
+from os import path
+from cake.filesys import makeDirs
+from cake.tools import compiler, script, shell
 
-compiler.addIncludePath(script.cwd("../../include"))
-compiler.addDefine("TPO_DLL")
+script.include(script.cwd("../config/include.cake"))
 
-source = script.cwd([
-	"Triple.cpp",
-	])
+compiler.addDefine("TOPOLOGY_DLL")
+
+source = glob(path.join(script.cwd(), "*.cpp"))
 
 objects = compiler.objects(
-	targetDir=script.cwd("../../../build/testbed/obj/topology"),
-	sources=source,
-	)
-
+  targetDir=script.cwd("../../../build/testbed/obj/topology"),
+  sources=source,
+  )
 module = compiler.module(
-	target=script.cwd("../../../build/testbed/bin/topology.dll"),
-	sources=objects,
-	)
-
+  target=script.cwd("../../../build/testbed/bin/topology.dll"),
+  sources=objects,
+  )
 lib = script.cwd("../../../build/testbed/bin/topology.lib")
 
 script.setResult(library=lib)

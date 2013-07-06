@@ -1,36 +1,27 @@
+# GENERATED
 #-------------------------------------------------------------------------------
-# Script used to build the voxel library.
+# Script that can be run to build the voxel library.
 #-------------------------------------------------------------------------------
-from cake.tools import compiler, script
+from glob import glob
+import re
+from os import path
+from cake.filesys import makeDirs
+from cake.tools import compiler, script, shell
 
-# include dependencies
-script.include(script.cwd("../attribute/use.cake"))
-script.include(script.cwd("../object/use.cake"))
-script.include(script.cwd("../geometry/use.cake"))
-script.include(script.cwd("../topology/use.cake"))
-script.include(script.cwd("../numeric/use.cake"))
+script.include(script.cwd("../object/include.cake"))
 
-compiler.addIncludePath(script.cwd("../../include"))
-compiler.addDefine("VXL_DLL")
+compiler.addDefine("VOXEL_DLL")
 
-source = script.cwd([
-  "Factory.cpp",
-  "SubBlock.cpp",
-  "TerrainDescriptor.cpp",
-  "Triangulate.cpp",
-  "Voxel.cpp",
-  ])
+source = glob(path.join(script.cwd(), "*.cpp"))
 
 objects = compiler.objects(
   targetDir=script.cwd("../../../build/testbed/obj/voxel"),
   sources=source,
   )
-
 module = compiler.module(
   target=script.cwd("../../../build/testbed/bin/voxel.dll"),
   sources=objects,
   )
-
 lib = script.cwd("../../../build/testbed/bin/voxel.lib")
 
 script.setResult(library=lib)

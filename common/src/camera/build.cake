@@ -1,35 +1,27 @@
+# GENERATED
 #-------------------------------------------------------------------------------
-# Script used to build the camera library.
+# Script that can be run to build the camera library.
 #-------------------------------------------------------------------------------
-from cake.tools import compiler, script
+from glob import glob
+import re
+from os import path
+from cake.filesys import makeDirs
+from cake.tools import compiler, script, shell
 
-# include dependencies
-script.include(script.cwd("../geometry/use.cake"))
-script.include(script.cwd("../input/use.cake"))
-script.include(script.cwd("../renderer/use.cake"))
-script.include(script.cwd("../scenetree/use.cake"))
+script.include(script.cwd("../geometry/include.cake"))
 
-compiler.addIncludePath(script.cwd("../../include"))
-compiler.addIncludePath(script.cwd("../../3rdParty/boost/include"))
-compiler.addIncludePath(script.cwd("../../3rdParty/gl/include"))
-compiler.addDefine("CMR_DLL")
-compiler.addLibrary("glu32.Lib")
+compiler.addDefine("CAMERA_DLL")
 
-source = script.cwd([
-	"Camera.cpp",
-	"CameraController.cpp",
-	])
+source = glob(path.join(script.cwd(), "*.cpp"))
 
 objects = compiler.objects(
-	targetDir=script.cwd("../../../build/testbed/obj/camera"),
-	sources=source,
-	)
-
+  targetDir=script.cwd("../../../build/testbed/obj/camera"),
+  sources=source,
+  )
 module = compiler.module(
-	target=script.cwd("../../../build/testbed/bin/camera.dll"),
-	sources=objects,
-	)
-
+  target=script.cwd("../../../build/testbed/bin/camera.dll"),
+  sources=objects,
+  )
 lib = script.cwd("../../../build/testbed/bin/camera.lib")
 
 script.setResult(library=lib)

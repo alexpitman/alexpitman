@@ -8,7 +8,7 @@
 
 #include "config/Dll.h"
 
-#ifdef IMG_DLL
+#ifdef IMAGE_DLL
 # define Dll_img Dll_export
 #else
 # define Dll_img Dll_import

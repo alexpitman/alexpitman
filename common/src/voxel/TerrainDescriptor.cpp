@@ -51,7 +51,7 @@ vxl::TerrainDescriptor::TerrainDescriptor(bool EnableCaves)
   myGroundSelect.setControlSource(&myGroundDomainCache);
   myGroundSelect.setThreshold(0.5f);
   
-  myOverallCombine.setSource(1, &myGroundDomainCache);
+  myOverallCombine.setSource(0, &myGroundDomainCache);
   
   if (EnableCaves)
   {
@@ -87,6 +87,11 @@ vxl::TerrainDescriptor::TerrainDescriptor(bool EnableCaves)
     myOverallCombine.setSource(1, &myCaveSelect);
     //myOverallCombine.setSource(1, &myCavePerturb);
   }
+}
+
+float vxl::TerrainDescriptor::Evaluate(const geo::Point3D& Point) const
+{
+  return myOverallCombine.get(Point.X(), Point.Y(), Point.Z());
 }
 
 float vxl::TerrainDescriptor::Evaluate(float X, float Y, float Z) const
