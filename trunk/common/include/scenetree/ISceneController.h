@@ -10,20 +10,20 @@
 
 #include "renderer/ree.h"
 
-#include "boost/shared_ptr.hpp"
+#include <memory>
 
 namespace obj
 {
   class Object;
 
-  typedef boost::shared_ptr<Object> T_ObjectPtr;
+  typedef std::shared_ptr<Object> T_ObjectPtr;
 }
 
 namespace st
 {
   class ISceneController;
 
-  typedef boost::shared_ptr<ISceneController> T_SceneControllerPtr;
+  typedef std::shared_ptr<ISceneController> T_SceneControllerPtr;
 
   class ISceneController
   {

@@ -8,7 +8,7 @@
 
 #include "config/Dll.h"
 
-#ifdef ST_DLL
+#ifdef SCENETREE_DLL
 # define Dll_st Dll_export
 #else
 # define Dll_st Dll_import

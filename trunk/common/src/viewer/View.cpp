@@ -2,7 +2,7 @@
 //
 // Name           : View
 // Inheritance    : Base class 
-// Desctription   : View rendering
+// Description    : View rendering
 //
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -35,6 +35,8 @@
 #include <gl.h>
 
 #include <glu.h>
+
+#include <assert.h>
 
 #ifndef GL_MULTISAMPLE
 #define GL_MULTISAMPLE  0x809D
@@ -87,7 +89,7 @@ vwr::View::Render()
   //local::sun.Render();
   
   // Set up camera
-  myCamera.SetCamera();  
+  Renderer()->SetCamera(myCamera);
   
   // Set up lights
   //local::light.Render();
@@ -177,6 +179,7 @@ vwr::View::GLInitialise()
   
   const int tileCountX = 2;
   const int tileCountY = 2;
+  /*
   for (int x = 0; x < tileCountX; ++x)
   {
     for (int y = 0; y < tileCountY; ++y)
@@ -184,6 +187,16 @@ vwr::View::GLInitialise()
       std::unique_ptr<vxl::SubBlock<64>> subBlockArea( vxl::Factory::GenerateTerrain<64>(descriptor, geo::Vector3D(x, y, 0.0)));
       obj::T_FacetNetworkPtr blockModelRep = vxl::Triangulate::SubBlock(*subBlockArea);
       mySceneTreePtr->AddNode( st::T_NodePtr(new st::FacetNetworkNode(mySceneTreePtr, blockModelRep)) );
+    }
+  }
+  */
+  
+  for (int x = 0; x < tileCountX; ++x)
+  {
+    for (int y = 0; y < tileCountY; ++y)
+    {
+      obj::T_FacetNetworkPtr terrainTile = vxl::Triangulate::Terrain<64>(descriptor, geo::Vector3D(x, y, 0));
+      mySceneTreePtr->AddNode( st::T_NodePtr(new st::FacetNetworkNode(mySceneTreePtr, terrainTile)) );
     }
   }
   

@@ -4,7 +4,7 @@
 //
 // Name           : View
 // Inheritance    : Base class 
-// Desctription   : View rendering
+// Description    : View rendering
 //
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -96,7 +96,7 @@ namespace vwr
     
     // Classes that can access private members
     friend class wid::GLWidget;
-    friend class cmr::CameraController;
+    friend class vwr::CameraController;
     friend class SceneController;
     friend class RendererController;
   };

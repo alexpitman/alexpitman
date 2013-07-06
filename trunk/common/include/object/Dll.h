@@ -8,7 +8,7 @@
 
 #include "config/Dll.h"
 
-#ifdef OBJ_DLL
+#ifdef OBJECT_DLL
 # define Dll_obj Dll_export
 #else
 # define Dll_obj Dll_import

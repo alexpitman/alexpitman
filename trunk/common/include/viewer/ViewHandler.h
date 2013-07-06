@@ -8,18 +8,19 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
+#include "viewer/CameraController.h"
 #include "viewer/Dll.h"
 #include "viewer/InputController.h"
 #include "viewer/SceneController.h"
 
-#include "camera/CameraController.h"
+#include <memory>
 
 namespace vwr
 {
   class View;
   class ViewHandler;
   
-  typedef boost::shared_ptr<ViewHandler> T_ViewHandlerPtr;
+  typedef std::shared_ptr<ViewHandler> T_ViewHandlerPtr;
 
   class Dll_vwr ViewHandler
   {
@@ -30,14 +31,14 @@ namespace vwr
     ViewHandler(View* ViewPtr);
 
     // Obtain different controllers on the view
-    cmr::T_CameraControllerPtr CameraController();
+    T_CameraControllerPtr CameraController();
     T_InputControllerPtr InputController();
     st::T_SceneControllerPtr SceneController();
     //T_RendererControllerPtr RendererController();
   
   private:
   
-    cmr::T_CameraControllerPtr myCameraControllerPtr;
+    T_CameraControllerPtr myCameraControllerPtr;
     T_InputControllerPtr myInputControllerPtr;
     st::T_SceneControllerPtr mySceneControllerPtr;
     //T_RendererControllerPtr myRendererControllerPtr;

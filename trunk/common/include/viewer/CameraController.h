@@ -1,35 +1,33 @@
-#ifndef __CMR_CAMERA_CONTROLLER_H
-#define __CMR_CAMERA_CONTROLLER_H
+#ifndef __VWR_CAMERA_CONTROLLER_H
+#define __VWR_CAMERA_CONTROLLER_H
 ///////////////////////////////////////////////////////////////////////////////
 //
 // Name           : CameraController
 // Inheritance    : Base class 
-// Desctription   : Camera manipulation
+// Description    : Camera manipulation
 //
 ///////////////////////////////////////////////////////////////////////////////
 
+#include "viewer/Dll.h"
+
 #include "camera/Camera.h"
 
-#include "boost/shared_ptr.hpp"
+#include <memory>
 
 namespace vwr
 {
-  class View;
-}
-
-namespace cmr
-{
   class CameraController;
+  class View;
   
-  typedef boost::shared_ptr<CameraController> T_CameraControllerPtr;
+  typedef std::shared_ptr<CameraController> T_CameraControllerPtr;
   
-  class Dll_cmr CameraController
+  class Dll_vwr CameraController
   {
   public:
     
     CameraController(vwr::View* ViewPtr);
     
-    const Camera& Camera() const;
+    const cmr::Camera& Camera() const;
     
     // Translate using an arbitrary vector.
     void Translate(const geo::Vector3D& Vector);

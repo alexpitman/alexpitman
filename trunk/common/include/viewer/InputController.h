@@ -14,14 +14,14 @@
 #include "input/Mouse.h"
 #include "input/XBox.h"
 
-#include "boost/shared_ptr.hpp"
+#include <memory>
 
 namespace vwr
 {
   class View;
   class InputController;
   
-  typedef boost::shared_ptr<InputController> T_InputControllerPtr;
+  typedef std::shared_ptr<InputController> T_InputControllerPtr;
 
   class Dll_vwr InputController
   {

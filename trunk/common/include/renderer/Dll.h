@@ -8,7 +8,7 @@
 
 #include "config/Dll.h"
 
-#ifdef REE_DLL
+#ifdef RENDERER_DLL
 # define Dll_ree Dll_export
 #else
 # define Dll_ree Dll_import

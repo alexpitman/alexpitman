@@ -1,32 +1,29 @@
+# GENERATED
 #-------------------------------------------------------------------------------
-# Script used to build the object library.
+# Script that can be run to build the object library.
 #-------------------------------------------------------------------------------
-from cake.tools import compiler, script
+from glob import glob
+import re
+from os import path
+from cake.filesys import makeDirs
+from cake.tools import compiler, script, shell
 
-# include dependencies
-script.include(script.cwd("../attribute/use.cake"))
-script.include(script.cwd("../geometry/use.cake"))
-script.include(script.cwd("../topology/use.cake"))
+script.include(script.cwd("../geometry/include.cake"))
+script.include(script.cwd("../attribute/include.cake"))
+script.include(script.cwd("../topology/include.cake"))
 
-compiler.addIncludePath(script.cwd("../../include"))
-compiler.addIncludePath(script.cwd("../../3rdParty/boost/include"))
-compiler.addDefine("OBJ_DLL")
+compiler.addDefine("OBJECT_DLL")
 
-source = script.cwd([
-  "FacetNetwork.cpp",
-	"PointSet.cpp",
-	])
+source = glob(path.join(script.cwd(), "*.cpp"))
 
 objects = compiler.objects(
-	targetDir=script.cwd("../../../build/testbed/obj/object"),
-	sources=source,
-	)
-
+  targetDir=script.cwd("../../../build/testbed/obj/object"),
+  sources=source,
+  )
 module = compiler.module(
-	target=script.cwd("../../../build/testbed/bin/object.dll"),
-	sources=objects,
-	)
-
+  target=script.cwd("../../../build/testbed/bin/object.dll"),
+  sources=objects,
+  )
 lib = script.cwd("../../../build/testbed/bin/object.lib")
 
 script.setResult(library=lib)

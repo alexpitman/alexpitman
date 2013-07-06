@@ -4,7 +4,7 @@
 //
 // Name           : Transform
 // Inheritance    : Base class
-// Desctription   : Struct that represent a 3D transform matrix.
+// Description    : Struct that represent a 3D transform matrix.
 //
 ///////////////////////////////////////////////////////////////////////////////
 

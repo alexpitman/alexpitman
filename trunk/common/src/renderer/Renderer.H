@@ -4,7 +4,7 @@
 //
 // Name           : Renderer
 // Inheritance    : IRenderer
-// Desctription   : OpenGL Renderer
+// Description    : OpenGL Renderer
 //
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -32,6 +32,8 @@ namespace ree
     
     void Push() const;
     void Pop() const;
+    
+    void SetCamera(const cmr::Camera& Camera) const override;
     
     /////////////////////////////////////////////////////////////////////////////
     // Transform operations

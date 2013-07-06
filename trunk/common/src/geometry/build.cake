@@ -1,33 +1,27 @@
+# GENERATED
 #-------------------------------------------------------------------------------
-# Script used to build the geometry library.
+# Script that can be run to build the geometry library.
 #-------------------------------------------------------------------------------
-from cake.tools import compiler, script
+from glob import glob
+import re
+from os import path
+from cake.filesys import makeDirs
+from cake.tools import compiler, script, shell
 
-# include dependencies
-script.include(script.cwd("../numeric/use.cake"))
+script.include(script.cwd("../numeric/include.cake"))
 
-compiler.addIncludePath(script.cwd("../../include"))
-compiler.addDefine("GEO_DLL")
+compiler.addDefine("GEOMETRY_DLL")
 
-source = script.cwd([
-  "Extent.cpp",
-  "Point.cpp",
-  "Rotation.cpp",
-  "Transform.cpp",
-  "Vector.cpp",
-  "geo.cpp",
-  ])
+source = glob(path.join(script.cwd(), "*.cpp"))
 
 objects = compiler.objects(
   targetDir=script.cwd("../../../build/testbed/obj/geometry"),
   sources=source,
   )
-
 module = compiler.module(
   target=script.cwd("../../../build/testbed/bin/geometry.dll"),
   sources=objects,
   )
-
 lib = script.cwd("../../../build/testbed/bin/geometry.lib")
 
 script.setResult(library=lib)

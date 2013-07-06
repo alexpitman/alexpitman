@@ -1,36 +1,52 @@
+# GENERATED
 #-------------------------------------------------------------------------------
-# Script used to build the input library.
+# Script that can be run to build the input library.
 #-------------------------------------------------------------------------------
-from cake.tools import compiler, script
+from glob import glob
+import re
+from os import path
+from cake.filesys import makeDirs
+from cake.tools import compiler, script, shell
 
-# include dependencies
-script.include(script.cwd("../geometry/use.cake"))
+script.include(script.cwd("../geometry/include.cake"))
+script.include(script.cwd("../../3rdParty/qt/include.cake"))
+script.include(script.cwd("../../3rdParty/directx/include.cake"))
 
-compiler.addIncludePath(script.cwd("../../include"))
-compiler.addIncludePath(script.cwd("../../3rdParty/boost/include"))
-compiler.addIncludePath(script.cwd("../../3rdParty/qt/include"))
-compiler.addIncludePath(script.cwd("../../3rdParty/qt/include/QtCore"))
-compiler.addIncludePath(script.cwd("../../3rdParty/qt/include/QtGui"))
-compiler.addIncludePath(script.cwd("../../3rdParty/directx/include"))
-compiler.addDefine("IN_DLL")
-compiler.addLibrary(script.cwd("../../3rdParty/directx/lib/XInput.lib"))
+compiler.addDefine("INPUT_DLL")
 
-source = script.cwd([
-  "Key.cpp",
-	"Mouse.cpp",
-	"XBox.cpp",
-	])
+source = glob(path.join(script.cwd(), "*.cpp"))
+
+allHeaders = glob(path.join(script.cwd(), "../../include/input/*.h"))
+mocHeaders = []
+for file in allHeaders:
+  with open(file, "r") as f:
+    fileContent = f.read()
+    match = re.search("Q_OBJECT", fileContent)
+    if match:
+      head, tail = path.split(file)
+      mocHeaders.append(file)
+
+makeDirs(script.cwd("../../../build/testbed/moc/input"))
+for file in mocHeaders:
+  head, tail = path.split(file)
+  mocFile = script.cwd("../../../build/testbed/moc/input/m_" + tail)
+  shell.run(
+    args=[
+      script.cwd("../../3rdParty/qt/bin/moc.exe"),
+      "-i", file,
+      "-o", mocFile, "-f" ],
+    targets=[mocFile],
+    sources=[file])
+  source.append(mocFile)
 
 objects = compiler.objects(
-	targetDir=script.cwd("../../../build/testbed/obj/input"),
-	sources=source,
-	)
-
+  targetDir=script.cwd("../../../build/testbed/obj/input"),
+  sources=source,
+  )
 module = compiler.module(
-	target=script.cwd("../../../build/testbed/bin/input.dll"),
-	sources=objects,
-	)
-
+  target=script.cwd("../../../build/testbed/bin/input.dll"),
+  sources=objects,
+  )
 lib = script.cwd("../../../build/testbed/bin/input.lib")
 
 script.setResult(library=lib)

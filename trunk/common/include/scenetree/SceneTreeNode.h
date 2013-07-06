@@ -12,13 +12,14 @@
 
 #include "renderer/IRenderer.h"
 
+#include <memory>
 #include <vector>
 
 namespace st
 {
   class SceneTreeNode;
   
-  typedef boost::shared_ptr<SceneTreeNode> T_SceneTreePtr;
+  typedef std::shared_ptr<SceneTreeNode> T_SceneTreePtr;
 
   class Dll_st SceneTreeNode : public Node
   {

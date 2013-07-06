@@ -11,11 +11,16 @@
 #include "renderer/Dll.h"
 #include "renderer/ree.h"
 
-#include "boost/shared_ptr.hpp"
+#include <memory>
 
 namespace att
 {
   class Colour;
+}
+
+namespace cmr
+{
+  class Camera;
 }
 
 namespace geo
@@ -28,7 +33,7 @@ namespace ree
 {
   class IRenderer;
   
-  typedef boost::shared_ptr<IRenderer> T_RendererPtr;
+  typedef std::shared_ptr<IRenderer> T_RendererPtr;
 
   class Dll_ree IRenderer
   {
@@ -49,6 +54,8 @@ namespace ree
     virtual void Push() const = 0;
     virtual void Pop() const = 0;
     
+    virtual void SetCamera(const cmr::Camera& Camera) const = 0;
+    
     /////////////////////////////////////////////////////////////////////////////
     // Transformation operations
     virtual void Transform(const geo::Vector3D& Vector) const = 0;
@@ -58,10 +65,10 @@ namespace ree
     virtual void Begin( ree::DrawMode DrawMode ) const = 0;
     virtual void End() const = 0;
 
-	virtual GLuint BeginList() const = 0;
-	virtual void EndList() const = 0;
-	virtual void CallList(GLuint Id) const = 0;
-	virtual void DeleteList(GLuint Id) const = 0;
+    virtual GLuint BeginList() const = 0;
+    virtual void EndList() const = 0;
+    virtual void CallList(GLuint Id) const = 0;
+    virtual void DeleteList(GLuint Id) const = 0;
   
     virtual void Vertex( const geo::Point3D& Point ) const = 0;
     virtual void Normal( const geo::Vector3D& Direction ) const = 0;
