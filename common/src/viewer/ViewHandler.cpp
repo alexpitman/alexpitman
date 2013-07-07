@@ -2,14 +2,19 @@
 //
 // Name           : ViewHandler
 // Inheritance    : Base class 
-// Desctription   : View handling
+// Description    : View handling
 //
 ///////////////////////////////////////////////////////////////////////////////
 
 #include "viewer/ViewHandler.h"
 
+#include "CameraController.h"
+#include "InputController.h"
+#include "RendererController.h"
+#include "SceneController.h"
+
 vwr::ViewHandler::ViewHandler()
-: myViewPtr(NULL)
+: myViewPtr(nullptr)
 {
 }
     
@@ -18,7 +23,7 @@ vwr::ViewHandler::ViewHandler(View* ViewPtr)
 {
 }
   
-vwr::T_CameraControllerPtr
+cmr::T_CameraControllerPtr
 vwr::ViewHandler::CameraController()
 {
   if ( !myCameraControllerPtr )
@@ -28,7 +33,7 @@ vwr::ViewHandler::CameraController()
   return myCameraControllerPtr;
 }
 
-vwr::T_InputControllerPtr
+in::T_InputControllerPtr
 vwr::ViewHandler::InputController()
 {
   if ( !myInputControllerPtr )
@@ -46,4 +51,14 @@ vwr::ViewHandler::SceneController()
     mySceneControllerPtr.reset(new vwr::SceneController(myViewPtr));
   }
   return mySceneControllerPtr;
+}
+
+ree::T_RendererControllerPtr
+vwr::ViewHandler::RendererController()
+{
+  if ( !myRendererControllerPtr )
+  {
+    myRendererControllerPtr.reset(new vwr::RendererController(myViewPtr));
+  }
+  return myRendererControllerPtr;
 }

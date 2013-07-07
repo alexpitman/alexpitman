@@ -129,6 +129,11 @@ void ree::Renderer::Normal( const geo::Vector3D& Normal ) const
   glNormal3f(Normal.X(), Normal.Y(), Normal.Z());
 }
 
+void ree::Renderer::SetPolygonRenderMode(ree::PolygonRenderMode::Type RenderMode) const
+{
+  glPolygonMode(GL_FRONT_AND_BACK, RenderMode);
+}
+
 // Colour Operations //////////////////////////////////////////////////////////
 void ree::Renderer::SetColour( const att::Colour& Colour ) const
 {

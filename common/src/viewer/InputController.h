@@ -4,12 +4,11 @@
 //
 // Name           : InputController
 // Inheritance    : Base class 
-// Desctription   : Controller that takes in events and does actions based on them
+// Description    : Controller that takes in events and does actions based on them
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-#include "viewer/Dll.h"
-
+#include "input/IInputController.h"
 #include "input/Key.h"
 #include "input/Mouse.h"
 #include "input/XBox.h"
@@ -19,31 +18,28 @@
 namespace vwr
 {
   class View;
-  class InputController;
-  
-  typedef std::shared_ptr<InputController> T_InputControllerPtr;
 
-  class Dll_vwr InputController
+  class InputController : public in::IInputController
   {
   public:
   
     InputController(vwr::View* ViewPtr);
     
-    void Animate();
+    void Animate() override;
     
-    void Mouse( const in::Mouse& Mouse );
+    void Mouse( const in::Mouse& Mouse ) override;
     
     // Keyboard key presses
-    void KeyPress( const in::Key& Key );
-    void KeyRelease( const in::Key& Key );
+    void KeyPress( const in::Key& Key ) override;
+    void KeyRelease( const in::Key& Key ) override;
   
     // XBox controller key presses
-    void XKeyPress( const in::XKey& Key );
-    void XKeyRelease( const in::XKey& Key );
-    void LeftTriggerChange( short Value );
-    void RightTriggerChange( short Value );
-    void LeftThumbChange( short X, short Y );
-    void RightThumbChange( short X, short Y );
+    void XKeyPress( const in::XKey& Key ) override;
+    void XKeyRelease( const in::XKey& Key ) override;
+    void LeftTriggerChange( short Value ) override;
+    void RightTriggerChange( short Value ) override;
+    void LeftThumbChange( short X, short Y ) override;
+    void RightThumbChange( short X, short Y ) override;
   
   private:
   

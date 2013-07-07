@@ -2,11 +2,12 @@
 //
 // Name           : InputController
 // Inheritance    : Base class 
-// Desctription   : Controller that takes in events and does actions based on them
+// Description    : Controller that takes in events and does actions based on them
 //
 ///////////////////////////////////////////////////////////////////////////////
  
-#include "viewer/InputController.h"
+#include "InputController.h"
+
 #include "viewer/View.h"
 
 #include "input/Mouse.h"
@@ -38,7 +39,7 @@ namespace local
   static int IsVibrating = 0;
   static bool IsCurrentlyVibrating = false;
   
-  static ree::FacetRenderMode RenderMode = ree::RENDER_TRIANGLES;
+  static ree::PolygonRenderMode::Type RenderMode = ree::PolygonRenderMode::SOLID;
   
   static in::Mouse LastMouse;
 }
@@ -61,7 +62,7 @@ vwr::InputController::Animate()
 {
   myXboxController.Poll();
 
-  T_CameraControllerPtr cmrController = myViewPtr->Handler()->CameraController();
+  cmr::T_CameraControllerPtr cmrController = myViewPtr->Handler()->CameraController();
   
   ///////////////////////////////
   // Camera movement.
@@ -135,7 +136,7 @@ vwr::InputController::Mouse( const in::Mouse& Mouse )
     return;
   }
   
-  vwr::T_CameraControllerPtr cmrController = myViewPtr->Handler()->CameraController();
+  cmr::T_CameraControllerPtr cmrController = myViewPtr->Handler()->CameraController();
   
   if ( local::LastMouse.IsLeftClick() )
   {
@@ -272,10 +273,10 @@ void
 vwr::InputController::ToggleFacetRenderMode()
 {
   // Toggle facet render mode.
-  if (local::RenderMode == ree::RENDER_TRIANGLES) local::RenderMode = ree::RENDER_WIREFRAME;
-  else if (local::RenderMode == ree::RENDER_WIREFRAME) local::RenderMode = ree::RENDER_POINTS;
-  else local::RenderMode = ree::RENDER_TRIANGLES;
+  if (local::RenderMode == ree::PolygonRenderMode::SOLID) local::RenderMode = ree::PolygonRenderMode::WIREFRAME;
+  else if (local::RenderMode == ree::PolygonRenderMode::WIREFRAME) local::RenderMode = ree::PolygonRenderMode::POINTS;
+  else local::RenderMode = ree::PolygonRenderMode::SOLID;
 
-  myViewPtr->Handler()->SceneController()->SetFacetRenderMode(local::RenderMode);
+  myViewPtr->Handler()->RendererController()->SetPolygonRenderMode(local::RenderMode);
 }
 
