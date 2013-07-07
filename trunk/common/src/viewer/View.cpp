@@ -51,7 +51,7 @@ namespace local
 vwr::View::View()
 : myRendererPtr(ree::Factory::CreateRenderer()),
   myViewHandlerPtr(new ViewHandler(this)),
-  myFacetRenderMode(ree::RENDER_TRIANGLES)
+  myPolygonRenderMode(ree::PolygonRenderMode::SOLID)
 {
 }
 
@@ -94,20 +94,7 @@ vwr::View::Render()
   // Set up lights
   //local::light.Render();
   
-  switch(myFacetRenderMode)
-  {
-  case ree::RENDER_POINTS:
-    glPolygonMode( GL_FRONT_AND_BACK, GL_POINT );
-    break;
-  case ree::RENDER_WIREFRAME:
-    glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
-    break;
-  case ree::RENDER_TRIANGLES:
-    //glPolygonMode( GL_FRONT, GL_FILL );
-    glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
-    break;
-  default: assert(false); // Unreachable
-  }
+  Renderer()->SetPolygonRenderMode(myPolygonRenderMode);
   
   // HACK
   glDisable(GL_LIGHTING);
@@ -258,7 +245,7 @@ vwr::View::KeyRelease( const in::Key& Key )
 }
 
 void
-vwr::View::SetFacetRenderMode(ree::FacetRenderMode FacetRenderMode)
+vwr::View::SetPolygonRenderMode(ree::PolygonRenderMode::Type RenderMode)
 {
-  myFacetRenderMode = FacetRenderMode;
+  myPolygonRenderMode = RenderMode;
 }

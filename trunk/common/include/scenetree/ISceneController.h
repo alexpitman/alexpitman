@@ -4,11 +4,9 @@
 //
 // Name           : ISceneController
 // Inheritance    : Interface 
-// Desctription   : Scene manipulation
+// Description    : Scene manipulation
 //
 ///////////////////////////////////////////////////////////////////////////////
-
-#include "renderer/ree.h"
 
 #include <memory>
 
@@ -30,8 +28,6 @@ namespace st
   public:
   
     virtual void AddObject(const obj::T_ObjectPtr& Object) = 0;
-  
-    virtual void SetFacetRenderMode(ree::FacetRenderMode FacetRenderMode) = 0;
   
   };
 }

@@ -8,8 +8,6 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-//#include "scenetree/SceneTreeNode.h"
-
 #include "viewer/ViewHandler.h"
 
 #include "camera/Camera.h"
@@ -26,9 +24,11 @@ namespace wid
   class GLWidget;
 }
 
-namespace cmr
+namespace vwr
 {
   class CameraController;
+  class RendererController;
+  class SceneController;
 }
 
 namespace vwr
@@ -74,31 +74,30 @@ namespace vwr
     void KeyPress( const in::Key& Key );
     void KeyRelease( const in::Key& Key );
     
+    void SetPolygonRenderMode(ree::PolygonRenderMode::Type RenderMode);
+    
     // Handler for this view.
     T_ViewHandlerPtr myViewHandlerPtr;
   
     inline ree::T_RendererPtr Renderer() { return myRendererPtr; }
   
-    void SetFacetRenderMode(ree::FacetRenderMode FacetRenderMode);
-  
     // Renderer for this view
     ree::T_RendererPtr myRendererPtr;
-    
-    // Camera for this view
-    cmr::Camera myCamera;
     
     bool isBuildPending; // Is a new build required?
     bool isRenderPending; // Is a new render required?
     
     st::T_SceneTreePtr mySceneTreePtr;
     
-    ree::FacetRenderMode myFacetRenderMode;
+    // View properties
+    cmr::Camera myCamera;
+    ree::PolygonRenderMode::Type myPolygonRenderMode;
     
     // Classes that can access private members
     friend class wid::GLWidget;
     friend class vwr::CameraController;
-    friend class SceneController;
-    friend class RendererController;
+    friend class vwr::SceneController;
+    friend class vwr::RendererController;
   };
 }
 

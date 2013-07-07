@@ -23,12 +23,15 @@ namespace ree
     TRIANGLES       = GL_TRIANGLES,
   };
   
-  enum FacetRenderMode
+  namespace PolygonRenderMode
   {
-    RENDER_POINTS,
-    RENDER_WIREFRAME,
-    RENDER_TRIANGLES,
-  };
+    enum Type
+    {
+      POINTS    = GL_POINT,
+      WIREFRAME = GL_LINE,
+      SOLID     = GL_FILL,
+    };
+  }
 }
 
 #endif

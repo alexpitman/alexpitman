@@ -2,11 +2,11 @@
 //
 // Name           : SceneController
 // Inheritance    : Base class 
-// Desctription   : Scene manipulation
+// Description    : Scene manipulation
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-#include "viewer/SceneController.h"
+#include "SceneController.h"
 
 #include "viewer/View.h"
 
@@ -22,9 +22,4 @@ vwr::SceneController::SceneController(vwr::View* ViewPtr)
 void vwr::SceneController::AddObject(const obj::T_ObjectPtr& Object)
 {
   myViewPtr->mySceneTreePtr->AddNode( st::Factory::NewNode(Object) );
-}
-
-void vwr::SceneController::SetFacetRenderMode(ree::FacetRenderMode FacetRenderMode)
-{
-  myViewPtr->SetFacetRenderMode(FacetRenderMode);
 }

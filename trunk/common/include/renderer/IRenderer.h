@@ -73,10 +73,12 @@ namespace ree
     virtual void Vertex( const geo::Point3D& Point ) const = 0;
     virtual void Normal( const geo::Vector3D& Direction ) const = 0;
     
+    virtual void SetPolygonRenderMode(ree::PolygonRenderMode::Type RenderMode) const = 0;
+    
     /////////////////////////////////////////////////////////////////////////////
     // Colour operations
     virtual void SetColour( const att::Colour& Colour ) const = 0;
-	virtual void SetColour( const geo::Vector3D& Normal ) const = 0;
+    virtual void SetColour( const geo::Vector3D& Normal ) const = 0;
     virtual void SetClearColour( const att::Colour& Colour ) const = 0;
     
     /////////////////////////////////////////////////////////////////////////////

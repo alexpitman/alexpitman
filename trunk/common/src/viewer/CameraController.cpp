@@ -6,7 +6,7 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-#include "viewer/CameraController.h"
+#include "CameraController.h"
 
 #include "viewer/View.h"
 

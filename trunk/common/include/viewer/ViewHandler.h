@@ -4,14 +4,19 @@
 //
 // Name           : View
 // Inheritance    : Base class 
-// Desctription   : View handling
+// Description    : View handling/controlling
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-#include "viewer/CameraController.h"
 #include "viewer/Dll.h"
-#include "viewer/InputController.h"
-#include "viewer/SceneController.h"
+
+#include "input/IInputController.h"
+
+#include "scenetree/ISceneController.h"
+
+#include "renderer/IRendererController.h"
+
+#include "camera/ICameraController.h"
 
 #include <memory>
 
@@ -31,17 +36,17 @@ namespace vwr
     ViewHandler(View* ViewPtr);
 
     // Obtain different controllers on the view
-    T_CameraControllerPtr CameraController();
-    T_InputControllerPtr InputController();
+    cmr::T_CameraControllerPtr CameraController();
+    in::T_InputControllerPtr InputController();
     st::T_SceneControllerPtr SceneController();
-    //T_RendererControllerPtr RendererController();
+    ree::T_RendererControllerPtr RendererController();
   
   private:
   
-    T_CameraControllerPtr myCameraControllerPtr;
-    T_InputControllerPtr myInputControllerPtr;
+    cmr::T_CameraControllerPtr myCameraControllerPtr;
+    in::T_InputControllerPtr myInputControllerPtr;
     st::T_SceneControllerPtr mySceneControllerPtr;
-    //T_RendererControllerPtr myRendererControllerPtr;
+    ree::T_RendererControllerPtr myRendererControllerPtr;
   
     vwr::View* myViewPtr;
   
