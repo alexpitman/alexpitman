@@ -4,6 +4,7 @@
 
 #include "viewer/ViewHandler.h"
 
+#include "voxel/Factory.h"
 #include "voxel/Triangulate.h"
 
 #include "import/ImportObjFile.h"
@@ -57,6 +58,12 @@ wid::MainWindow::MainWindow()
     
     addAction(tr("&Terrain"));
     connect(action, SIGNAL(triggered()), this, SLOT(createTerrain()));
+    
+    addAction(tr("&Sphere"));
+    connect(action, SIGNAL(triggered()), this, SLOT(createSphere()));
+    
+    addAction(tr("&Planet"));
+    connect(action, SIGNAL(triggered()), this, SLOT(createPlanet()));
   }
 }
 #include <iostream>
@@ -126,4 +133,18 @@ void wid::MainWindow::createTerrain()
       myViewWindow->Handler()->SceneController()->AddObject(terrainTile);
     }
   }
+}
+
+void wid::MainWindow::createSphere()
+{
+  std::unique_ptr<vxl::SubBlock<64>> ptr(vxl::Factory::GenerateSphere<64>());
+  auto blockModelRep = vxl::Triangulate::SubBlock(*ptr);
+  myViewWindow->Handler()->SceneController()->AddObject(blockModelRep);
+}
+  
+void wid::MainWindow::createPlanet()
+{
+  std::unique_ptr<vxl::SubBlock<64>> ptr(vxl::Factory::GeneratePlanet<64>(20.0f));
+  auto blockModelRep = vxl::Triangulate::SubBlock(*ptr);
+  myViewWindow->Handler()->SceneController()->AddObject(blockModelRep);
 }
