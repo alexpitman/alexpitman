@@ -1,0 +1,9 @@
+# Ignore the build directory
+build
+
+# Ignore generated compiled cake files
+*.cakec
+
+# Ignore 3rdParty built files
+common/3rdParty/accidentalnoise/lib
+common/3rdParty/accidentalnoise/obj
