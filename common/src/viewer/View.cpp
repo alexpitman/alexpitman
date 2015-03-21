@@ -126,7 +126,7 @@ vwr::View::GLInitialise()
     att::Colour(1, 0, 0, 1),
     att::Colour(1, 1, 0, 1),
     att::Colour(1, 1, 1, 1) );
-  
+
   geo::Point3D points[] = {
     geo::Point3D(-1, -1,  1),
     geo::Point3D(-1,  1,  1),
@@ -135,16 +135,16 @@ vwr::View::GLInitialise()
   };
   
   tpo::Triple facets[] = {
-    tpo::Triple(0, 1, 2),
-    tpo::Triple(0, 2, 3),
+    tpo::Triple(0, 2, 1),
+    tpo::Triple(0, 3, 2),
   };
-  /*
+
   obj::T_FacetNetworkPtr f(new obj::FacetNetwork(points, points+4, facets, facets+2));
   obj::T_PointSetPtr p(new obj::PointSet(points, points+4));
   
   mySceneTreePtr->AddNode( st::T_NodePtr(new st::FacetNetworkNode(mySceneTreePtr, f)) );
   mySceneTreePtr->AddNode( st::T_NodePtr(new st::PointSetNode(mySceneTreePtr, p)) );
-  */
+  
   /*
   obj::T_FacetNetworkPtr f2 = imp::ImportObjFile::Import("test.obj");
   mySceneTreePtr->AddNode( st::T_NodePtr(new st::FacetNetworkNode(mySceneTreePtr, f2)) );
@@ -177,7 +177,7 @@ vwr::View::GLInitialise()
     }
   }
   */
-  
+  /*
   for (int x = 0; x < tileCountX; ++x)
   {
     for (int y = 0; y < tileCountY; ++y)
@@ -186,7 +186,7 @@ vwr::View::GLInitialise()
       mySceneTreePtr->AddNode( st::T_NodePtr(new st::FacetNetworkNode(mySceneTreePtr, terrainTile)) );
     }
   }
-  
+  */
   /*
   std::unique_ptr<vxl::SubBlock<64>> ptr3( vxl::Factory::GeneratePlanet<64>(20.0f));
   obj::T_FacetNetworkPtr blockModelRep3 = vxl::Triangulate::SubBlock(*ptr3);
