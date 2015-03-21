@@ -60,6 +60,8 @@ void wid::MainWindow::import()
   auto fileName = QFileDialog::getOpenFileName(
     this, tr("Import"), "", tr("Obj files (*.obj)"));
   
+  if (fileName.isEmpty()) return;
+  
   try
   {
     auto name = fileName.toUtf8();
