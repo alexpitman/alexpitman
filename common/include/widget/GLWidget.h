@@ -22,8 +22,10 @@ namespace wid
     Q_OBJECT
     
   public:
-    GLWidget(QWidget* Parent = NULL);
+    GLWidget(QWidget* Parent = nullptr);
     ~GLWidget();
+
+    vwr::ViewHandler* Handler() { return myView.Handler(); }
 
     QSize minimumSizeHint() const;
     QSize sizeHint() const;

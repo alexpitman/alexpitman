@@ -1,5 +1,7 @@
 #include "widget/ViewWindow.h"
 
+#include "widget/GLWidget.h"
+
 #include <QHBoxLayout>
 #include <QTimer>
 
@@ -17,6 +19,12 @@ wid::ViewWindow::ViewWindow()
   timer->start(10);
   
   setWindowTitle(tr("Hello GL"));
+}
+
+vwr::ViewHandler*
+wid::ViewWindow::Handler()
+{
+  return myGLWidget->Handler();
 }
 
 void 

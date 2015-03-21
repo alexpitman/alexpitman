@@ -11,10 +11,16 @@
 #include <QWidget>
 
 #include "widget/Dll.h"
-#include "widget/GLWidget.h"
+
+namespace vwr
+{
+  class ViewHandler;
+}
 
 namespace wid
 {
+  class GLWidget;
+
   class Dll_wid ViewWindow : public QWidget
   {
     Q_OBJECT
@@ -23,6 +29,8 @@ namespace wid
    
     ViewWindow();
 
+    vwr::ViewHandler* Handler();
+    
   protected:
 
     void keyPressEvent(QKeyEvent* Event);

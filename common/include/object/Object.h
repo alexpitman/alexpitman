@@ -14,17 +14,19 @@
 
 namespace obj
 {
-	class Object;
+  class Object;
 
-	typedef std::shared_ptr<Object> T_ObjectPtr;
+  typedef std::shared_ptr<Object> T_ObjectPtr;
 
-	class Dll_obj Object
-	{
-	public:
-	
-		Object() {};
-		
-	};
+  class Dll_obj Object
+  {
+  public:
+
+    Object() {}
+
+    virtual ~Object() {}
+    
+  };
 }
 
 #endif

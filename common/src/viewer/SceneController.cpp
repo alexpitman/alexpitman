@@ -21,5 +21,9 @@ vwr::SceneController::SceneController(vwr::View* ViewPtr)
 
 void vwr::SceneController::AddObject(const obj::T_ObjectPtr& Object)
 {
-  myViewPtr->mySceneTreePtr->AddNode( st::Factory::NewNode(Object) );
+  auto node = st::Factory::NewNode(myViewPtr->mySceneTreePtr, Object);
+  if (node)
+  {
+    myViewPtr->mySceneTreePtr->AddNode(node);
+  }
 }

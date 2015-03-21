@@ -25,6 +25,11 @@ namespace wid
    
     MainWindow();
     
+  private slots:
+    
+    void createPointSet();
+    void createFacetNetwork();
+    
   private:
 
     ViewWindow* myViewWindow;

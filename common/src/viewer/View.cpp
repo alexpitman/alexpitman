@@ -127,24 +127,6 @@ vwr::View::GLInitialise()
     att::Colour(1, 1, 0, 1),
     att::Colour(1, 1, 1, 1) );
 
-  geo::Point3D points[] = {
-    geo::Point3D(-1, -1,  1),
-    geo::Point3D(-1,  1,  1),
-    geo::Point3D( 1,  1,  1),
-    geo::Point3D( 1, -1,  1),
-  };
-  
-  tpo::Triple facets[] = {
-    tpo::Triple(0, 2, 1),
-    tpo::Triple(0, 3, 2),
-  };
-
-  obj::T_FacetNetworkPtr f(new obj::FacetNetwork(points, points+4, facets, facets+2));
-  obj::T_PointSetPtr p(new obj::PointSet(points, points+4));
-  
-  mySceneTreePtr->AddNode( st::T_NodePtr(new st::FacetNetworkNode(mySceneTreePtr, f)) );
-  mySceneTreePtr->AddNode( st::T_NodePtr(new st::PointSetNode(mySceneTreePtr, p)) );
-  
   /*
   obj::T_FacetNetworkPtr f2 = imp::ImportObjFile::Import("test.obj");
   mySceneTreePtr->AddNode( st::T_NodePtr(new st::FacetNetworkNode(mySceneTreePtr, f2)) );

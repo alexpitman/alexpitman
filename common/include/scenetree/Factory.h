@@ -14,14 +14,17 @@
 
 namespace st
 {
-	class Node;
+  class Node;
+  class SceneTreeNode;
   
   typedef std::shared_ptr<Node> T_NodePtr;
+  typedef std::shared_ptr<SceneTreeNode> T_SceneTreePtr;
 
-	namespace Factory
-	{
-		Dll_st st::T_NodePtr NewNode(const obj::T_ObjectPtr& Object);
-	};
+  namespace Factory
+  {
+    Dll_st st::T_NodePtr NewNode(const st::T_SceneTreePtr& SceneTreePtr,
+                                 const obj::T_ObjectPtr& Object);
+  };
 }
 
 #endif
