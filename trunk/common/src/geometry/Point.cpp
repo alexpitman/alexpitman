@@ -1,7 +1,7 @@
 #include "geometry/Point.h"
 
 #include "numeric/num.h"
-
+/*
 ///////////////////////////////////////////////////////////////////////////////
 //
 // Name           : Point2D
@@ -307,3 +307,4 @@ geo::Point3D::UnitZ()
   static Point3D pt(0, 0, 1);
   return pt;
 }
+*/
