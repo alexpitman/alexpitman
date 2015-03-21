@@ -4,6 +4,8 @@
 
 #include "viewer/ViewHandler.h"
 
+#include "voxel/Triangulate.h"
+
 #include "import/ImportObjFile.h"
 
 #include "object/PointSet.h"
@@ -52,6 +54,9 @@ wid::MainWindow::MainWindow()
     
     addAction(tr("&Facet network"));
     connect(action, SIGNAL(triggered()), this, SLOT(createFacetNetwork()));
+    
+    addAction(tr("&Terrain"));
+    connect(action, SIGNAL(triggered()), this, SLOT(createTerrain()));
   }
 }
 #include <iostream>
@@ -104,4 +109,21 @@ void wid::MainWindow::createFacetNetwork()
 
   auto f = std::make_shared<obj::FacetNetwork>(points, points+4, facets, facets+2);
   myViewWindow->Handler()->SceneController()->AddObject(f);
+}
+
+void wid::MainWindow::createTerrain()
+{
+  vxl::TerrainDescriptor descriptor(false);
+  
+  const int tileCountX = 2;
+  const int tileCountY = 2;
+  
+  for (int x = 0; x < tileCountX; ++x)
+  {
+    for (int y = 0; y < tileCountY; ++y)
+    {
+      auto terrainTile = vxl::Triangulate::Terrain<64>(descriptor, geo::Vector3D(x, y, 0));
+      myViewWindow->Handler()->SceneController()->AddObject(terrainTile);
+    }
+  }
 }

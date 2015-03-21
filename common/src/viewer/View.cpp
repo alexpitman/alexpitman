@@ -21,10 +21,6 @@
 #include "object/FacetNetwork.h"
 #include "object/Object.h"
 
-#include "voxel/Factory.h"
-#include "voxel/SubBlock.h"
-#include "voxel/Triangulate.h"
-
 #include "attribute/Colour.h"
 
 #include "geometry/Point.h"
@@ -131,31 +127,6 @@ vwr::View::GLInitialise()
   mySceneTreePtr->AddNode( st::T_NodePtr(new st::FacetNetworkNode(mySceneTreePtr, blockModelRep)) );
   */
   
-  vxl::TerrainDescriptor descriptor(false);
-  
-  const int tileCountX = 2;
-  const int tileCountY = 2;
-  /*
-  for (int x = 0; x < tileCountX; ++x)
-  {
-    for (int y = 0; y < tileCountY; ++y)
-    {
-      std::unique_ptr<vxl::SubBlock<64>> subBlockArea( vxl::Factory::GenerateTerrain<64>(descriptor, geo::Vector3D(x, y, 0.0)));
-      obj::T_FacetNetworkPtr blockModelRep = vxl::Triangulate::SubBlock(*subBlockArea);
-      mySceneTreePtr->AddNode( st::T_NodePtr(new st::FacetNetworkNode(mySceneTreePtr, blockModelRep)) );
-    }
-  }
-  */
-  /*
-  for (int x = 0; x < tileCountX; ++x)
-  {
-    for (int y = 0; y < tileCountY; ++y)
-    {
-      obj::T_FacetNetworkPtr terrainTile = vxl::Triangulate::Terrain<64>(descriptor, geo::Vector3D(x, y, 0));
-      mySceneTreePtr->AddNode( st::T_NodePtr(new st::FacetNetworkNode(mySceneTreePtr, terrainTile)) );
-    }
-  }
-  */
   /*
   std::unique_ptr<vxl::SubBlock<64>> ptr3( vxl::Factory::GeneratePlanet<64>(20.0f));
   obj::T_FacetNetworkPtr blockModelRep3 = vxl::Triangulate::SubBlock(*ptr3);

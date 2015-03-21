@@ -31,6 +31,7 @@ namespace wid
     
     void createPointSet();
     void createFacetNetwork();
+    void createTerrain();
     
   private:
 
