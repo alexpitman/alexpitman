@@ -1,17 +1,7 @@
-///////////////////////////////////////////////////////////////////////////////
-//
-// Name           : View
-// Inheritance    : QGLWidget
-// Desctription   : View rendering
-//
-///////////////////////////////////////////////////////////////////////////////
-
 #include "widget/GLWidget.h"
 
 #include "input/Key.h"
 #include "input/Mouse.h"
-
-//#include <iostream>
 
 wid::GLWidget::GLWidget(QWidget* Parent)
 : QGLWidget(QGLFormat(QGL::SampleBuffers), Parent),

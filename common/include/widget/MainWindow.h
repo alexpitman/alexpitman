@@ -27,6 +27,8 @@ namespace wid
     
   private slots:
     
+    void import();
+    
     void createPointSet();
     void createFacetNetwork();
     

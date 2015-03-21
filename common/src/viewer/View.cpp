@@ -17,8 +17,6 @@
 
 #include "renderer/Factory.h"
 
-#include "import/ImportObjFile.h"
-
 #include "object/PointSet.h"
 #include "object/FacetNetwork.h"
 #include "object/Object.h"
@@ -126,23 +124,12 @@ vwr::View::GLInitialise()
     att::Colour(1, 0, 0, 1),
     att::Colour(1, 1, 0, 1),
     att::Colour(1, 1, 1, 1) );
-
-  /*
-  obj::T_FacetNetworkPtr f2 = imp::ImportObjFile::Import("test.obj");
-  mySceneTreePtr->AddNode( st::T_NodePtr(new st::FacetNetworkNode(mySceneTreePtr, f2)) );
-  */
-  
-  /*
-  obj::T_FacetNetworkPtr f3 = imp::ImportObjFile::Import("candle.obj");
-  mySceneTreePtr->AddNode( st::T_NodePtr(new st::FacetNetworkNode(mySceneTreePtr, f3)) );
-  */
   
   /*
   std::unique_ptr<vxl::SubBlock<10>> ptr( vxl::Factory::GenerateSphere<10>());
   obj::T_FacetNetworkPtr blockModelRep = vxl::Triangulate::SubBlock(*ptr);
   mySceneTreePtr->AddNode( st::T_NodePtr(new st::FacetNetworkNode(mySceneTreePtr, blockModelRep)) );
   */
-  
   
   vxl::TerrainDescriptor descriptor(false);
   

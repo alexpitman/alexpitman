@@ -4,10 +4,14 @@
 
 #include "viewer/ViewHandler.h"
 
+#include "import/ImportObjFile.h"
+
 #include "object/PointSet.h"
 #include "object/FacetNetwork.h"
 
 #include <QApplication>
+#include <QErrorMessage>
+#include <QFileDialog>
 #include <QMenuBar>
 
 wid::MainWindow::MainWindow()
@@ -32,6 +36,9 @@ wid::MainWindow::MainWindow()
   {
     addMenu(tr("&File"));
 
+    addAction(tr("&Import"));
+    connect(action, SIGNAL(triggered()), this, SLOT(import()));
+
     addAction(tr("&Quit"));
     connect(action, SIGNAL(triggered()), qApp, SLOT(closeAllWindows()));
   }
@@ -45,6 +52,24 @@ wid::MainWindow::MainWindow()
     
     addAction(tr("&Facet network"));
     connect(action, SIGNAL(triggered()), this, SLOT(createFacetNetwork()));
+  }
+}
+#include <iostream>
+void wid::MainWindow::import()
+{
+  auto fileName = QFileDialog::getOpenFileName(
+    this, tr("Import"), "", tr("Obj files (*.obj)"));
+  
+  try
+  {
+    auto name = fileName.toUtf8();
+    auto f = imp::ImportObjFile::Import(name.constData());
+    myViewWindow->Handler()->SceneController()->AddObject(f);
+  }
+  catch (const std::exception& e)
+  {
+    auto error = new QErrorMessage(this);
+    error->showMessage(tr("Failed to import file") + "\n" + QString(e.what()));
   }
 }
 

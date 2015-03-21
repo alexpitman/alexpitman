@@ -16,13 +16,10 @@
 
 namespace imp
 {
-	class Dll_imp ImportObjFile
-	{
-	public:
-	
-		static obj::T_FacetNetworkPtr Import(const std::string& File);
-	
-	};
+  namespace ImportObjFile
+  {
+    Dll_imp obj::T_FacetNetworkPtr Import(const std::string& File);
+  }
 }
 
 #endif

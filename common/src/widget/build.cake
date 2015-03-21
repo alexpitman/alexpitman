@@ -9,6 +9,7 @@ from cake.filesys import makeDirs
 from cake.tools import compiler, script, shell
 
 script.include(script.cwd("../viewer/include.cake"))
+script.include(script.cwd("../import/include.cake"))
 script.include(script.cwd("../input/include.cake"))
 
 compiler.addDefine("WIDGET_DLL")

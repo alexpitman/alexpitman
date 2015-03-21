@@ -8,6 +8,8 @@
 
 #include "import/ImportObjFile.h"
 
+#include "import/imp.h"
+
 #include "geometry/Point.h"
 
 #include "system/InputStream.h"
@@ -43,7 +45,7 @@ geo::Point3D local::ParsePoint(const std::string& Line)
 		start = next+1;
 		++i;
 	}
-	if ( coord[0] != coord[0] || coord[1] != coord[1] || coord[2] != coord[2] ) throw std::exception(); // Parse error
+	if ( coord[0] != coord[0] || coord[1] != coord[1] || coord[2] != coord[2] ) throw imp::Base("Malformed line " + Line); // Parse error
 	
 	return geo::Point3D(coord[0], coord[1], coord[2]);
 }
@@ -102,13 +104,13 @@ void local::ParseFacet(const std::string& Line, std::vector<tpo::Triple>* Facets
 		
 		if (i > 2)
 		{
-			if ( findex[0] == tpo::NullIndex || findex[1] == tpo::NullIndex || findex[2] == tpo::NullIndex ) throw std::exception(); // Parse error
+			if ( findex[0] == tpo::NullIndex || findex[1] == tpo::NullIndex || findex[2] == tpo::NullIndex ) throw imp::Base("Malformed line " + Line); // Parse error
 	
 			Facets->push_back( tpo::Triple(findex[0], findex[1], findex[2]) );
 	
 			if ( nindex[0] != tpo::NullIndex || nindex[1] != tpo::NullIndex || nindex[2] != tpo::NullIndex )
 			{
-				if ( nindex[0] == tpo::NullIndex || nindex[1] == tpo::NullIndex || nindex[2] == tpo::NullIndex ) throw std::exception(); // Parse error
+				if ( nindex[0] == tpo::NullIndex || nindex[1] == tpo::NullIndex || nindex[2] == tpo::NullIndex ) throw imp::Base("Malformed line " + Line); // Parse error
 	
 				Normals->push_back( tpo::Triple(nindex[0], nindex[1], nindex[2]));
 			}
@@ -140,7 +142,7 @@ geo::Vector3D local::ParseNormal(const std::string& Line)
 		start = next+1;
 		++i;
 	}
-	if ( dir[0] != dir[0] || dir[1] != dir[1] || dir[2] != dir[2] ) throw std::exception(); // Parse error
+	if ( dir[0] != dir[0] || dir[1] != dir[1] || dir[2] != dir[2] ) throw imp::Base("Malformed line " + Line); // Parse error
 	return geo::Vector3D(dir[0], dir[1], dir[2]);
 }
 
@@ -175,7 +177,7 @@ imp::ImportObjFile::Import(const std::string& File)
 		
 		if ( first == 'v' )
 		{
-			if ( line.size() == 1 ) throw(std::exception()); // error malformed line
+			if ( line.size() == 1 ) throw imp::Base("Malformed line " + line); // error malformed line
 			
 			char second = line.at(1);
 			if ( second == 'n' )
@@ -219,7 +221,7 @@ imp::ImportObjFile::Import(const std::string& File)
 		}
 		else
 		{
-			throw(std::exception()); // Not handled yet
+			throw imp::Base("Unsupported line " + line); // Not handled yet
 		}
 	}
 	
