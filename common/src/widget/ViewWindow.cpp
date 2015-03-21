@@ -1,11 +1,3 @@
-///////////////////////////////////////////////////////////////////////////////
-//
-// Name           : ViewWindow
-// Inheritance    : QWidget
-// Desctription   : View window holder
-//
-///////////////////////////////////////////////////////////////////////////////
-
 #include "widget/ViewWindow.h"
 
 #include <QHBoxLayout>
@@ -25,11 +17,6 @@ wid::ViewWindow::ViewWindow()
   timer->start(10);
   
   setWindowTitle(tr("Hello GL"));
-}
-
-wid::ViewWindow::~ViewWindow()
-{
-  delete myGLWidget;
 }
 
 void 

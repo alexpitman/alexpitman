@@ -4,7 +4,7 @@
 //
 // Name           : ViewWindow
 // Inheritance    : QWidget
-// Desctription   : View window holder
+// Description    : View window holder
 //
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -22,12 +22,11 @@ namespace wid
   public:
    
     ViewWindow();
-    ~ViewWindow();
 
   protected:
 
     void keyPressEvent(QKeyEvent* Event);
-
+    
   private:
 
     GLWidget* myGLWidget;
