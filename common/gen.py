@@ -26,14 +26,14 @@ libraryDependencies = {
   'input'            : { 'geometry', thirdParty('qt'), thirdParty('directx') },
   'numeric'          : { 'config', thirdParty('accidentalnoise') },
   'object'           : { 'attribute', 'geometry', 'topology' },
-  'renderer'         : { 'attribute', 'camera', 'geometry', 'voxel', thirdParty('gl') },
+  'renderer'         : { 'attribute', 'camera', 'geometry', thirdParty('gl') },
   'scenetree'        : { 'object', 'renderer' },
   'system'           : { 'config' },
   'test'             : { 'config' },
   'topology'         : { 'config' },
   'viewer'           : { 'camera', 'input', 'renderer', 'scenetree' },
   'voxel'            : { 'object' },
-  'widget'           : { 'input', 'import', 'viewer' },
+  'widget'           : { 'input', 'import', 'viewer', 'voxel' },
   }
 
 dir = os.path.dirname(os.path.realpath(__file__))
