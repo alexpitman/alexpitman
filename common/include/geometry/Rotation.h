@@ -9,8 +9,9 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-#include "geometry/Vector.h"
+#include "geometry/Dll.h"
 #include "geometry/Transform.h"
+#include "geometry/Vector.h"
 
 namespace geo
 {

@@ -26,8 +26,8 @@ namespace geo
       return derived.data[Index];
     }
     
-    // Addition.
-    Derived operator+(const Derived& Rhs) const
+    // Addition with a vector.
+    Derived operator+(const Vector<T, N>& Rhs) const
     {
       Derived point;
       const Derived& derived = reinterpret_cast<const Derived&>(*this);
@@ -37,7 +37,7 @@ namespace geo
       }
       return point;
     }
-    Derived& operator+=(const Derived& Rhs)
+    Derived& operator+=(const Vector<T, N>& Rhs)
     {
       Derived& derived = reinterpret_cast<Derived&>(*this);
       for (unsigned int i = 0; i < N; ++i)
@@ -47,8 +47,8 @@ namespace geo
       return reinterpret_cast<Derived&>(*this);
     }
     
-    // Subtraction.
-    Derived operator-(const Derived& Rhs) const
+    // Subtraction with a vector.
+    Derived operator-(const Vector<T, N>& Rhs) const
     {
       Derived point;
       const Derived& derived = reinterpret_cast<const Derived&>(*this);
@@ -58,7 +58,7 @@ namespace geo
       }
       return point;
     }
-    Derived& operator-=(const Derived& Rhs)
+    Derived& operator-=(const Vector<T, N>& Rhs)
     {
       Derived& derived = reinterpret_cast<Derived&>(*this);
       for (unsigned int i = 0; i < N; ++i)
@@ -137,6 +137,7 @@ namespace geo
       return false;
     }
     
+    // Check for NaN point.
     bool IsNull() const
     {
       const Derived& derived = reinterpret_cast<const Derived&>(*this);
