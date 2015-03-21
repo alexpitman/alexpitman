@@ -11,6 +11,9 @@
 #include "renderer/Dll.h"
 #include "renderer/ree.h"
 
+#include "geometry/Point.h"
+#include "geometry/Vector.h"
+
 #include <memory>
 
 namespace att
@@ -21,12 +24,6 @@ namespace att
 namespace cmr
 {
   class Camera;
-}
-
-namespace geo
-{
-  class Point3D;
-  class Vector3D;
 }
 
 namespace ree

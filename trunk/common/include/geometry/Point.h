@@ -1,5 +1,11 @@
 #ifndef __GEOMETRY_POINT_H
 #define __GEOMETRY_POINT_H
+///////////////////////////////////////////////////////////////////////////////
+//
+// Name           : Point2D, Point3D, Point4D
+// Description    : Template struct that represents points in different dimensions.
+//
+///////////////////////////////////////////////////////////////////////////////
 
 #include "geometry/Vector.h"
 
@@ -66,6 +72,30 @@ namespace geo
         derived.data[i] -= Rhs[i];
       }
       return reinterpret_cast<Derived&>(*this);
+    }
+    
+    // Unary minus.
+    Derived operator-() const
+    {
+      Derived point;
+      Derived& derived = reinterpret_cast<Derived&>(*this);
+      for (unsigned int i = 0; i < N; ++i)
+      {
+        point[i] = -derived.data[i];
+      }
+      return point;
+    }
+    
+    // Subtraction with a point (resulting in a vector).
+    Vector<T, N> operator-(const Derived& Rhs) const
+    {
+      Vector<T, N> vector;
+      const Derived& derived = reinterpret_cast<const Derived&>(*this);
+      for (unsigned int i = 0; i < N; ++i)
+      {
+        vector[i] = derived.data[i] - Rhs[i];
+      }
+      return vector;
     }
     
     // Multiplication by factor.
@@ -278,225 +308,5 @@ namespace geo
   typedef Point<double, 3> Point3D;
   typedef Point<double, 4> Point4D;
 }
-/*
 
-///////////////////////////////////////////////////////////////////////////////
-//
-// Name           : Point2D, Point
-// Inheritance    : Base class
-// Desctription   : Structs that represent 2D and 3D points respectively.
-//
-///////////////////////////////////////////////////////////////////////////////
-
-#include "geometry/Vector.h"
-
-///////////////////////////////////////////////////////////////////////////////
-//
-// Name: Point2D
-// Desctription: Memory storage and opperations for a 2D point
-//
-///////////////////////////////////////////////////////////////////////////////
-
-namespace geo
-{
-  struct Dll_geo Point2D
-  {
-  public:
-    // Default constructor.
-    Point2D();
-
-    // Standard constructor.
-    Point2D( const double X, const double Y);
-
-    Point2D& operator =(const Point2D& RHS);
-
-    inline double X() const;
-    inline double Y() const;
-    
-    inline double& X();
-    inline double& Y();
-
-    inline double operator[] (unsigned short int Index) const;
-    inline double& operator[] (unsigned short int Index);
-    
-    Point2D operator +(const Vector2D& RHS) const;
-    Point2D operator -(const Vector2D& RHS) const;
-
-    Point2D& operator +=(const Vector2D& RHS);
-    Point2D& operator -=(const Vector2D& RHS);
-
-    bool operator ==(const Point2D& RHS) const;
-    bool operator !=(const Point2D& RHS) const;
-
-    bool operator <(const Point2D& RHS) const;
-    
-    Vector2D ToVector() const;
-    
-    Vector2D operator -(const Point2D& RHS) const;
-    Vector2D operator -=(const Point2D& RHS) const;
-
-    bool IsNull() const;
-    
-    // Special points
-    static Point2D& Null();
-    static Point2D& Origin();
-
-    // Unit vector positions
-    static Point2D& UnitX();
-    static Point2D& UnitY();
-
-  private:
-    double myX;
-    double myY;
-  };
-}
-
-///////////////////// INLINE DECLARATIONS /////////////////////////////////////
-double geo::Point2D::X() const { return myX; }
-double geo::Point2D::Y() const { return myY; }
-
-double& geo::Point2D::X() { return myX; }
-double& geo::Point2D::Y() { return myY; }
-
-///////////////////////////////////////////////////////////////////////////////
-double 
-geo::Point2D::operator[] (unsigned short int Index) const
-{
-  switch ( Index )
-  {
-  case 0:
-    return myX;
-  case 1:
-    return myY;
-  default:
-    // ASSERT_UNREACHABLE();
-    return myX;
-  }
-}
-double& 
-geo::Point2D::operator[] (unsigned short int Index)
-{
-  switch ( Index )
-  {
-  case 0:
-    return myX;
-  case 1:
-    return myY;
-  default:
-    // ASSERT_UNREACHABLE();
-    return myX;
-  }
-}
-
-///////////////////////////////////////////////////////////////////////////////
-//
-// Name: Point3D
-// Desctription: Memory storage and opperations for a 3D point
-//
-///////////////////////////////////////////////////////////////////////////////
-
-namespace geo
-{
-  struct Dll_geo Point3D
-  {
-  public:
-    // Default constructor.
-    Point3D();
-
-    // Standard constructor.
-    Point3D(double X, double Y, double Z);
-
-    inline double X() const;
-    inline double Y() const;
-    inline double Z() const;
-    
-    inline double& X();
-    inline double& Y();
-    inline double& Z();
-
-    inline double operator[] (unsigned short int Index) const;
-    inline double& operator[] (unsigned short int Index);
-
-    Point3D& operator =(const Point3D& RHS);
-
-    Point3D operator +(const Vector3D& RHS) const;
-    Point3D operator -(const Vector3D& RHS) const;
-    Point3D operator *(double RHS) const;
-    Point3D operator /(double RHS) const;
-
-    Point3D& operator +=(const Vector3D& RHS);
-    Point3D& operator -=(const Vector3D& RHS);
-
-    bool operator ==(const Point3D& RHS) const;
-    bool operator !=(const Point3D& RHS) const;
-
-    bool operator <(const Point3D& RHS) const;
-    
-    Vector3D operator -(const Point3D& RHS) const;
-    
-    Vector3D ToVector() const;
-    
-    bool IsNull() const;
-
-    // Special Points
-    static Point3D& Null();
-    static Point3D& Origin();
-
-    // Unit vector positions
-    static Point3D& UnitX();
-    static Point3D& UnitY();
-    static Point3D& UnitZ();
-
-  private:
-    double myX;
-    double myY;
-    double myZ;
-  };
-}
-
-///////////////////// INLINE DECLARATIONS /////////////////////////////////////
-double geo::Point3D::X() const { return myX; }
-double geo::Point3D::Y() const { return myY; }
-double geo::Point3D::Z() const { return myZ; }
-
-///////////////////////////////////////////////////////////////////////////////
-double& geo::Point3D::X() { return myX; }
-double& geo::Point3D::Y() { return myY; }
-double& geo::Point3D::Z() { return myZ; }
-
-///////////////////////////////////////////////////////////////////////////////
-double 
-geo::Point3D::operator[] (unsigned short int Index) const
-{
-  switch ( Index )
-  {
-  case 0:
-    return myX;
-  case 1:
-    return myY;
-  case 2:
-    return myZ;
-  default:
-    // ASSERT_UNREACHABLE();
-    return myX;
-  }
-}
-
-double& 
-geo::Point3D::operator[] (unsigned short int Index)
-{
-  switch ( Index )
-  {
-  case 0:
-    return myX;
-  case 1:
-    return myY;
-  case 2:
-    return myZ;
-  default:
-    // ASSERT_UNREACHABLE();
-    return myX;
-  }
-}
-*/
 #endif
