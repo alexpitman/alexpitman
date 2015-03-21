@@ -29,6 +29,7 @@ libraryDependencies = {
   'renderer'         : { 'attribute', 'camera', 'geometry', 'voxel', thirdParty('gl') },
   'scenetree'        : { 'object', 'renderer' },
   'system'           : { 'config' },
+  'test'             : { 'config' },
   'topology'         : { 'config' },
   'viewer'           : { 'camera', 'input', 'renderer', 'scenetree' },
   'voxel'            : { 'object' },
@@ -130,6 +131,50 @@ def generateBuild(library, dependencies):
   
   f.close()
 
+def generateTestBuild(library):
+  print 'Generating tests/build.cake for %s' % library
+  f = open(os.path.join(dir, 'src', library, 'tests', 'build.cake'), 'w')
+  f.write('''# GENERATED
+#-------------------------------------------------------------------------------
+# Script that can be run to build and run the tests for the %s library.
+#-------------------------------------------------------------------------------
+''' % library)
+
+  f.write('from glob import glob\n')
+  f.write('import re\n')
+  f.write('from os import path\n')
+  f.write('from cake.filesys import makeDirs\n')
+  f.write('from cake.tools import compiler, script, shell\n\n')
+  
+  f.write('script.include(script.cwd("../include.cake"))\n')
+
+  if library != 'test':
+    f.write('script.include(script.cwd("../../test/include.cake"))\n')
+  f.write('\n')
+
+  f.write('source = glob(path.join(script.cwd(), "*.cpp"))\n\n')
+  
+  f.write('''objects = compiler.objects(
+  targetDir=script.cwd("../../../../build/testbed/obj/%s/tests"),
+  sources=source,
+  )
+''' % library)
+  
+  f.write('''program = compiler.program(
+  target=script.cwd("../../../../build/testbed/bin/test_%s.exe"),
+  sources=objects,
+  )
+  
+shell.run(
+  args=[program.path],
+  targets=[],
+  sources=[program],
+  )
+''' % library)
+  
+  f.close()
+
+  
 def writeDependencies(file, dependencies):
   for d in dependencies:
     if d.startswith("3rd_"):
@@ -165,8 +210,24 @@ def isBuildGenerated(library):
   
   return line.startswith('# GENERATED')
   
+def isTestBuildGenerated(library):
+  path = os.path.join(dir, 'src', library, 'tests', 'build.cake')
+  if not os.path.exists(path):
+    if not glob(os.path.join(dir, 'src', library, 'tests', '*.cpp')):
+      return False
+      
+    return True
+    
+  f = open(path)
+  line = f.readline()
+  f.close()
+  
+  return line.startswith('# GENERATED')
+  
 for l, d in libraryDependencies.items():
   if isIncludeGenerated(l):
     generateInclude(l, d)
   if isBuildGenerated(l):
     generateBuild(l, d)
+  if isTestBuildGenerated(l):
+    generateTestBuild(l)
