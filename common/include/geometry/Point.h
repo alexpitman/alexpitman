@@ -177,6 +177,16 @@ namespace geo
       }
       return false;
     }
+    
+    // Reinterpret a point as a vector.
+    const Vector<T, N>& ToVector() const
+    {
+      return reinterpret_cast<const Vector<T, N>&>(*this);
+    }
+    Vector<T, N>& ToVector()
+    {
+      return reinterpret_cast<Vector<T, N>&>(*this);
+    }
   };
 
   template<typename T, unsigned int N>
@@ -197,8 +207,6 @@ namespace geo
     T& Y() { return y; }
     const T& X() const { return x; }
     const T& Y() const { return y; }
-
-    Vector2D ToVector() const { return Vector2D(x, y); }
     
     // Special points
     static const Point<T, 2>& Null()
@@ -243,8 +251,6 @@ namespace geo
     const T& X() const { return x; }
     const T& Y() const { return y; }
     const T& Z() const { return z; }
-    
-    Vector3D ToVector() const { return Vector3D(x, y, z); }
 
     // Special points
     static const Point<T, 3>& Null()
