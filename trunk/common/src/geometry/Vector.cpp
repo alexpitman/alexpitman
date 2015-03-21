@@ -1,4 +1,5 @@
 #include "geometry/Vector.h"
+/*
 ///////////////////////////////////////////////////////////////////////////////
 //
 // Name           : Vector2D
@@ -288,3 +289,4 @@ geo::Vector3D::UnitZ()
   static Vector3D vec(0, 0, 1);
   return vec;
 }
+*/
