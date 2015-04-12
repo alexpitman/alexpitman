@@ -33,7 +33,7 @@ libraryDependencies = {
   'topology'         : { 'config' },
   'viewer'           : { 'camera', 'input', 'renderer', 'scenetree' },
   'voxel'            : { 'object' },
-  'widget'           : { 'input', 'import', 'viewer', 'voxel' },
+  'widget'           : { 'viewer' },
   }
 
 dir = os.path.dirname(os.path.realpath(__file__))

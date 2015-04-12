@@ -2,7 +2,7 @@
 
 #include <QApplication>
 
-#include "widget/MainWindow.h"
+#include "MainWindow.h"
 
 #include "export/ExportImage.h"
 
@@ -85,7 +85,7 @@ int main(int Argc, char** Argv)
   }
 */
   QApplication app(Argc, Argv);
-  wid::MainWindow window;
+  MainWindow window;
   
   window.resize(window.sizeHint());
   window.show();

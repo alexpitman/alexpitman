@@ -1,4 +1,4 @@
-#include "widget/MainWindow.h"
+#include "MainWindow.h"
 
 #include "widget/ViewWindow.h"
 
@@ -17,8 +17,8 @@
 #include <QFileDialog>
 #include <QMenuBar>
 
-wid::MainWindow::MainWindow()
-: myViewWindow(new ViewWindow())
+MainWindow::MainWindow()
+: myViewWindow(new wid::ViewWindow())
 {
   setCentralWidget(myViewWindow);
   setWindowTitle(tr("Application"));
@@ -66,8 +66,8 @@ wid::MainWindow::MainWindow()
     connect(action, SIGNAL(triggered()), this, SLOT(createPlanet()));
   }
 }
-#include <iostream>
-void wid::MainWindow::import()
+
+void MainWindow::import()
 {
   auto fileName = QFileDialog::getOpenFileName(
     this, tr("Import"), "", tr("Obj files (*.obj)"));
@@ -87,7 +87,7 @@ void wid::MainWindow::import()
   }
 }
 
-void wid::MainWindow::createPointSet()
+void MainWindow::createPointSet()
 {
   geo::Point3D points[] = {
     geo::Point3D(-1, -1,  1),
@@ -100,7 +100,7 @@ void wid::MainWindow::createPointSet()
   myViewWindow->Handler()->SceneController()->AddObject(p);
 }
 
-void wid::MainWindow::createFacetNetwork()
+void MainWindow::createFacetNetwork()
 {
   geo::Point3D points[] = {
     geo::Point3D(-1, -1,  1),
@@ -118,7 +118,7 @@ void wid::MainWindow::createFacetNetwork()
   myViewWindow->Handler()->SceneController()->AddObject(f);
 }
 
-void wid::MainWindow::createTerrain()
+void MainWindow::createTerrain()
 {
   vxl::TerrainDescriptor descriptor(false);
   
@@ -135,14 +135,14 @@ void wid::MainWindow::createTerrain()
   }
 }
 
-void wid::MainWindow::createSphere()
+void MainWindow::createSphere()
 {
   std::unique_ptr<vxl::SubBlock<64>> ptr(vxl::Factory::GenerateSphere<64>());
   auto blockModelRep = vxl::Triangulate::SubBlock(*ptr);
   myViewWindow->Handler()->SceneController()->AddObject(blockModelRep);
 }
   
-void wid::MainWindow::createPlanet()
+void MainWindow::createPlanet()
 {
   std::unique_ptr<vxl::SubBlock<64>> ptr(vxl::Factory::GeneratePlanet<64>(20.0f));
   auto blockModelRep = vxl::Triangulate::SubBlock(*ptr);
