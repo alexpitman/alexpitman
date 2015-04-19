@@ -9,6 +9,8 @@
 
 #include "import/ImportObjFile.h"
 
+#include "export/ExportImage.h"
+
 #include "object/PointSet.h"
 #include "object/FacetNetwork.h"
 
@@ -55,6 +57,11 @@ MainWindow::MainWindow()
     
     addAction(tr("&Facet network"));
     connect(action, SIGNAL(triggered()), this, SLOT(createFacetNetwork()));
+  } 
+
+  // Voxel menu
+  {
+    addMenu(tr("&Voxel"));
     
     addAction(tr("&Terrain"));
     connect(action, SIGNAL(triggered()), this, SLOT(createTerrain()));
@@ -64,6 +71,9 @@ MainWindow::MainWindow()
     
     addAction(tr("&Planet"));
     connect(action, SIGNAL(triggered()), this, SLOT(createPlanet()));
+    
+    addAction(tr("Terrain &2D"));
+    connect(action, SIGNAL(triggered()), this, SLOT(create2DTerrain()));
   }
 }
 
@@ -147,4 +157,55 @@ void MainWindow::createPlanet()
   std::unique_ptr<vxl::SubBlock<64>> ptr(vxl::Factory::GeneratePlanet<64>(20.0f));
   auto blockModelRep = vxl::Triangulate::SubBlock(*ptr);
   myViewWindow->Handler()->SceneController()->AddObject(blockModelRep);
+}
+
+void MainWindow::create2DTerrain()
+{
+  auto fileName = QFileDialog::getSaveFileName(
+    this, tr("Export"), "", tr("PNG files (*.png)"));
+  
+  if (fileName.isEmpty()) return;
+
+  int width = 1024;
+  int height = 256;
+  img::Image image(width, height);
+  
+  num::Gradient gradient;
+  gradient.setGradient(0, 0, 0, 1);
+  
+  num::Fractal fbm(num::FractalTypes::FBM, num::BasisTypes::GRADIENT, num::InterpTypes::QUINTIC);
+  fbm.setNumOctaves(6);
+  fbm.setFrequency(2.0f);
+  
+  num::ScaleOffset scaleOffset(0.5f, 0.0f);
+  scaleOffset.setSource(&fbm);
+  
+  num::ScaleDomain scaleDomain;
+  scaleDomain.setSource(&scaleOffset);
+  scaleDomain.setYScale(0.0f);
+  
+  num::TranslateDomain translateDomain;
+  translateDomain.setSource(&gradient);
+  translateDomain.setYAxisSource(&scaleDomain);
+  
+  for (int x = 0; x < width; ++x)
+  {
+    const float pX = x / float(width);
+  
+    for (int y = 0; y < height; ++y)
+    {
+      const float pY = y / float(height);
+    
+      if (translateDomain.get(pX, pY) > 0.5f)
+      {
+        image(x, y) = att::Colour::BlackColour();
+      }
+      else
+      {
+        image(x, y) = att::Colour::WhiteColour();
+      }
+    }
+  }
+  
+  ept::ExportImage::Png(image, fileName.toUtf8().constData());
 }

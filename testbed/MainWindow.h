@@ -29,11 +29,15 @@ private slots:
     
   void import();
     
+  // Create menu
   void createPointSet();
   void createFacetNetwork();
+  
+  // Voxel menu
   void createTerrain();
   void createSphere();
   void createPlanet();
+  void create2DTerrain();
     
 private:
 
