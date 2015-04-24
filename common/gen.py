@@ -61,7 +61,8 @@ def generateInclude(library, dependencies):
   
   writeDependencies(f, dependencies)
   
-  f.write('compiler.addLibrary(script.getResult(script.cwd("build.cake"), "library"))\n')
+  if isBuildGenerated(library):
+    f.write('compiler.addLibrary(script.getResult(script.cwd("build.cake"), "library"))\n')
 
   f.close()
   
