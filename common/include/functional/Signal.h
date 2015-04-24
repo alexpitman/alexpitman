@@ -1,6 +1,9 @@
 #ifndef __FUNCTIONAL_SIGNAL_H
 #define __FUNCTIONAL_SIGNAL_H
 
+#include "Connection.h"
+#include "types.h"
+
 #include <algorithm>
 #include <functional>
 #include <memory>
@@ -9,39 +12,7 @@
 
 namespace fun
 {
-  typedef unsigned int T_HandleIdentifier;
-
   class I_SignalInternals {};
-  
-  class Connection
-  {
-  public:
-    Connection() = default;
-    Connection(const Connection&) = delete;
-    Connection& operator=(const Connection&) = delete;
-    Connection(Connection&&) = default;
-    Connection& operator=(Connection&&) = default;
-    
-    Connection(std::shared_ptr<I_SignalInternals> Internals,
-               std::function<void()>&& RemoveFunction)
-    : mySignalInternals(Internals),
-      myRemoveFunction(std::move(RemoveFunction))
-    {
-    }
-    
-    ~Connection()
-    {
-      auto ptr = mySignalInternals.lock();
-      if (ptr)
-      {
-        myRemoveFunction();
-      }
-    }
-    
-  private:
-    std::weak_ptr<I_SignalInternals> mySignalInternals;
-    std::function<void()> myRemoveFunction;
-  };
 
   template<typename RETURN, typename... ARGS>
   class Signal
