@@ -1,4 +1,5 @@
 #include "mapping.h"
+#include <algorithm>
 #include <cmath>
 #include <fstream>
 #include <iostream>

@@ -14,9 +14,9 @@
 
 namespace geo
 {
-  class Rotation;
+  struct Rotation;
 
-  class Dll_geo Transform
+  struct Dll_geo Transform
   {
   public:
   
