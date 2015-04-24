@@ -26,7 +26,7 @@ filesys = base.tools["filesys"] = FileSystemTool(configuration=configuration)
 base.tools["variant"] = VariantTool(configuration=configuration)
 shell = base.tools["shell"] = ShellTool(configuration=configuration)
 shell.update(os.environ)
-compiler = base.tools["compiler"] = findMsvcCompiler(script.configuration, '11.0', 'x86')
+compiler = base.tools["compiler"] = findMsvcCompiler(script.configuration, '14.0', 'x86')
 
 # Set up compiler flags
 compiler.addCppFlag("/EHsc")
