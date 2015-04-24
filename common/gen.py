@@ -20,6 +20,7 @@ libraryDependencies = {
   'camera'           : { 'geometry' },
   'config'           : {},
   'export'           : { 'image', thirdParty('DevIL') },
+  'functional'       : { 'config' },
   'geometry'         : { 'numeric' },
   'image'            : { 'attribute' },
   'import'           : { 'system', 'object' },
