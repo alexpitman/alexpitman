@@ -44,6 +44,9 @@ namespace fun
   private:
     std::weak_ptr<I_SignalInternals> mySignalInternals;
     std::function<void()> myRemoveFunction;
+    
+    template<typename KEY, typename RETURN, typename... ARGS>
+    friend class SignalMap;
   };
 }
 

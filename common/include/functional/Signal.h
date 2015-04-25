@@ -29,6 +29,19 @@ namespace fun
       myInternals->myNextHandleIdentifier = 1;
     }
   
+    // No copy (move only).
+    Signal(const Signal<RETURN, ARGS...>&) = delete;
+    Signal& operator=(const Signal<RETURN, ARGS...>&) = delete;
+  
+    // Default move operations.
+    Signal(Signal<RETURN, ARGS...>&&) = default;
+    Signal& operator=(Signal<RETURN, ARGS...>&&) = default;
+  
+    bool HasConnections() const
+    {
+      return !myInternals->myCallbacks.empty();
+    }
+  
     Connection Register(const T_Callback& Callback)
     {
       myInternals->myCallbacks.push_back(
