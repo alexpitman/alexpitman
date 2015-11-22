@@ -5,8 +5,22 @@
 
 #include <iostream>
 
+namespace
+{
+  namespace local
+  {
+    QGLFormat Format()
+    {
+      QGLFormat format;
+      format.setVersion(3, 3);
+      format.setProfile(QGLFormat::CoreProfile);
+      return format;
+    }
+  }
+}
+
 wid::GLWidget::GLWidget(QWidget* Parent)
-: QGLWidget(QGLFormat(QGL::SampleBuffers), Parent),
+: QGLWidget(/*local::Format(), */Parent),
   myView()
 {
   std::cout << format().majorVersion() << "." << format().minorVersion() << std::endl;
