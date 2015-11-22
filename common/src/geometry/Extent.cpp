@@ -8,15 +8,23 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 geo::Extent3D::Extent3D()
+: myMin(Point3D::Null()),
+  myMax(Point3D::Null())
 {
-  myMin = Point3D::Null();
-  myMax = Point3D::Null();
 }
 
 geo::Extent3D::Extent3D( const Extent3D& Extent3D )
+: myMin(Extent3D.Min()),
+  myMax(Extent3D.Max())
+{
+}
+
+geo::Extent3D&
+geo::Extent3D::operator=(const Extent3D& Extent3D)
 {
   myMin = Extent3D.Min();
   myMax = Extent3D.Max();
+  return *this;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -25,6 +33,16 @@ geo::Extent3D::operator +(const Point3D& RHS) const
 {
   Extent3D Extent3D( *this );
   Extent3D += RHS;
+  return Extent3D;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+geo::Extent3D 
+geo::Extent3D::operator+(const Extent3D& RHS) const
+{
+  Extent3D Extent3D(*this);
+  Extent3D += RHS.myMin;
+  Extent3D += RHS.myMax;
   return Extent3D;
 }
 
@@ -51,18 +69,36 @@ geo::Extent3D::operator +=(const Point3D& RHS)
   return *this;
 }
 
+geo::Extent3D&
+geo::Extent3D::operator+=(const Extent3D& RHS)
+{
+  *this += RHS.myMin;
+  *this += RHS.myMax;
+  return *this;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
-geo::Point3D 
+const geo::Point3D&
 geo::Extent3D::Min() const
 {
   return myMin;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-geo::Point3D 
+const geo::Point3D&
 geo::Extent3D::Max() const
 {
   return myMax;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+geo::Point3D
+geo::Extent3D::Centre() const
+{
+  return geo::Point3D(
+    (myMin.x + myMax.x) / 2.0,
+    (myMin.y + myMax.y) / 2.0,
+    (myMin.z + myMax.z) / 2.0);
 }
 
 ///////////////////////////////////////////////////////////////////////////////

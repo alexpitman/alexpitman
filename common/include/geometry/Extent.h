@@ -35,14 +35,20 @@ namespace geo
   public:
     Extent3D();
     
-    Extent3D( const Extent3D& Extent3D );
+    Extent3D(const Extent3D& Extent3D);
     
-    Extent3D operator +(const Point3D& RHS) const;
+    Extent3D& operator=(const Extent3D& Extent3D);
     
-    Extent3D& operator +=(const Point3D& RHS);
+    Extent3D operator+(const Point3D& RHS) const;
+    Extent3D operator+(const Extent3D& RHS) const;
     
-    Point3D Min() const;
-    Point3D Max() const;
+    Extent3D& operator+=(const Point3D& RHS);
+    Extent3D& operator+=(const Extent3D& RHS);
+    
+    const Point3D& Min() const;
+    const Point3D& Max() const;
+    
+    Point3D Centre() const;
     
     Vector3D Span() const;
 
