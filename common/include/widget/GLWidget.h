@@ -35,9 +35,9 @@ namespace wid
     
   protected:
     
-    void initializeGL();
-    void paintGL();
-    void resizeGL(int Width, int Height);
+    void initializeGL() override;
+    void paintGL() override;
+    void resizeGL(int Width, int Height) override;
     
     void mousePressEvent(QMouseEvent* Event);
     void mouseReleaseEvent(QMouseEvent* Event);

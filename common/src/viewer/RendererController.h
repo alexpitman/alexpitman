@@ -20,7 +20,9 @@ namespace vwr
   
     RendererController(vwr::View* ViewPtr);
   
-    virtual void SetPolygonRenderMode(ree::PolygonRenderMode::Type RenderMode) override;
+    void SetPolygonRenderMode(ree::PolygonRenderMode::Type RenderMode) override;
+  
+    void TestShader() override;
   
   private:
   

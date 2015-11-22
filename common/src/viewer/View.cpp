@@ -7,6 +7,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 #include <iostream>
+#include <glew.h>
 
 #include "viewer/View.h"
 
@@ -16,6 +17,8 @@
 #include "scenetree/PointSetNode.h"
 
 #include "renderer/Factory.h"
+#include "renderer/Shader.h"
+#include "renderer/ShaderSource.h"
 
 #include "object/PointSet.h"
 #include "object/FacetNetwork.h"
@@ -27,7 +30,6 @@
 #include "geometry/Vector.h"
 
 #include <gl.h>
-
 #include <glu.h>
 
 #include <assert.h>
@@ -74,9 +76,11 @@ vwr::View::SetBuildPending()
 void 
 vwr::View::Render()
 {
-  if ( isBuildPending ) Build();
+  if (isBuildPending) Build();
   isRenderPending = false;
 
+  if (myShader) myShader->Bind();
+  
   Renderer()->Clear();
   Renderer()->LoadIdentity();
   
@@ -106,6 +110,8 @@ vwr::View::SetRenderPending()
 void
 vwr::View::GLInitialise()
 {
+  ::glewInit();
+  
   mySceneTreePtr.reset( new st::SceneTreeNode(Renderer()) );
 
   local::light = st::PointLight(
@@ -177,3 +183,20 @@ vwr::View::SetPolygonRenderMode(ree::PolygonRenderMode::Type RenderMode)
 {
   myPolygonRenderMode = RenderMode;
 }
+
+void
+vwr::View::TestShader()
+{
+  ree::ShaderSource source;
+  source.AddSourceCode(
+    ree::ShaderType::Fragment,
+    R"(#version 330
+out vec4 FragColour;
+void main()
+{
+  FragColour = vec4(0.0, 0.0, 1.0, 1.0);
+})");
+
+  myShader = ree::MakeShader(source);
+}
+

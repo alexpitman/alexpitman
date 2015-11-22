@@ -19,9 +19,16 @@
 #include "input/Key.h"
 #include "input/Mouse.h"
 
+#include <memory>
+
 namespace wid
 {
   class GLWidget;
+}
+
+namespace ree
+{
+  class Shader;
 }
 
 namespace vwr
@@ -76,6 +83,8 @@ namespace vwr
     
     void SetPolygonRenderMode(ree::PolygonRenderMode::Type RenderMode);
     
+    void TestShader();
+    
     // Handler for this view.
     T_ViewHandlerPtr myViewHandlerPtr;
   
@@ -92,6 +101,8 @@ namespace vwr
     // View properties
     cmr::Camera myCamera;
     ree::PolygonRenderMode::Type myPolygonRenderMode;
+    
+    std::unique_ptr<ree::Shader> myShader;
     
     // Classes that can access private members
     friend class wid::GLWidget;

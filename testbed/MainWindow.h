@@ -40,6 +40,8 @@ private slots:
   void createPlanet();
   void create2DTerrain();
     
+  // Shader menu
+  void testShader();
   
   void zoom();
   

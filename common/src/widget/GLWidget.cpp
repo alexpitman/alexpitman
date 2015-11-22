@@ -3,10 +3,13 @@
 #include "input/Key.h"
 #include "input/Mouse.h"
 
+#include <iostream>
+
 wid::GLWidget::GLWidget(QWidget* Parent)
 : QGLWidget(QGLFormat(QGL::SampleBuffers), Parent),
   myView()
 {
+  std::cout << format().majorVersion() << "." << format().minorVersion() << std::endl;
   setFocusPolicy(Qt::StrongFocus);
   setMouseTracking(true);
 }

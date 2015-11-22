@@ -163,6 +163,11 @@ void MainWindow::create2DTerrain()
   ept::ExportImage::Png(image, fileName.toUtf8().constData());
 }
 
+void MainWindow::testShader()
+{
+  myViewWindow->Handler()->RendererController()->TestShader();
+}
+
 void MainWindow::zoom()
 {
   myViewWindow->Handler()->CameraController()->ZoomToFit(
@@ -220,6 +225,14 @@ void MainWindow::buildMenu()
     
     addAction(tr("Terrain &2D"));
     connect(action, SIGNAL(triggered()), this, SLOT(create2DTerrain()));
+  }
+  
+  // Shader menu
+  {
+    addMenu(tr("&Shader"));
+    
+    addAction(tr("&Test"));
+    connect(action, SIGNAL(triggered()), this, SLOT(testShader()));
   }
 }
 

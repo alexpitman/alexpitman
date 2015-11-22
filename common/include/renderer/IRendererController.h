@@ -24,6 +24,7 @@ namespace ree
   
     virtual void SetPolygonRenderMode(ree::PolygonRenderMode::Type RenderMode) = 0;
   
+    virtual void TestShader() = 0;
   };
 }
 

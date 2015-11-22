@@ -19,3 +19,8 @@ void vwr::RendererController::SetPolygonRenderMode(ree::PolygonRenderMode::Type 
 {
   myViewPtr->SetPolygonRenderMode(RenderMode);
 }
+
+void vwr::RendererController::TestShader()
+{
+  myViewPtr->TestShader();
+}
