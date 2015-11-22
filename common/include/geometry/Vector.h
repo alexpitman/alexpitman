@@ -76,7 +76,7 @@ namespace geo
     Derived operator-() const
     {
       Derived vector;
-      Derived& derived = reinterpret_cast<Derived&>(*this);
+      const Derived& derived = reinterpret_cast<const Derived&>(*this);
       for (unsigned int i = 0; i < N; ++i)
       {
         vector[i] = -derived.data[i];

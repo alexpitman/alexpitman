@@ -78,7 +78,7 @@ namespace geo
     Derived operator-() const
     {
       Derived point;
-      Derived& derived = reinterpret_cast<Derived&>(*this);
+      const Derived& derived = reinterpret_cast<const Derived&>(*this);
       for (unsigned int i = 0; i < N; ++i)
       {
         point[i] = -derived.data[i];
