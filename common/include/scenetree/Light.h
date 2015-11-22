@@ -32,7 +32,9 @@ namespace st
     void Enable() const;
     void Disable() const;
   
-    void Render() const;
+    void Render() const override;
+  
+    geo::Extent3D Extent() const override { return geo::Extent3D(); }
   
   private:
   
@@ -70,6 +72,8 @@ namespace st
     void Disable() const;
     
     void Render() const;
+  
+    geo::Extent3D Extent() const override { return geo::Extent3D(); }
   
   private:
   

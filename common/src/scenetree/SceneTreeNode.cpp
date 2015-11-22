@@ -32,6 +32,17 @@ st::SceneTreeNode::Rebuild()
 {
 }
 
+geo::Extent3D
+st::SceneTreeNode::Extent() const
+{
+  geo::Extent3D extent;
+  for (const auto& node : myNodes)
+  {
+    extent += node->Extent();
+  }
+  return extent;
+}
+
 void
 st::SceneTreeNode::AddNode(const st::T_NodePtr& Node)
 {

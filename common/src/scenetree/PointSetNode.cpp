@@ -16,8 +16,15 @@ st::PointSetNode::PointSetNode(
 	const st::T_SceneTreePtr& Root,
 	const obj::T_PointSetPtr& PointSet )
 : st::Node(Root),
-  myPointSet(PointSet)
+  myPointSet(PointSet),
+  myExtent()
 {
+  myExtent = geo::Extent3D();
+  for (auto pu = myPointSet->PointsBegin(),
+         pv = myPointSet->PointsEnd(); pu != pv; ++pu)
+  {
+    myExtent += *pu;
+  }
 }
 
 void

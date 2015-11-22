@@ -24,16 +24,20 @@ namespace st
 	
     ~FacetNetworkNode();
   
-    virtual void Build() const;
+    void Build() const;
   
-		virtual void Render() const;
+		void Render() const override;
 	
+    geo::Extent3D Extent() const override { return myExtent; }
+  
 	private:
 	
 		obj::T_FacetNetworkPtr myFacetNetwork;
+    
 	
     mutable bool isRebuildRequired;
     mutable GLuint myDisplayListId;
+    mutable geo::Extent3D myExtent;
 	};
 }
 

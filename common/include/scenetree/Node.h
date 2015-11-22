@@ -12,6 +12,8 @@
 
 #include "renderer/IRenderer.h"
 
+#include "geometry/Extent.h"
+
 #include <memory>
 
 namespace st
@@ -35,6 +37,8 @@ namespace st
     
     virtual void Rebuild();
 
+    virtual geo::Extent3D Extent() const = 0;
+    
   protected:
 	
     ree::T_RendererPtr Renderer() const;

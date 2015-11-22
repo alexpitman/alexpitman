@@ -22,12 +22,14 @@ namespace st
 			const st::T_SceneTreePtr& Root,
 			const obj::T_PointSetPtr& PointSet );
 	
-		virtual void Render() const;
+		void Render() const override;
 	
+    geo::Extent3D Extent() const override { return myExtent; }
+  
 	private:
 	
 		obj::T_PointSetPtr myPointSet;
-	
+    geo::Extent3D myExtent;
 	};
 }
 

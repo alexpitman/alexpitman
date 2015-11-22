@@ -32,6 +32,13 @@ st::FacetNetworkNode::Build() const
 {
   isRebuildRequired = false;
 
+  myExtent = geo::Extent3D();
+  for (auto pu = myFacetNetwork->PointsBegin(),
+         pv = myFacetNetwork->PointsEnd(); pu != pv; ++pu)
+  {
+    myExtent += *pu;
+  }
+
   if (myDisplayListId) Renderer()->DeleteList(myDisplayListId);
   
   myDisplayListId = Renderer()->BeginList();

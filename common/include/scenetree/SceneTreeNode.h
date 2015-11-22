@@ -27,9 +27,11 @@ namespace st
 	
     SceneTreeNode(ree::T_RendererPtr RendererPtr);
 		
-    virtual void Render() const;
+    void Render() const override;
     
-    void Rebuild();
+    void Rebuild() override;
+    
+    geo::Extent3D Extent() const override;
     
 		void AddNode(const st::T_NodePtr& Node);
   
