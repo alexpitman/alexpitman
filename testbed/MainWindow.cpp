@@ -18,6 +18,7 @@
 #include <QErrorMessage>
 #include <QFileDialog>
 #include <QMenuBar>
+#include <QToolBar>
 
 MainWindow::MainWindow()
 : myViewWindow(new wid::ViewWindow())
@@ -25,56 +26,8 @@ MainWindow::MainWindow()
   setCentralWidget(myViewWindow);
   setWindowTitle(tr("Application"));
   
-  QMenu* menu;
-  QAction* action;
-  
-  auto addMenu = [&](const QString& Name)
-    {
-      menu = menuBar()->addMenu(Name);
-    };
-  auto addAction = [&](const QString& Name)
-    {
-      action = menu->addAction(Name);
-    };
-  
-  // File menu.
-  {
-    addMenu(tr("&File"));
-
-    addAction(tr("&Import"));
-    connect(action, SIGNAL(triggered()), this, SLOT(import()));
-
-    addAction(tr("&Quit"));
-    connect(action, SIGNAL(triggered()), qApp, SLOT(closeAllWindows()));
-  }
-  
-  // Create menu.
-  {
-    addMenu(tr("&Create"));
-    
-    addAction(tr("&Point set"));
-    connect(action, SIGNAL(triggered()), this, SLOT(createPointSet()));
-    
-    addAction(tr("&Facet network"));
-    connect(action, SIGNAL(triggered()), this, SLOT(createFacetNetwork()));
-  } 
-
-  // Voxel menu
-  {
-    addMenu(tr("&Voxel"));
-    
-    addAction(tr("&Terrain"));
-    connect(action, SIGNAL(triggered()), this, SLOT(createTerrain()));
-    
-    addAction(tr("&Sphere"));
-    connect(action, SIGNAL(triggered()), this, SLOT(createSphere()));
-    
-    addAction(tr("&Planet"));
-    connect(action, SIGNAL(triggered()), this, SLOT(createPlanet()));
-    
-    addAction(tr("Terrain &2D"));
-    connect(action, SIGNAL(triggered()), this, SLOT(create2DTerrain()));
-  }
+  buildMenu();
+  buildToolBar();
 }
 
 void MainWindow::import()
@@ -208,4 +161,80 @@ void MainWindow::create2DTerrain()
   }
   
   ept::ExportImage::Png(image, fileName.toUtf8().constData());
+}
+
+void MainWindow::zoom()
+{
+  myViewWindow->Handler()->CameraController()->ZoomToFit(
+    -geo::Vector3D::UnitZ(), geo::Vector3D::UnitY());
+}
+
+void MainWindow::buildMenu()
+{
+  QMenu* menu;
+  QAction* action;
+  
+  auto addMenu = [&](const QString& Name)
+    {
+      menu = menuBar()->addMenu(Name);
+    };
+  auto addAction = [&](const QString& Name)
+    {
+      action = menu->addAction(Name);
+    };
+  
+  // File menu.
+  {
+    addMenu(tr("&File"));
+
+    addAction(tr("&Import"));
+    connect(action, SIGNAL(triggered()), this, SLOT(import()));
+
+    addAction(tr("&Quit"));
+    connect(action, SIGNAL(triggered()), qApp, SLOT(closeAllWindows()));
+  }
+  
+  // Create menu.
+  {
+    addMenu(tr("&Create"));
+    
+    addAction(tr("&Point set"));
+    connect(action, SIGNAL(triggered()), this, SLOT(createPointSet()));
+    
+    addAction(tr("&Facet network"));
+    connect(action, SIGNAL(triggered()), this, SLOT(createFacetNetwork()));
+  } 
+
+  // Voxel menu
+  {
+    addMenu(tr("&Voxel"));
+    
+    addAction(tr("&Terrain"));
+    connect(action, SIGNAL(triggered()), this, SLOT(createTerrain()));
+    
+    addAction(tr("&Sphere"));
+    connect(action, SIGNAL(triggered()), this, SLOT(createSphere()));
+    
+    addAction(tr("&Planet"));
+    connect(action, SIGNAL(triggered()), this, SLOT(createPlanet()));
+    
+    addAction(tr("Terrain &2D"));
+    connect(action, SIGNAL(triggered()), this, SLOT(create2DTerrain()));
+  }
+}
+
+void MainWindow::buildToolBar()
+{
+  QToolBar* toolBar = new QToolBar;
+  addToolBar(toolBar);
+
+  QAction* action;
+  
+  auto addAction = [&](const QString& Name)
+    {
+      action = toolBar->addAction(Name);
+    };
+  
+  addAction(tr("Zoom"));
+  connect(action, SIGNAL(triggered()), this, SLOT(zoom()));
 }

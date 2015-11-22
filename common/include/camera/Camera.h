@@ -28,6 +28,13 @@ namespace cmr
     const geo::Vector3D& LookDirection() const;
     const geo::Vector3D& UpDirection() const;
     
+    // Set the camera position.
+    void SetPosition(const geo::Point3D& Position);
+    
+    // Set specific look/up directions.
+    void SetLookDirection(const geo::Vector3D& Vector);
+    void SetUpDirection(const geo::Vector3D& Vector);
+    
     // Translate using an arbitrary vector.
     void Translate(const geo::Vector3D& Vector);
     

@@ -88,3 +88,11 @@ void vwr::CameraController::RotateYaw(double Degrees)
   myViewPtr->myCamera.RotateYaw(Degrees);
 }
 
+void vwr::CameraController::ZoomToFit(const geo::Vector3D& LookDirection, const geo::Vector3D& UpDirection)
+{
+  myViewPtr->myCamera.SetLookDirection(LookDirection);
+  myViewPtr->myCamera.SetUpDirection(UpDirection);
+  
+  const auto extent = myViewPtr->mySceneTreePtr->Extent();
+  myViewPtr->myCamera.SetPosition(extent.Centre() - LookDirection * extent.Span().Length());
+}

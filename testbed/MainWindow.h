@@ -27,6 +27,7 @@ public:
     
 private slots:
     
+  // File menu
   void import();
     
   // Create menu
@@ -39,7 +40,13 @@ private slots:
   void createPlanet();
   void create2DTerrain();
     
+  
+  void zoom();
+  
 private:
+
+  void buildMenu();
+  void buildToolBar();
 
   wid::ViewWindow* myViewWindow;
 };

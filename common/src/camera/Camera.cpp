@@ -48,6 +48,23 @@ cmr::Camera::UpDirection() const
   return myUpDirection;
 }
 
+void cmr::Camera::SetPosition(const geo::Point3D& Position)
+{
+  myPosition = Position;
+}
+
+void cmr::Camera::SetLookDirection(const geo::Vector3D& Vector)
+{
+  myLookDirection = Vector;
+  myLookDirection.Normalise();
+}
+
+void cmr::Camera::SetUpDirection(const geo::Vector3D& Vector)
+{
+  myUpDirection = Vector;
+  myUpDirection.Normalise();
+}
+
 void
 cmr::Camera::Translate(const geo::Vector3D& Vector)
 {

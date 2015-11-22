@@ -46,6 +46,8 @@ namespace vwr
     void RotateRoll(double Degrees) override;
     void RotateYaw(double Degrees) override;
   
+    void ZoomToFit(const geo::Vector3D& LookDirection, const geo::Vector3D& UpDirection) override;
+  
   private:
   
     vwr::View* myViewPtr;

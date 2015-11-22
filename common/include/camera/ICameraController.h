@@ -44,6 +44,8 @@ namespace cmr
     virtual void RotatePitch(double Degrees) = 0;
     virtual void RotateRoll(double Degrees) = 0;
     virtual void RotateYaw(double Degrees) = 0;
+    
+    virtual void ZoomToFit(const geo::Vector3D& LookDirection, const geo::Vector3D& UpDirection) = 0;
   };
 }
 
